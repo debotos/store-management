@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import Navigation from "../Navigation";
+
+import AppBarMain from '../ui-element/AppBarMain';
+// import Navigation from "../Navigation";
 
 class Employee extends Component {
   render() {
     return (
       <div>
-        <Navigation/>
+        <AppBarMain />
         <h1>Employee.js</h1>
       </div>
     )

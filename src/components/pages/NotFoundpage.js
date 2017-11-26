@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
-import Navigation from "../Navigation";
+import React, { Component } from "react";
+
+import AppBarMain from "../ui-element/AppBarMain";
+// import Navigation from "../Navigation";
 
 class NotFoundpage extends Component {
   render() {
     return (
       <div>
-        <Navigation/>
+        <AppBarMain />
         <h1>NotFoundpage.js</h1>
         <h2>SORRY!!!</h2>
       </div>
-    )
+    );
   }
 }
 

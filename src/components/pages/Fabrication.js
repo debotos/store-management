@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import Navigation from "../Navigation";
+
+import AppBarMain from '../ui-element/AppBarMain';
+// import Navigation from "../Navigation";
 
 class Fabrication extends Component {
   render() {
     return (
       <div>
-        <Navigation/>
+        <AppBarMain />
         <h1>Fabrication.js</h1>
       </div>
     )
