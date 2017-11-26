@@ -38,7 +38,7 @@ class AppBarMain extends React.Component {
             title={<span>Menu</span>}
           />
           
-          <MenuItems/>
+          <MenuItems handleClose={this.handleClose}/>
 
         </Drawer>
       </div>
