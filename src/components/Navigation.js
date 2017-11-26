@@ -1,0 +1,25 @@
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
+class Navigation extends Component {
+  render() {
+    return (
+      <div>
+        <Link to="/">Home</Link>
+        <Link to="/bank">Bank</Link>
+        <Link to="/due">Due</Link>
+        <Link to="/employee">Employee</Link>
+        <Link to="/expenses">Expenses</Link>
+        <Link to="/fabrication">Fabrication</Link>
+        <Link to="/moneyreceipt">Money Receipt</Link>
+        <Link to="/pad">Pad</Link>
+        <Link to="/readycash">Ready Cash</Link>
+        <Link to="/salary">Salary</Link>
+        <Link to="/sell">Sell</Link>
+        <Link to="/stock">Stock</Link>
+      </div>
+    );
+  }
+}
+
+export default Navigation;
