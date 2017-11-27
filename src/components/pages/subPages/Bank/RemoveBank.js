@@ -1,11 +1,32 @@
 import React, { Component } from "react";
 import { Card, CardActions, CardHeader } from "material-ui/Card";
-import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
+import DropDownMenu from "material-ui/DropDownMenu";
+import MenuItem from "material-ui/MenuItem";
+import { connect } from "react-redux";
 
+import { removeBank } from "../../../../actions/bank-actions";
 import RemoveBankImage from "../../../../../src/assets/images/bankRemove.jpg";
 import "../../../../style/Bank/bank.css";
 
 class RemoveBank extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      bank_account_number: ""
+    };
+  }
+
+  handleChange = (event, index, value) =>
+    this.setState({ bank_account_number: value });
+
+  handleBankDelete = event => {
+    const account_number = this.state.bank_account_number;
+    this.props.removeBank(account_number);
+    this.props.showSnackBar(`Bank account ${account_number} Deleted`);
+    this.setState({ bank_account_number: this.props.banks[0].bank_account_number})
+  };
+
   render() {
     return (
       <Card className="bank-remove-card">
@@ -14,13 +35,59 @@ class RemoveBank extends Component {
           subtitle="select a bank to remove"
           avatar={RemoveBankImage}
         />
+        
+        {this.props.banks.length > 0 ? (
+          <div>
+            <DropDownMenu
+              value={
+                this.state.bank_account_number === ""
+                  ? this.props.banks[0].bank_account_number
+                  : this.state.bank_account_number
+              }
+              onChange={this.handleChange}
+            >
+              {this.props.banks.map(bank => {
+                return (
+                  <MenuItem
+                    key={bank.bank_account_number}
+                    value={bank.bank_account_number}
+                    label={bank.bank_account_number}
+                    primaryText={bank.bank_name}
+                  />
+                );
+              })}
+            </DropDownMenu>
+          </div>
+        ) : (
+          <h3 style={{ color: "red" }}>First add a Bank !</h3>
+        )}
 
         <CardActions>
-          <FlatButton label="Remove Bank" primary={true} />
+          <RaisedButton
+            disabled={this.props.banks.length > 0 ? false : true}
+            onClick={this.handleBankDelete}
+            label="Remove Bank"
+            secondary={true}
+          />
         </CardActions>
       </Card>
     );
   }
 }
 
-export default RemoveBank;
+const mapStateToProps = state => {
+  console.log("[RemoveBank.js] state: ", state.bank);
+  return {
+    banks: state.bank
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    removeBank: account_number => {
+      dispatch(removeBank(account_number));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RemoveBank);

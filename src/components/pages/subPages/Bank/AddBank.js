@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import TextField from "material-ui/TextField";
 import { Card, CardActions, CardHeader } from "material-ui/Card";
-import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
 import { connect } from "react-redux";
 
 import { addBank } from "../../../../actions/bank-actions";
@@ -19,33 +19,33 @@ class AddBank extends Component {
   }
 
   handleBankName = event => {
-    const bankName = event.target.value.trim();
-    if (bankName.length > 0) {
-      this.setState({ bankName });
-      if (this.state.accountNumber.length > 0) {
-        this.setState({ submitEnable: false });
-      }
+    const bankName = event.target.value;
+    this.setState({ bankName });
+    if(bankName.length > 0 && this.state.accountNumber.length > 0) {
+      this.setState({submitEnable: false});
+    }else {
+      this.setState({submitEnable: true});
     }
   };
 
   handleAccountNumber = event => {
-    const accountNumber = event.target.value.trim();
-    if (accountNumber.length > 0) {
-      this.setState({ accountNumber });
-      if (this.state.bankName.length > 0) {
-        this.setState({ submitEnable: false });
-      }
+    const accountNumber = event.target.value;
+    this.setState({ accountNumber });
+    if(accountNumber.length > 0 && this.state.bankName.length > 0) {
+      this.setState({submitEnable: false});
+    }else {
+      this.setState({submitEnable: true});
     }
   };
 
   handleSubmit = event => {
     this.setState({ submitEnable: true });
-    const bankName = this.state.bankName;
-    const accountNumber = this.state.accountNumber;
-    this.props.showSnackBar(`${bankName} added Successfully !`);
+    const bankName = this.state.bankName.trim();
+    const accountNumber = this.state.accountNumber.trim();
     console.log(`[AddBank.js] State is : ${bankName} ${accountNumber}`);
     // Now adding a bank
     this.props.addBank(bankName, accountNumber);
+    this.props.showSnackBar(`${bankName} added Successfully !`);
     this.setState({ bankName: "", accountNumber: "" });
   };
 
@@ -59,18 +59,21 @@ class AddBank extends Component {
             avatar={AddBankImage}
           />
           <TextField
+            type="text"
             value={this.state.bankName}
             onChange={this.handleBankName}
             hintText="Bank Name Here"
+            floatingLabelText="Bank Name Here"
           />
           <br />
           <TextField
             value={this.state.accountNumber}
             onChange={this.handleAccountNumber}
             hintText="Bank Account Number"
+            floatingLabelText="Bank Account Number"
           />
           <CardActions>
-            <FlatButton
+            <RaisedButton
               onClick={this.handleSubmit}
               disabled={this.state.submitEnable}
               label="Add Bank"

@@ -77,7 +77,7 @@ class Bank extends Component {
                 <AddBank showSnackBar={this.showSnackBar}/>
               </div>
               <div style={styles.slide}>
-                <RemoveBank />
+                <RemoveBank showSnackBar={this.showSnackBar}/>
               </div>
             </SwipeableViews>
           </div>
