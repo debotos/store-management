@@ -55,7 +55,7 @@ class AddBank extends Component {
         <Card className="bank-add-card">
           <CardHeader
             title="Add a Bank"
-            subtitle="NOTE: Both field is required"
+            subtitle="NOTE: Both required!"
             avatar={AddBankImage}
           />
           <TextField

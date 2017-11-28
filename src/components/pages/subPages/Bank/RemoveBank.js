@@ -17,6 +17,7 @@ class RemoveBank extends Component {
     };
   }
 
+
   handleChange = (event, index, value) =>
     this.setState({ bank_account_number: value });
 
@@ -24,7 +25,6 @@ class RemoveBank extends Component {
     const account_number = this.state.bank_account_number;
     this.props.removeBank(account_number);
     this.props.showSnackBar(`Bank account ${account_number} Deleted`);
-    this.setState({ bank_account_number: this.props.banks[0].bank_account_number})
   };
 
   render() {
@@ -35,13 +35,13 @@ class RemoveBank extends Component {
           subtitle="select a bank to remove"
           avatar={RemoveBankImage}
         />
-        
+
         {this.props.banks.length > 0 ? (
           <div>
             <DropDownMenu
               value={
                 this.state.bank_account_number === ""
-                  ? this.props.banks[0].bank_account_number
+                  ? ''
                   : this.state.bank_account_number
               }
               onChange={this.handleChange}

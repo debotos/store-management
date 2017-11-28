@@ -62,7 +62,7 @@ class Bank extends Component {
         <h1 style={{textAlign: 'center'}}>Manage your Bank </h1>
           <div>
             <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
-              <Tab style={{marginLeft: 14}} label="Deposit / Withdraw" value={0} />
+              <Tab label="D / W" value={0} />
               <Tab label="Add Bank" value={1} />
               <Tab label="Remove Bank" value={2} />
             </Tabs>
@@ -70,7 +70,7 @@ class Bank extends Component {
               index={this.state.slideIndex}
               onChangeIndex={this.handleChange}
             >
-              <div>
+              <div style={styles.slide}>
                 <DepositWithdraw/>
               </div>
               <div style={styles.slide}>
