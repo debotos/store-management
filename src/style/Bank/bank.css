@@ -1,17 +1,24 @@
 .bank-add-card {
-  margin-top: 20px;
+  margin-top: 15px;
   padding: 10px;
   text-align: center;
 }
 
 .bank-remove-card {
-  margin-top: 20px;
+  margin-top: 15px;
   padding: 10px;
   text-align: center;
 }
 
 .deposit-withdraw-card {
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 10px;
   text-align: center;
+}
+
+.balance-card {
+  margin-top: 15px;
+  padding: 10px;
+  text-align: center;
+  border: 2px solid #00BCD4;
 }

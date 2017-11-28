@@ -8,6 +8,10 @@ import TextField from "material-ui/TextField";
 
 import BankImage from "../../../../../src/assets/images/bankMoney.ico";
 import "../../../../style/Bank/bank.css";
+import {
+  depositMoneyToBankAccount,
+  withdrawMoneyFromBankAccount
+} from "../../../../actions/bank-actions";
 
 class DepositWithdraw extends Component {
   constructor(props) {
@@ -21,10 +25,21 @@ class DepositWithdraw extends Component {
   }
 
   handleDeposit = event => {
+    const bank_account_number = this.state.bank_account_number;
+    const amount = this.state.amount;
+    console.log("amount sending", this.state.amount);
+    this.props.depositMoneyToBankAccount(bank_account_number, amount);
     this.getBalance();
+    this.setState({amount: ''})
   };
 
-  handleWithdraw = event => {};
+  handleWithdraw = event => {
+    const bank_account_number = this.state.bank_account_number;
+    const amount = this.state.amount;
+    this.props.withdrawMoneyFromBankAccount(bank_account_number, amount);
+    this.getBalance();
+    this.setState({amount: ''})
+  };
 
   handleAmount = event => {
     const amount = event.target.value;
@@ -51,111 +66,126 @@ class DepositWithdraw extends Component {
   getBalance = () => {
     const account_number = this.state.bank_account_number;
     let balance;
-    if (account_number !== "") {
-      const banks = this.props.banks;
-      for (let bank of banks) {
-        if (bank.hasOwnProperty("bank_account_number")) {
-          if (bank["bank_account_number"] === account_number) {
-            balance = bank["amount"];
-            this.setState({ balance });
+    const getBalanceNow = account_number => {
+      return new Promise((resolve, reject) => {
+        if (account_number !== "") {
+          const banks = this.props.banks;
+          for (let bank of banks) {
+            if (bank.hasOwnProperty("bank_account_number")) {
+              if (bank["bank_account_number"] === account_number) {
+                balance = bank["amount"];
+                resolve(balance);
+              }
+            }
           }
         }
-      }
-    }
+      });
+    };
+
+    getBalanceNow(account_number).then(balance => {
+      this.setState({ balance });
+    });
   };
 
   render() {
     return (
-      <Card className="deposit-withdraw-card">
-        <CardHeader
-          title="select bank for Balance"
-          subtitle="Select a bank"
-          avatar={BankImage}
-        />
+      <div>
+        <Card className="balance-card">
+          <h3>
+            Balance:{" "}
+            {this.state.balance !== "" &&
+            this.state.balance !== "undefined" &&
+            this.props.banks.length > 0 ? (
+              <b>{this.state.balance}</b>
+            ) : (
+              <b style={{ color: "red" }}>Select Account !</b>
+            )}
+          </h3>
+        </Card>
+        <Card className="deposit-withdraw-card">
+          <CardHeader
+            title="select bank for Balance"
+            subtitle="Then do your actions"
+            avatar={BankImage}
+          />
 
-        <h3>
-          Balance:{" "}
-          {this.state.balance !== "" &&
-          this.state.balance !== "undefined" &&
-          this.props.banks.length > 0 ? (
-            this.state.balance
+          {this.props.banks.length > 0 ? (
+            <div>
+              <DropDownMenu
+                value={
+                  this.state.bank_account_number === ""
+                    ? ""
+                    : this.state.bank_account_number
+                }
+                onChange={this.handleChange}
+              >
+                {this.props.banks.map(bank => {
+                  return (
+                    <MenuItem
+                      key={bank.bank_account_number}
+                      value={bank.bank_account_number}
+                      label={bank.bank_account_number}
+                      primaryText={bank.bank_name}
+                    />
+                  );
+                })}
+              </DropDownMenu>
+            </div>
           ) : (
-            <b style={{ color: "red" }}>Select ?</b>
+            <h3 style={{ color: "red" }}><b>First add a Bank !</b></h3>
           )}
-        </h3>
-
-        {this.props.banks.length > 0 ? (
-          <div>
-            <DropDownMenu
-              value={
-                this.state.bank_account_number === ""
-                  ? ""
-                  : this.state.bank_account_number
+          <TextField
+            value={this.state.amount}
+            disabled={this.props.banks.length > 0 ? false : true}
+            onChange={this.handleAmount}
+            hintText="Amount here to Add or Remove"
+            floatingLabelText="Amount here to Add or Remove"
+          />
+          <CardActions>
+            <RaisedButton
+              disabled={
+                this.props.banks.length > 0 && this.state.amount !== ""
+                  ? false
+                  : true
               }
-              onChange={this.handleChange}
-            >
-              {this.props.banks.map(bank => {
-                return (
-                  <MenuItem
-                    key={bank.bank_account_number}
-                    value={bank.bank_account_number}
-                    label={bank.bank_account_number}
-                    primaryText={bank.bank_name}
-                  />
-                );
-              })}
-            </DropDownMenu>
-          </div>
-        ) : (
-          <h3 style={{ color: "red" }}>First add a Bank !</h3>
-        )}
-        <TextField
-          value={this.state.amount}
-          disabled={this.props.banks.length > 0 ? false : true}
-          onChange={this.handleAmount}
-          hintText="Amount here to Add or Remove"
-          floatingLabelText="Amount here to Add or Remove"
-        />
-        <CardActions>
-          <RaisedButton
-            disabled={
-              this.props.banks.length > 0 && this.state.amount !== ""
-                ? false
-                : true
-            }
-            onClick={this.handleDeposit}
-            label="Deposit"
-            primary={true}
-          />
-          <RaisedButton
-            disabled={
-              this.props.banks.length > 0 && this.state.amount !== ""
-                ? false
-                : true
-            }
-            onClick={this.handleWithdraw}
-            label="Withdraw"
-            secondary={true}
-          />
-        </CardActions>
-      </Card>
+              onClick={this.handleDeposit}
+              label="Deposit"
+              primary={true}
+            />
+            <RaisedButton
+              disabled={
+                this.props.banks.length > 0 &&
+                this.state.amount !== "" &&
+                parseInt(this.state.balance, 10) > 0
+                  ? false
+                  : true
+              }
+              onClick={this.handleWithdraw}
+              label="Withdraw"
+              secondary={true}
+            />
+          </CardActions>
+        </Card>
+      </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log("[AddBank.js] state: ", state.bank);
   return {
     banks: state.bank
   };
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     addBank: (name, account_number) => {
-//       dispatch(addBank(name, account_number));
-//     }
-//   };
-// };
+const mapDispatchToProps = dispatch => {
+  return {
+    depositMoneyToBankAccount: (account_number, amount) => {
+      dispatch(depositMoneyToBankAccount(account_number, amount));
+    },
+    withdrawMoneyFromBankAccount: (account_number, amount) => {
+      dispatch(withdrawMoneyFromBankAccount(account_number, amount));
+    }
+  };
+};
 
-export default connect(mapStateToProps, null)(DepositWithdraw);
+export default connect(mapStateToProps, mapDispatchToProps)(DepositWithdraw);

@@ -70,7 +70,7 @@ class Bank extends Component {
               index={this.state.slideIndex}
               onChangeIndex={this.handleChange}
             >
-              <div style={styles.slide}>
+              <div >
                 <DepositWithdraw/>
               </div>
               <div style={styles.slide}>

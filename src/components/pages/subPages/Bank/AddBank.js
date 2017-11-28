@@ -18,31 +18,53 @@ class AddBank extends Component {
     };
   }
 
+  checkAlreadyExist = () => {
+    const Banks = this.props.banks;
+    for (let bank of Banks) {
+      if (bank.bank_account_number === this.state.accountNumber) {
+        this.setState({ submitEnable: true });
+        this.props.showSnackBar(`${this.state.accountNumber} account already exist !`)
+      }
+    }
+  };
+
   handleBankName = event => {
     const bankName = event.target.value;
     this.setState({ bankName });
-    if(bankName.length > 0 && this.state.accountNumber.length > 0) {
-      this.setState({submitEnable: false});
-    }else {
-      this.setState({submitEnable: true});
+    if (bankName.length > 0 && this.state.accountNumber.length > 0) {
+      this.setState({ submitEnable: false });
+    } else {
+      this.setState({ submitEnable: true });
     }
   };
 
   handleAccountNumber = event => {
-    const accountNumber = event.target.value;
-    this.setState({ accountNumber });
-    if(accountNumber.length > 0 && this.state.bankName.length > 0) {
-      this.setState({submitEnable: false});
-    }else {
-      this.setState({submitEnable: true});
-    }
+    const getValue = event => {
+      return new Promise((resolve, reject) => {
+        const accountNumber = event.target.value;
+        resolve(accountNumber);
+      });
+    };
+    getValue(event)
+      .then(value => {
+        this.setState({ accountNumber: value });
+        if (value.length > 0 && this.state.bankName.length > 0) {
+          this.setState({ submitEnable: false });
+        } else {
+          this.setState({ submitEnable: true });
+        }
+        return value;
+      })
+      .then(() => {
+        this.checkAlreadyExist();
+      });
   };
 
   handleSubmit = event => {
     this.setState({ submitEnable: true });
     const bankName = this.state.bankName.trim();
     const accountNumber = this.state.accountNumber.trim();
-    console.log(`[AddBank.js] State is : ${bankName} ${accountNumber}`);
+    // console.log(`[AddBank.js] State is : ${bankName} ${accountNumber}`);
     // Now adding a bank
     this.props.addBank(bankName, accountNumber);
     this.props.showSnackBar(`${bankName} added Successfully !`);
@@ -69,8 +91,8 @@ class AddBank extends Component {
           <TextField
             value={this.state.accountNumber}
             onChange={this.handleAccountNumber}
-            hintText="Bank Account Number"
-            floatingLabelText="Bank Account Number"
+            hintText="Bank Account Number (unique!)"
+            floatingLabelText="Bank Account Number (unique!)"
           />
           <CardActions>
             <RaisedButton
@@ -87,7 +109,6 @@ class AddBank extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("[AddBank.js] state: ", state.bank);
   return {
     banks: state.bank
   };

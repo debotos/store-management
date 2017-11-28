@@ -76,7 +76,6 @@ class RemoveBank extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("[RemoveBank.js] state: ", state.bank);
   return {
     banks: state.bank
   };
