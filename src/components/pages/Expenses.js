@@ -8,6 +8,12 @@ import AppBarMain from "../ui-element/AppBarMain";
 import FloatingAddButton from "../ui-element/FloatingAddButton";
 import TextField from "material-ui/TextField";
 
+const customDialogContentStyle = {
+  width: '90%',
+  maxWidth: 'none',
+  minHeight: '20%'
+};
+
 class Expenses extends Component {
   constructor(props) {
     super(props);
@@ -87,6 +93,8 @@ class Expenses extends Component {
           open={this.state.showAddExpensesModel}
           autoScrollBodyContent={true}
           repositionOnUpdate={false}
+          contentStyle={customDialogContentStyle}
+          autoDetectWindowHeight={false}
         >
           <TextField
             onChange={this.handleExpensesTitleChange}
@@ -100,8 +108,17 @@ class Expenses extends Component {
           <TextField
             onChange={this.handleExpensesAmountChange}
             value={this.state.expensesAmount}
+            type="number"
             hintText="Money / Amount"
             floatingLabelText="Expenses Amount Here"
+            floatingLabelStyle={{ color: orange500 }}
+            floatingLabelFocusStyle={{ color: blue500 }}
+          />
+
+          <DatePicker
+            onChange={this.handleExpensesDateChange}
+            hintText="Select Date"
+            floatingLabelText="Date of Expenses Here"
             floatingLabelStyle={{ color: orange500 }}
             floatingLabelFocusStyle={{ color: blue500 }}
           />
@@ -114,14 +131,7 @@ class Expenses extends Component {
             floatingLabelStyle={{ color: orange500 }}
             floatingLabelFocusStyle={{ color: blue500 }}
             multiLine={true}
-            rows={2}
-          />
-          <DatePicker
-            onChange={this.handleExpensesDateChange}
-            hintText="Select Date"
-            floatingLabelText="Date of Expenses Here"
-            floatingLabelStyle={{ color: orange500 }}
-            floatingLabelFocusStyle={{ color: blue500 }}
+            rows={1}
           />
         </Dialog>
       </div>
