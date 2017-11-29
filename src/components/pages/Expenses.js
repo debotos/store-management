@@ -34,6 +34,7 @@ class Expenses extends Component {
     this.setState({ expensesAmount: "" });
     this.setState({ expensesDetails: "" });
     this.setState({ showAddExpensesModel: false });
+    this.setState({ expensesDate: moment() })
   };
   onFocusChange = ({ focused }) => {
     this.setState(() => ({ calendarFocused: focused }));
