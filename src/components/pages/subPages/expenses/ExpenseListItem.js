@@ -1,18 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
+import moment from "moment";
+import numeral from "numeral";
+import { Card } from "material-ui/Card";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import { orange500, blue500 } from "material-ui/styles/colors";
-// import DatePicker from "material-ui/DatePicker";
-import FloatingAddButton from "../ui-element/FloatingAddButton";
-import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
-import moment from "moment";
 import { SingleDatePicker } from "react-dates";
+import TextField from "material-ui/TextField";
 
-import "../../style/expenses/expenses.css";
-import AppBarMain from "../ui-element/AppBarMain";
-import { startAddExpense } from "../../actions/expenses/expenses-actions";
-import ExpenseDashboardPage from "./subPages/expenses/ExpensesDashboardPage";
+import {
+  startEditExpense,
+  startRemoveExpense
+} from "../../../../actions/expenses/expenses-actions";
 
 const customDialogContentStyle = {
   width: "90%",
@@ -20,21 +20,7 @@ const customDialogContentStyle = {
   minHeight: "50%"
 };
 
-class Expenses extends Component {
-  // Handling add expenses request
-  handleSubmit = event => {
-    const expense = {
-      note: this.state.expensesTitle,
-      description: this.state.expensesDetails,
-      amount: parseFloat(this.state.expensesAmount, 10),
-      createdAt: this.state.expensesDate.valueOf()
-    };
-    this.props.startAddExpense(expense);
-    this.setState({ expensesTitle: "" });
-    this.setState({ expensesAmount: "" });
-    this.setState({ expensesDetails: "" });
-    this.setState({ showAddExpensesModel: false });
-  };
+class ExpenseListItem extends React.Component {
   onFocusChange = ({ focused }) => {
     this.setState(() => ({ calendarFocused: focused }));
   };
@@ -44,11 +30,11 @@ class Expenses extends Component {
       this.setState(() => ({ expensesDate: createdAt }));
     }
   };
-  closeAddExpensesModel = () => {
-    this.setState({ showAddExpensesModel: false });
+  closeEditExpensesModel = () => {
+    this.setState({ showEditExpensesModel: false });
   };
-  showAddExpensesModel = () => {
-    this.setState({ showAddExpensesModel: true });
+  showEditExpensesModel = () => {
+    this.setState({ showEditExpensesModel: true });
   };
   handleExpensesTitleChange = event => {
     const title = event.target.value;
@@ -64,56 +50,54 @@ class Expenses extends Component {
     const details = event.target.value;
     this.setState({ expensesDetails: details });
   };
-  // playing with other date picker
-  // handleExpensesDateChange = (event, date) => {
-  //   let data = date;
-  //   if (typeof data !== 'string') {
-  //     data = data.toString();
-  // }
-  //   console.log("date is:", date);
-  //   console.log("type date is:", typeof date);
-  //   const dataArray = date.split(" ");
-  //   let day = dataArray[2];
-  //   let year = dataArray[3];
-  //   let month ;
-  //   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  //   for(var singleMonth in months) {
-  //     if(months[singleMonth] === dataArray[1]) {
-  //       month = singleMonth;
-  //       break;
-  //     }
-  //   }
-  //   console.log('trimed value ', year, month, day)
-  //   let momentDate = new Date(year, month, day);
-  //   this.setState({expensesDate: moment(momentDate)})
-  // };
-
   constructor(props) {
     super(props);
+    let { id, description, amount, createdAt, note } = props;
     this.state = {
+      id: id,
+      showEditExpensesModel: false,
       calendarFocused: false,
       submitDisable: true,
-      showAddExpensesModel: false,
-      expensesTitle: "",
-      expensesAmount: "",
-      expensesDate: moment(),
-      expensesDetails: ""
+      expensesTitle: note ? note : "",
+      expensesAmount: amount ? amount.toString() : "",
+      expensesDate: createdAt ? moment(createdAt) : moment(),
+      expensesDetails: description ? description : ""
     };
   }
 
-  showEditableModel = () => {
-    this.setState({ showAddExpensesModel: true });
+  handleDelete = () => {
+    this.closeEditExpensesModel();
+    this.props.startRemoveExpense({ id: this.state.id });
+  };
+
+  handleUpdate = () => {
+    const expense = {
+      note: this.state.expensesTitle,
+      description: this.state.expensesDetails,
+      amount: parseFloat(this.state.expensesAmount, 10),
+      createdAt: this.state.expensesDate.valueOf()
+    };
+    this.closeEditExpensesModel();
+    this.props.startEditExpense(this.state.id, expense);
   };
 
   render() {
     const DefaultActionsOfAddExpensesModel = [
+      <FlatButton label="Cancel" onClick={this.closeEditExpensesModel} />,
       <FlatButton
-        label="Cancel"
+        label="Delete"
         secondary={true}
-        onClick={this.closeAddExpensesModel}
+        disabled={
+          !this.state.expensesAmount ||
+          !this.state.expensesTitle ||
+          !this.state.expensesDate
+            ? true
+            : false
+        }
+        onClick={this.handleDelete}
       />,
       <FlatButton
-        label="Add Expense"
+        label="Update"
         primary={true}
         disabled={
           !this.state.expensesAmount ||
@@ -122,23 +106,33 @@ class Expenses extends Component {
             ? true
             : false
         }
-        onClick={this.handleSubmit}
+        onClick={this.handleUpdate}
       />
     ];
-
     return (
       <div>
-        <AppBarMain />
-        <div className="container">
-          <h1 style={{ textAlign: "center" }}>Record Expenses</h1>
-          <ExpenseDashboardPage showEditableModel={this.showEditableModel} />
-          <FloatingAddButton showAddExpensesModel={this.showAddExpensesModel} />
-        </div>
+        <Card
+          className="expenses-list-item"
+          onClick={() => this.setState({ showEditExpensesModel: true })}
+        >
+          <div className="list-item">
+            <div>
+              <h3 className="list-item-title">{this.state.expensesTitle}</h3>
+              <span className="list-item-sub-title">
+                {moment(this.state.expensesDate).format("MMMM Do, YYYY")}
+              </span>
+            </div>
+            <h3 className="list-item-data">
+              {" "}
+              {numeral(this.state.expensesAmount).format("0,0.00")} &#x9f3;
+            </h3>
+          </div>
+        </Card>
         <Dialog
-          title="Add an Expense"
+          title="Update/Remove Expense"
           actions={DefaultActionsOfAddExpensesModel}
           modal={true}
-          open={this.state.showAddExpensesModel}
+          open={this.state.showEditExpensesModel}
           autoScrollBodyContent={true}
           repositionOnUpdate={false}
           contentStyle={customDialogContentStyle}
@@ -164,14 +158,6 @@ class Expenses extends Component {
               floatingLabelFocusStyle={{ color: blue500 }}
             />
 
-            {/* <DatePicker
-            onChange={this.handleExpensesDateChange}
-            hintText="Select Date"
-            value={this.state.expensesDate}
-            floatingLabelText="Date of Expenses Here"
-            floatingLabelStyle={{ color: orange500 }}
-            floatingLabelFocusStyle={{ color: blue500 }}
-          /> */}
             <br />
             <TextField
               onChange={this.handleExpensesDetailsChange}
@@ -185,9 +171,7 @@ class Expenses extends Component {
             />
             <br />
             <div className="single-date-picker">
-              <label style={{ color: "orange" }}>
-                Select Data [Default: <b>Today</b>]
-              </label>
+              <label style={{ color: "orange" }}>Select Data</label>
               <br />
               <SingleDatePicker
                 date={this.state.expensesDate}
@@ -205,12 +189,9 @@ class Expenses extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    startAddExpense: expense => {
-      dispatch(startAddExpense(expense));
-    }
-  };
-};
+const mapDispatchToProps = (dispatch, props) => ({
+  startEditExpense: (id, expense) => dispatch(startEditExpense(id, expense)),
+  startRemoveExpense: data => dispatch(startRemoveExpense(data))
+});
 
-export default connect(null, mapDispatchToProps)(Expenses);
+export default connect(null, mapDispatchToProps)(ExpenseListItem);

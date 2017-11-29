@@ -1,0 +1,15 @@
+import * as firebase from "firebase";
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyDsmxbMNk-Mir5hNH0Zr0nYs90ZU3Kq5GQ",
+  authDomain: "store-management-deb.firebaseapp.com",
+  databaseURL: "https://store-management-deb.firebaseio.com",
+  projectId: "store-management-deb",
+  storageBucket: "store-management-deb.appspot.com",
+  messagingSenderId: "546219312878"
+};
+firebase.initializeApp(config);
+
+const database = firebase.database();
+
+export { firebase, database as default };
