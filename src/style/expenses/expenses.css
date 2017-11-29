@@ -89,3 +89,17 @@
 .list-item:hover {
     background: #f7f7f7;
 }
+
+@media only screen and (min-width: 769px) { 
+    .filter-items {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+    
+    .filter-date-picker {
+        margin-top: 10px;
+    }
+  }

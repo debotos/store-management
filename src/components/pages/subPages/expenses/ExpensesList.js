@@ -7,8 +7,8 @@ export const ExpenseList = props => (
   <div className="content-container">
     <div className="list-body">
       {props.expenses.length === 0 ? (
-        <div className="list-item list-item-message">
-          <span>No expenses</span>
+        <div style={{textAlign: 'center'}}>
+          <span style={{ color: 'red'}}><b>No expenses</b></span>
         </div>
       ) : (
         props.expenses.map(expense => {

@@ -15,13 +15,15 @@ const ExpenseDashboardPage = props => (
     </Card>
 
     <Card className="expenses-list-card">
-      
       <div className="list-header">
-        <div><strong>Expenses</strong></div>
-        <div><strong>Amount</strong></div>
+        <div>
+          <strong>Expenses</strong>
+        </div>
+        <div>
+          <strong>Amount</strong>
+        </div>
       </div>
-      
-      
+
       <ExpenseList />
     </Card>
   </div>
