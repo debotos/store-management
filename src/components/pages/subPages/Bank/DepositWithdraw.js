@@ -30,15 +30,18 @@ class DepositWithdraw extends Component {
     console.log("amount sending", this.state.amount);
     this.props.depositMoneyToBankAccount(bank_account_number, amount);
     this.getBalance();
-    this.setState({amount: ''})
+    this.setState({ amount: "" });
   };
 
   handleWithdraw = event => {
     const bank_account_number = this.state.bank_account_number;
     const amount = this.state.amount;
-    this.props.withdrawMoneyFromBankAccount(bank_account_number, amount);
-    this.getBalance();
-    this.setState({amount: ''})
+    const balance = this.state.balance;
+    if (balance >= amount) {
+      this.props.withdrawMoneyFromBankAccount(bank_account_number, amount);
+      this.getBalance();
+      this.setState({ amount: "" });
+    }
   };
 
   handleAmount = event => {
@@ -96,7 +99,7 @@ class DepositWithdraw extends Component {
             {this.state.balance !== "" &&
             this.state.balance !== "undefined" &&
             this.props.banks.length > 0 ? (
-              <b>{this.state.balance}</b>
+              <strong>{this.state.balance} &#x9f3;</strong>
             ) : (
               <b style={{ color: "red" }}>Select Account !</b>
             )}
@@ -109,62 +112,68 @@ class DepositWithdraw extends Component {
             avatar={BankImage}
           />
 
-          {this.props.banks.length > 0 ? (
-            <div >
-              <SelectField
-                value={
-                  this.state.bank_account_number === ""
-                    ? ""
-                    : this.state.bank_account_number
+          <div className="deposit-withdraw-inner-card">
+            {this.props.banks.length > 0 ? (
+              <div>
+                <SelectField
+                  value={
+                    this.state.bank_account_number === ""
+                      ? ""
+                      : this.state.bank_account_number
+                  }
+                  floatingLabelText="Select A Bank"
+                  onChange={this.handleChange}
+                >
+                  {this.props.banks.map(bank => {
+                    return (
+                      <MenuItem
+                        key={bank.bank_account_number}
+                        value={bank.bank_account_number}
+                        label={bank.bank_account_number}
+                        primaryText={bank.bank_name}
+                      />
+                    );
+                  })}
+                </SelectField>
+              </div>
+            ) : (
+              <h3 style={{ color: "red", textAlign: "center" }}>
+                <b>First add a Bank !</b>
+              </h3>
+            )}
+            <TextField
+              type="number"
+              value={this.state.amount}
+              disabled={this.props.banks.length > 0 ? false : true}
+              onChange={this.handleAmount}
+              hintText="Amount here to Add or Remove"
+              floatingLabelText="Amount here to Add or Remove"
+            />
+            <CardActions style={{ textAlign: "center" }}>
+              <RaisedButton
+                disabled={
+                  this.props.banks.length > 0 && this.state.amount !== ""
+                    ? false
+                    : true
                 }
-                onChange={this.handleChange}
-              >
-                {this.props.banks.map(bank => {
-                  return (
-                    <MenuItem
-                      key={bank.bank_account_number}
-                      value={bank.bank_account_number}
-                      label={bank.bank_account_number}
-                      primaryText={bank.bank_name}
-                    />
-                  );
-                })}
-              </SelectField>
-            </div>
-          ) : (
-            <h3 style={{ color: "red" }}><b>First add a Bank !</b></h3>
-          )}
-          <TextField
-            value={this.state.amount}
-            disabled={this.props.banks.length > 0 ? false : true}
-            onChange={this.handleAmount}
-            hintText="Amount here to Add or Remove"
-            floatingLabelText="Amount here to Add or Remove"
-          />
-          <CardActions>
-            <RaisedButton
-              disabled={
-                this.props.banks.length > 0 && this.state.amount !== ""
-                  ? false
-                  : true
-              }
-              onClick={this.handleDeposit}
-              label="Deposit"
-              primary={true}
-            />
-            <RaisedButton
-              disabled={
-                this.props.banks.length > 0 &&
-                this.state.amount !== "" &&
-                parseInt(this.state.balance, 10) > 0
-                  ? false
-                  : true
-              }
-              onClick={this.handleWithdraw}
-              label="Withdraw"
-              secondary={true}
-            />
-          </CardActions>
+                onClick={this.handleDeposit}
+                label="Deposit"
+                primary={true}
+              />
+              <RaisedButton
+                disabled={
+                  this.props.banks.length > 0 &&
+                  this.state.amount !== "" &&
+                  parseInt(this.state.balance, 10) > 0
+                    ? false
+                    : true
+                }
+                onClick={this.handleWithdraw}
+                label="Withdraw"
+                secondary={true}
+              />
+            </CardActions>
+          </div>
         </Card>
       </div>
     );

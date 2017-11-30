@@ -28,13 +28,52 @@ class Sells extends Component {
       this.setState({ toggle: false });
     }
   };
+  handleReset = () => {
+    this.setState({ quantity: "" });
+    this.setState({ length: "" });
+    this.setState({ dia: "" });
+    this.setState({ rate: "" });
+    this.setState({ toggle: false });
+    this.setState({ selectedItem: null });
+  };
   handleColorChange = color => {
     this.setState({ color });
     console.log("Setting the color:", color);
   };
+  handleQuantyChange = event => {
+    const quantity = event.target.value;
+    console.log("i got the", quantity);
+    if (!quantity || quantity.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ quantity });
+    }
+  };
+  handleLengthChange = event => {
+    const length = event.target.value;
+    if (!length || length.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ length });
+    }
+  };
+
+  handleDiaChange = event => {
+    const dia = event.target.value;
+    if (!dia || dia.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ dia });
+    }
+  };
+  handleRateChange = event => {
+    const rate = event.target.value;
+    if (!rate || rate.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ rate });
+    }
+  };
+
   constructor(props) {
     super(props);
     this.state = {
+      rate: "",
+      dia: "",
+      length: "",
+      quantity: "",
       selectedItem: null,
       toggle: false,
       color: {
@@ -58,7 +97,7 @@ class Sells extends Component {
               <b>Input Product Details</b>
             </h4>
             {/* All Fields */}
-            <div className="container" style={{}}>
+            <div>
               <div className="col-sm-6">
                 <SelectField
                   value={this.state.selectedItem}
@@ -69,6 +108,9 @@ class Sells extends Component {
                 </SelectField>
                 <br />
                 <TextField
+                  type="number"
+                  value={this.state.quantity}
+                  onChange={this.handleQuantyChange}
                   hintText="Quantity"
                   floatingLabelText="Place the Quantity "
                 />
@@ -84,18 +126,30 @@ class Sells extends Component {
                     handleColorChange={this.handleColorChange}
                   />
                 ) : (
-                  <h4>Turn on the toggle button to select color!</h4>
+                  <h4>Turn it on to select color!</h4>
                 )}
               </div>
               <div className="col-sm-6">
                 <TextField
+                  type="number"
+                  value={this.state.length}
+                  onChange={this.handleLengthChange}
                   hintText="Length"
                   floatingLabelText="Place the Length "
                 />{" "}
                 <br />
-                <TextField hintText="DIA" floatingLabelText="Place the DIA " />
+                <TextField
+                  type="number"
+                  value={this.state.dia}
+                  onChange={this.handleDiaChange}
+                  hintText="DIA"
+                  floatingLabelText="Place the DIA "
+                />
                 <br />
                 <TextField
+                  type="number"
+                  value={this.state.rate}
+                  onChange={this.handleRateChange}
                   hintText="Price/Rate"
                   floatingLabelText="Place the Price/Rate "
                 />
@@ -104,8 +158,33 @@ class Sells extends Component {
             <br />
             <div />
             <CardActions style={{ float: "right" }}>
-              <FlatButton style={{ color: "red" }} label="Reset" />
-              <FlatButton primary={true} label="Add" />
+              <FlatButton
+                disabled={
+                  this.state.selectedItem ||
+                  this.state.quantity ||
+                  this.state.length ||
+                  this.state.dia ||
+                  this.state.rate
+                    ? false
+                    : true
+                }
+                secondary={true}
+                label="Reset"
+                onClick={this.handleReset}
+              />
+              <FlatButton
+                disabled={
+                  this.state.selectedItem &&
+                  this.state.quantity &&
+                  this.state.length &&
+                  this.state.dia &&
+                  this.state.rate
+                    ? false
+                    : true
+                }
+                primary={true}
+                label="Add"
+              />
             </CardActions>
           </Card>
         </div>

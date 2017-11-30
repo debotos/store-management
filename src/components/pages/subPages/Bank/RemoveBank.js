@@ -17,7 +17,6 @@ class RemoveBank extends Component {
     };
   }
 
-
   handleChange = (event, index, value) =>
     this.setState({ bank_account_number: value });
 
@@ -41,10 +40,12 @@ class RemoveBank extends Component {
             <SelectField
               value={
                 this.state.bank_account_number === ""
-                  ? ''
+                  ? ""
                   : this.state.bank_account_number
               }
               onChange={this.handleChange}
+              floatingLabelText="Select A Bank"
+              style={{ marginLeft: "30px" }}
             >
               {this.props.banks.map(bank => {
                 return (
@@ -59,10 +60,12 @@ class RemoveBank extends Component {
             </SelectField>
           </div>
         ) : (
-          <h3 style={{ color: "red" }}>First add a Bank !</h3>
+          <h3 style={{ color: "red", textAlign: "center" }}>
+            First add a Bank !
+          </h3>
         )}
 
-        <CardActions>
+        <CardActions style={{ textAlign: "center" }}>
           <RaisedButton
             disabled={this.props.banks.length > 0 ? false : true}
             onClick={this.handleBankDelete}

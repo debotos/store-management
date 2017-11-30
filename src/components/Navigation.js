@@ -15,7 +15,7 @@ class Navigation extends Component {
         <Link to="/pad">Pad</Link>
         <Link to="/readycash">Ready Cash</Link>
         <Link to="/salary">Salary</Link>
-        <Link to="/sell">Sell</Link>
+        <Link to="/sell">Sells</Link>
         <Link to="/stock">Stock</Link>
       </div>
     );

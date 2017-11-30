@@ -92,7 +92,7 @@ export default props => (
         history.push("/sell");
       }}
     >
-      <Link to="/sell">Sell</Link>
+      <Link to="/sell">Sells</Link>
     </MenuItem>
     <MenuItem
       onClick={() => {

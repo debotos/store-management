@@ -34,11 +34,7 @@ export const bankReducer = (state = addBankDefaultState, action) => {
     case WITHDRAW_MONEY_FROM_BANK_ACCOUNT:
       return state.map(bank => {
         if (bank.bank_account_number === action.data.bank_account_number) {
-          const bankAccountHaveNow = parseFloat(bank.amount).toFixed(2);
-          const requestedWithdraw = parseFloat(action.data.amount).toFixed(2);
-          if (bankAccountHaveNow > requestedWithdraw) {
-            bank.amount = bankAccountHaveNow - requestedWithdraw;
-          }
+          bank.amount = bank.amount - action.data.amount;
         }
         return bank;
       });
