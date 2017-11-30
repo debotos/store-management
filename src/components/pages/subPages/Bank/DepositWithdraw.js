@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Card, CardActions, CardHeader } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
-import DropDownMenu from "material-ui/DropDownMenu";
+import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 import TextField from "material-ui/TextField";
 
@@ -110,8 +110,8 @@ class DepositWithdraw extends Component {
           />
 
           {this.props.banks.length > 0 ? (
-            <div>
-              <DropDownMenu
+            <div >
+              <SelectField
                 value={
                   this.state.bank_account_number === ""
                     ? ""
@@ -129,7 +129,7 @@ class DepositWithdraw extends Component {
                     />
                   );
                 })}
-              </DropDownMenu>
+              </SelectField>
             </div>
           ) : (
             <h3 style={{ color: "red" }}><b>First add a Bank !</b></h3>

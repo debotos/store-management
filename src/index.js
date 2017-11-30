@@ -24,7 +24,11 @@ store.subscribe(() => {
   console.log(store.getState());
 });
 
-store.dispatch(startSetExpenses()).then(() => {
-  ReactDOM.render(jsx, document.getElementById("root"));
-})
+// Uncomment this line to work with expenses.js
+// store.dispatch(startSetExpenses()).then(() => {
+//   ReactDOM.render(jsx, document.getElementById("root"));
+// })
+
+ReactDOM.render(jsx, document.getElementById("root"));
+
 registerServiceWorker();

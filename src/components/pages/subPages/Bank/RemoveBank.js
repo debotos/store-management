@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Card, CardActions, CardHeader } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
-import DropDownMenu from "material-ui/DropDownMenu";
+import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 import { connect } from "react-redux";
 
@@ -38,7 +38,7 @@ class RemoveBank extends Component {
 
         {this.props.banks.length > 0 ? (
           <div>
-            <DropDownMenu
+            <SelectField
               value={
                 this.state.bank_account_number === ""
                   ? ''
@@ -56,7 +56,7 @@ class RemoveBank extends Component {
                   />
                 );
               })}
-            </DropDownMenu>
+            </SelectField>
           </div>
         ) : (
           <h3 style={{ color: "red" }}>First add a Bank !</h3>
