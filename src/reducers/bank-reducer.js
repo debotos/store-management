@@ -8,7 +8,7 @@ import {
 const addBankDefaultState = [];
 
 const adder = (before, after) => {
-  console.log(before, after);
+  console.log('Action Deposit:', before, after);
   return parseFloat(before + after).toFixed(2);
 };
 
@@ -34,7 +34,7 @@ export const bankReducer = (state = addBankDefaultState, action) => {
     case WITHDRAW_MONEY_FROM_BANK_ACCOUNT:
       return state.map(bank => {
         if (bank.bank_account_number === action.data.bank_account_number) {
-          bank.amount = bank.amount - action.data.amount;
+          bank.amount = parseFloat(bank.amount) - parseFloat(action.data.amount);
         }
         return bank;
       });

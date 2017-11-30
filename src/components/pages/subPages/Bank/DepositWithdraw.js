@@ -31,16 +31,20 @@ class DepositWithdraw extends Component {
     this.props.depositMoneyToBankAccount(bank_account_number, amount);
     this.getBalance();
     this.setState({ amount: "" });
+    this.props.showSnackBar("Amount deposit Successfull !");
   };
 
   handleWithdraw = event => {
     const bank_account_number = this.state.bank_account_number;
-    const amount = this.state.amount;
-    const balance = this.state.balance;
+    const amount = parseFloat(this.state.amount);
+    const balance = parseFloat(this.state.balance);
     if (balance >= amount) {
       this.props.withdrawMoneyFromBankAccount(bank_account_number, amount);
       this.getBalance();
       this.setState({ amount: "" });
+      this.props.showSnackBar("Amount Withdraw Successfull !");
+    } else {
+      this.props.showSnackBar("Failed ! Not Enough Balance !");
     }
   };
 

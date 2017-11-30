@@ -71,7 +71,7 @@ class Bank extends Component {
               onChangeIndex={this.handleChange}
             >
               <div >
-                <DepositWithdraw/>
+                <DepositWithdraw showSnackBar={this.showSnackBar}/>
               </div>
               <div style={styles.slide}>
                 <AddBank showSnackBar={this.showSnackBar}/>
@@ -84,7 +84,7 @@ class Bank extends Component {
         </div>
         <Snackbar
           open={this.state.snackBar}
-          message={this.state.snackBarMessage}
+          message={<b>{this.state.snackBarMessage}</b>}
           action="Okey"
           onActionTouchTap={this.handleActionTouchTap}
           autoHideDuration={4000}
