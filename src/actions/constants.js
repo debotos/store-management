@@ -9,3 +9,7 @@ export const ADD_EXPENSE = "ADD_EXPENSE";
 export const REMOVE_EXPENSE = "REMOVE_EXPENSE";
 export const EDIT_EXPENSE = "EDIT_EXPENSE";
 export const SET_EXPENSES = "SET_EXPENSES";
+// Sells.js
+export const ADD_A_SELL_ITEM = 'ADD_A_SELL_ITEM'
+export const REMOVE_A_SELL_ITEM = 'REMOVE_A_SELL_ITEM'
+export const REMOVE_ALL_SELL_ITEMS = 'REMOVE_ALL_SELL_ITEMS'

@@ -3,7 +3,7 @@ import {
   REMOVE_BANK,
   DEPOSIT_MONEY_TO_BANK_ACCOUNT,
   WITHDRAW_MONEY_FROM_BANK_ACCOUNT
-} from "../actions/constants";
+} from "../../actions/constants";
 
 const addBankDefaultState = [];
 

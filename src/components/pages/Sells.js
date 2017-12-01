@@ -5,20 +5,43 @@ import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 import TextField from "material-ui/TextField";
 import Toggle from "material-ui/Toggle";
+import { connect } from "react-redux";
+import uuid from "uuid/v4";
 
 import AppBarMain from "../ui-element/AppBarMain";
 import ColorPicker from "../ui-element/ColorPicker";
+import SellsTable from "./subPages/sells/SellsTable";
+import { addSellItem } from "../../actions/sells/sells-actions";
+import SnackBar from "../ui-element/SnackBar";
 // import Navigation from "../Navigation";
 
 const items = [
-  <MenuItem key={1} value={1} primaryText="Debotos Das" />,
-  <MenuItem key={2} value={2} primaryText="Sourov Das" />,
-  <MenuItem key={3} value={3} primaryText="Ripon Das" />,
-  <MenuItem key={5} value={5} primaryText="Raisul Sohag vi" />,
-  <MenuItem key={4} value={4} primaryText="Akash Das" />
+  <MenuItem key={1} value="Debotos Das" primaryText="Debotos Das" />,
+  <MenuItem key={2} value="Sourov Das" primaryText="Sourov Das" />,
+  <MenuItem key={3} value="Ripon Das" primaryText="Ripon Das" />,
+  <MenuItem key={5} value="Raisul Sohag vi" primaryText="Raisul Sohag vi" />,
+  <MenuItem key={4} value="Akash Das" primaryText="Akash Das" />
 ];
 
 class Sells extends Component {
+  // SnackBar Functions
+  handleActionTouchTap = () => {
+    this.setState({
+      snackBar: false
+    });
+  };
+
+  handleRequestClose = () => {
+    this.handleActionTouchTap();
+  };
+
+  showSnackBar = message => {
+    this.setState({
+      snackBar: true,
+      snackBarMessage: message
+    });
+  };
+  // End
   handleSelectedItemChange = (event, index, value) =>
     this.setState({ selectedItem: value });
   handleToggle = (event, isInputChecked) => {
@@ -42,7 +65,6 @@ class Sells extends Component {
   };
   handleQuantyChange = event => {
     const quantity = event.target.value;
-    console.log("i got the", quantity);
     if (!quantity || quantity.match(/^\d{1,}(\.\d{0,2})?$/)) {
       this.setState({ quantity });
     }
@@ -81,9 +103,28 @@ class Sells extends Component {
         g: "188",
         b: "212",
         a: "100"
-      }
+      },
+      snackBar: false,
+      snackBarMessage: ""
     };
   }
+
+  handleSubmit = () => {
+    let color = this.state.toggle ? this.state.color : null;
+    let sellsItemData = {
+      id: uuid(),
+      item: this.state.selectedItem,
+      quantity: this.state.quantity,
+      rate: this.state.rate,
+      length: this.state.length,
+      dia: this.state.dia,
+      color,
+      total: (parseFloat(this.state.quantity) * parseFloat(this.state.rate)).toFixed(2)
+    };
+    this.props.addSellItem(sellsItemData);
+    // this.handleReset();
+    this.showSnackBar("Item added to the list Successfully !");
+  };
 
   render() {
     return (
@@ -91,7 +132,7 @@ class Sells extends Component {
         {/* Main App Bar */}
         <AppBarMain />
         {/* Input Section */}
-        <div className="container" style={{ marginTop: 10 }}>
+        <div className="container" style={{ marginTop: 10, marginBotton: 15 }}>
           <Card className="container" style={{ margin: 5, padding: 15 }}>
             <h4>
               <b>Input Product Details</b>
@@ -184,13 +225,32 @@ class Sells extends Component {
                 }
                 primary={true}
                 label="Add"
+                onClick={this.handleSubmit}
               />
             </CardActions>
           </Card>
         </div>
+        {/* Sells Table Section*/}
+        <div>
+          <SellsTable showSnackBar={this.showSnackBar}/>
+        </div>
+        <SnackBar
+          snackBar={this.state.snackBar}
+          snackBarMessage={this.state.snackBarMessage}
+          handleActionTouchTap={this.handleActionTouchTap}
+          handleRequestClose={this.handleRequestClose}
+        />
       </div>
     );
   }
 }
 
-export default Sells;
+const mapDispatchToProps = dispatch => {
+  return {
+    addSellItem: sellItemData => {
+      dispatch(addSellItem(sellItemData));
+    }
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Sells);
