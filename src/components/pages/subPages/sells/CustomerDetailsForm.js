@@ -3,6 +3,8 @@ import { Card, CardActions } from "material-ui/Card";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
 
+import GENERATE_PDF from './PDF'
+
 class CustomerDetailsForm extends Component {
   handleReset = () => {
     this.setState({ name: "" });
@@ -47,9 +49,9 @@ class CustomerDetailsForm extends Component {
       address: ""
     };
   }
-  generatePDF = () => {
+  handleGeneratePDF = () => {
     const data = this.collectAllData();
-    console.log("Generating PDF with.....\n", data);
+    GENERATE_PDF(data);
   };
   render() {
     return (
@@ -87,8 +89,8 @@ class CustomerDetailsForm extends Component {
               <TextField
                 value={this.state.address}
                 onChange={this.handleAddress}
-                hintText="DIA"
-                floatingLabelText="Place the DIA "
+                hintText="Address here"
+                floatingLabelText="Place the Address "
               />
             </div>
           </div>
@@ -111,13 +113,13 @@ class CustomerDetailsForm extends Component {
                 this.state.name &&
                 this.state.number &&
                 this.state.mail &&
-                this.state.address
+                this.state.address 
                   ? false
                   : true
               }
               primary={true}
               label="Generate PDF"
-              onClick={this.generatePDF}
+              onClick={this.handleGeneratePDF}
             />
           </CardActions>
         </Card>
@@ -127,3 +129,6 @@ class CustomerDetailsForm extends Component {
 }
 
 export default CustomerDetailsForm;
+
+// &&
+// this.props.sellsTable[0]
