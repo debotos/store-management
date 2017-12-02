@@ -73,7 +73,7 @@ class TableComponent extends Component {
   render() {
     return (
       <div>
-        <Table height="350px" fixedHeader={true} fixedFooter={true}>
+        <Table height="300px" fixedHeader={true} fixedFooter={true}>
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}

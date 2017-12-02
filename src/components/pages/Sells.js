@@ -13,6 +13,7 @@ import ColorPicker from "../ui-element/ColorPicker";
 import SellsTable from "./subPages/sells/SellsTable";
 import { addSellItem } from "../../actions/sells/sells-actions";
 import SnackBar from "../ui-element/SnackBar";
+import CustomerDetailsForm from "./subPages/sells/CustomerDetailsForm";
 // import Navigation from "../Navigation";
 
 const items = [
@@ -119,7 +120,9 @@ class Sells extends Component {
       length: this.state.length,
       dia: this.state.dia,
       color,
-      total: (parseFloat(this.state.quantity) * parseFloat(this.state.rate)).toFixed(2)
+      total: (
+        parseFloat(this.state.quantity) * parseFloat(this.state.rate)
+      ).toFixed(2)
     };
     this.props.addSellItem(sellsItemData);
     // this.handleReset();
@@ -132,8 +135,8 @@ class Sells extends Component {
         {/* Main App Bar */}
         <AppBarMain />
         {/* Input Section */}
-        <div className="container" style={{ marginTop: 10, marginBotton: 15 }}>
-          <Card className="container" style={{ margin: 5, padding: 15 }}>
+        <div className="container" style={{ marginTop: 15, marginBotton: 15 }}>
+          <Card className="container" style={{ margin: 5, padding: 40 }}>
             <h4>
               <b>Input Product Details</b>
             </h4>
@@ -232,7 +235,11 @@ class Sells extends Component {
         </div>
         {/* Sells Table Section*/}
         <div>
-          <SellsTable showSnackBar={this.showSnackBar}/>
+          <SellsTable showSnackBar={this.showSnackBar} />
+        </div>
+        {/* Customer Details Getting Form */}
+        <div>
+          <CustomerDetailsForm sellsTable={this.props.sellsTable} />
         </div>
         <SnackBar
           snackBar={this.state.snackBar}
@@ -253,4 +260,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Sells);
+const mapStateToProps = state => {
+  return {
+    sellsTable: state.sells
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sells);
