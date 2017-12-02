@@ -14,6 +14,13 @@ function GENERATE_PDF(data) {
   //Start
 
   var docDefinition = {
+    watermark: {
+      text: COMPANY_NAME,
+      color: "blue",
+      opacity: 0.3,
+      bold: true,
+      italics: false
+    },
     content: [
       { text: COMPANY_NAME, style: "header", alignment: "center" },
 
@@ -29,7 +36,11 @@ function GENERATE_PDF(data) {
         alignment: "center"
       },
 
-      { text: "Date: " + Date().substr(0, 15), alignment: "center" },
+      {
+        text: "Date: " + Date().substr(0, 15),
+        style: "subheader",
+        alignment: "center"
+      },
 
       { text: "\n\n" },
 
@@ -46,16 +57,16 @@ function GENERATE_PDF(data) {
       { text: "\n\n" },
 
       {
-        style: "tableExample",
+        style: "tableDesign",
         table: {
-          widths: ["*", "*", "*", "*", "*", "*", "*", "*"],
+          widths: [15, 80, 100, 40, 30, 45, 40, 90],
           body: renderContent(sellingItems)
         }
-      }
+      },
+      { text: "\n\n" },
+      { text: "------------------------------------", alignment: "right" },
+      { text: COMPANY_NAME, alignment: "right" }
     ],
-    footer: {
-      columns: [{ text: "Right part", alignment: "right" }]
-    },
     styles: {
       header: {
         fontSize: 30,
@@ -67,7 +78,7 @@ function GENERATE_PDF(data) {
         bold: true,
         margin: [0, 10, 0, 5]
       },
-      tableExample: {
+      tableDesign: {
         margin: [0, 5, 0, 15]
       },
       tableHeader: {
@@ -83,7 +94,9 @@ function GENERATE_PDF(data) {
 
   //End
 
-  pdfMake.createPdf(docDefinition).download();
+  pdfMake
+    .createPdf(docDefinition)
+    .download(customer.name + "-" + Date().substr(0, 15));
 }
 
 const setColorProperty = color => {
