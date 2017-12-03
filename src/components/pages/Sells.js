@@ -141,7 +141,7 @@ class Sells extends Component {
         <AppBarMain />
         {/* Input Section */}
         <div className="container" style={{ marginTop: 15, marginBotton: 15 }}>
-          <Card className="container" style={{ margin: 5, padding: 40 }}>
+          <Card className="container" style={{ margin: 5, padding: 30 }}>
             <h4>
               <b>Input Product Details</b>
             </h4>
@@ -250,6 +250,7 @@ class Sells extends Component {
           <CustomerDetailsForm
             sellsTable={this.props.sellsTable}
             AllTotal={this.state.AllTotal}
+            showSnackBar={this.showSnackBar}
           />
         </div>
         <SnackBar

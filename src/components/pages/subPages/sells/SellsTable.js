@@ -11,10 +11,31 @@ import {
 import { connect } from "react-redux";
 import reactCSS from "reactcss";
 import TextField from "material-ui/TextField";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
 
 import "../../../../style/sells/table.css";
+import { removeSellItem } from '../../../../actions/sells/sells-actions'
 
 class TableComponent extends Component {
+  setColorProperty = color => {
+    if (color) {
+      return <ColorPicker color={color} />;
+    } else {
+      return "No Selection";
+    }
+  };
+
+  handleRowClick = (row, column, event) => {
+    this.setState({ ModalData: this.props.sellItems[row] });
+    this.handleDetailsModelOpen();
+  };
+  handleDetailsModelOpen = () => {
+    this.setState({ detailsModelOpen: true });
+  };
+  handleDetailsModelClose = () => {
+    this.setState({ detailsModelOpen: false });
+  };
   renderTableRow = () => {
     return this.props.sellItems.map((singleItem, index) => {
       return (
@@ -70,14 +91,40 @@ class TableComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      discount: 0
+      discount: 0,
+      detailsModelOpen: false,
+      ModalData: ""
     };
   }
 
+  handleDetailsModelDeleteAction = () => {
+    const id = this.state.ModalData.id;
+    this.props.removeSellItem(id);
+    this.handleDetailsModelClose();
+  };
+
   render() {
+    const detailsModalActions = [
+      <FlatButton
+        label="Delete"
+        secondary={true}
+        onClick={this.handleDetailsModelDeleteAction}
+      />,
+      <FlatButton
+        label="Ok"
+        primary={true}
+        keyboardFocused={true}
+        onClick={this.handleDetailsModelClose}
+      />
+    ];
     return (
       <div>
-        <Table height="300px" fixedHeader={true} fixedFooter={true}>
+        <Table
+          height="300px"
+          fixedHeader={true}
+          fixedFooter={true}
+          onCellClick={this.handleRowClick}
+        >
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}
@@ -136,6 +183,21 @@ class TableComponent extends Component {
             </TableRow>
           </TableFooter>
         </Table>
+        <Dialog
+          title="Details : "
+          actions={detailsModalActions}
+          modal={false}
+          open={this.state.detailsModelOpen}
+          onRequestClose={this.handleDetailsModelClose}
+        >
+          Item: <strong>{this.state.ModalData.item}</strong> <br /> Length:{" "}
+          <strong>{this.state.ModalData.length}</strong> <br /> Dia:{" "}
+          <strong>{this.state.ModalData.dia}</strong> <br /> Color:{" "}
+          <strong>{this.setColorProperty(this.state.ModalData.color)}</strong>{" "}
+          <br /> Quantity: <strong>{this.state.ModalData.quantity}</strong>{" "}
+          <br /> Rate: <strong>{this.state.ModalData.rate}</strong> <br />
+          Total: <strong>{this.state.ModalData.total}</strong> <br />
+        </Dialog>
       </div>
     );
   }
@@ -147,7 +209,15 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, null)(TableComponent);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeSellItem: (id) => {
+      dispatch(removeSellItem(id))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableComponent);
 
 // Color Picker Class
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Card, CardActions } from "material-ui/Card";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
+import isEmail from "validator/lib/isEmail";
 
 import GENERATE_PDF from "./PDF";
 
@@ -52,12 +53,20 @@ class CustomerDetailsForm extends Component {
   }
   handleGeneratePDF = () => {
     const data = this.collectAllData();
-    GENERATE_PDF(data);
+    if (this.state.mail) {
+      if (isEmail(this.state.mail)) {
+        GENERATE_PDF(data);
+      } else {
+        this.props.showSnackBar("Error ! Invalid Email !");
+      }
+    } else {
+      GENERATE_PDF(data);
+    }
   };
   render() {
     return (
       <div className="container" style={{ marginTop: 15, marginBotton: 15 }}>
-        <Card className="container" style={{ margin: 5, padding: 40 }}>
+        <Card className="container" style={{ margin: 5, padding: 30 }}>
           <h4>
             <b>Input Customer Details</b>
           </h4>
@@ -72,6 +81,7 @@ class CustomerDetailsForm extends Component {
               />
               <br />
               <TextField
+                type="number"
                 value={this.state.number}
                 onChange={this.handleNumber}
                 hintText="Phone Number"
@@ -113,13 +123,13 @@ class CustomerDetailsForm extends Component {
               disabled={
                 this.state.name &&
                 this.state.number &&
-                this.state.mail &&
-                this.state.address
+                this.state.address &&
+                this.props.sellsTable[0]
                   ? false
                   : true
               }
               primary={true}
-              label="Generate PDF"
+              label="GET PDF"
               onClick={this.handleGeneratePDF}
             />
           </CardActions>
@@ -130,6 +140,3 @@ class CustomerDetailsForm extends Component {
 }
 
 export default CustomerDetailsForm;
-
-// &&
-// this.props.sellsTable[0]
