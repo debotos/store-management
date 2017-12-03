@@ -130,7 +130,7 @@ class Sells extends Component {
       ).toFixed(2)
     };
     this.props.addSellItem(sellsItemData);
-    // this.handleReset();
+    this.handleReset();
     this.showSnackBar("Item added to the list Successfully !");
   };
 
