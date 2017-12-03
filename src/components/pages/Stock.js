@@ -9,8 +9,8 @@ import Chip from "material-ui/Chip";
 import { blue300, indigo900 } from "material-ui/styles/colors";
 
 import {
-  addItemToStock,
-  removeItemToStock
+  startAddItemToStock,
+  startRemoveItemToStock
 } from "../../actions/stock/stock-action";
 import AppBarMain from "../ui-element/AppBarMain";
 // import Navigation from "../Navigation";
@@ -18,7 +18,7 @@ import AppBarMain from "../ui-element/AppBarMain";
 class Stock extends Component {
   // Chip Functions
   handleChipRequestDelete = id => {
-    this.props.removeItemToStock(id);
+    this.props.startRemoveItemToStock(id);
   };
 
   handleChipTouchTap = id => {
@@ -46,10 +46,9 @@ class Stock extends Component {
   addStockItemName = () => {
     if (this.state.stockItemName) {
       const data = {
-        id: uuid(),
         item: this.state.stockItemName
       };
-      this.props.addItemToStock(data);
+      this.props.startAddItemToStock(data);
       // this.setState({stockItemName: ""})
     } else {
       this.showSnackBar("Error !! Valid Input Please !");
@@ -123,7 +122,7 @@ class Stock extends Component {
             />
             <div
               style={{
-                padding: 15,
+                padding: 10,
                 display: "flex",
                 flexWrap: "wrap"
               }}
@@ -148,8 +147,8 @@ const mapStatetoProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addItemToStock: itemData => dispatch(addItemToStock(itemData)),
-  removeItemToStock: id => dispatch(removeItemToStock(id))
+  startAddItemToStock: itemData => dispatch(startAddItemToStock(itemData)),
+  startRemoveItemToStock: id => dispatch(startRemoveItemToStock(id))
 });
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Stock);
