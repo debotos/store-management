@@ -3,7 +3,7 @@ import { Card, CardActions } from "material-ui/Card";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
 
-import GENERATE_PDF from './PDF'
+import GENERATE_PDF from "./PDF";
 
 class CustomerDetailsForm extends Component {
   handleReset = () => {
@@ -37,7 +37,8 @@ class CustomerDetailsForm extends Component {
       mail: this.state.mail,
       address: this.state.address
     },
-    sellingItems: this.props.sellsTable
+    sellingItems: this.props.sellsTable,
+    allTotal: this.props.AllTotal
   });
 
   constructor(props) {
@@ -113,7 +114,7 @@ class CustomerDetailsForm extends Component {
                 this.state.name &&
                 this.state.number &&
                 this.state.mail &&
-                this.state.address 
+                this.state.address
                   ? false
                   : true
               }

@@ -106,9 +106,14 @@ class Sells extends Component {
         a: "100"
       },
       snackBar: false,
-      snackBarMessage: ""
+      snackBarMessage: "",
+      AllTotal: 0
     };
   }
+
+  AllTotal = AllTotal => {
+    this.setState({ AllTotal });
+  };
 
   handleSubmit = () => {
     let color = this.state.toggle ? this.state.color : null;
@@ -235,11 +240,17 @@ class Sells extends Component {
         </div>
         {/* Sells Table Section*/}
         <div>
-          <SellsTable showSnackBar={this.showSnackBar} />
+          <SellsTable
+            showSnackBar={this.showSnackBar}
+            AllTotal={this.AllTotal}
+          />
         </div>
         {/* Customer Details Getting Form */}
         <div>
-          <CustomerDetailsForm sellsTable={this.props.sellsTable} />
+          <CustomerDetailsForm
+            sellsTable={this.props.sellsTable}
+            AllTotal={this.state.AllTotal}
+          />
         </div>
         <SnackBar
           snackBar={this.state.snackBar}

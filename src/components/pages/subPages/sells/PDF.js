@@ -9,8 +9,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function GENERATE_PDF(data) {
-  let { customer, sellingItems } = data;
-
+  let { customer, sellingItems, allTotal } = data;
   //Start
 
   var docDefinition = {
@@ -63,6 +62,8 @@ function GENERATE_PDF(data) {
           body: renderContent(sellingItems)
         }
       },
+      { text: "\n" },
+      { text: "SUM = " + allTotal, style: "subheader", alignment: "right" },
       { text: "\n\n" },
       { text: "------------------------------------", alignment: "right" },
       { text: COMPANY_NAME, alignment: "right" }
@@ -101,9 +102,9 @@ function GENERATE_PDF(data) {
 
 const setColorProperty = color => {
   if (color) {
-    return JSON.stringify(color);
+    return `r:${color.r}, g:${color.g}, b:${color.b}, a:${color.a}`;
   } else {
-    return "Not Selected";
+    return "No Selection";
   }
 };
 
@@ -130,10 +131,8 @@ const renderContent = sellingItems => {
       singleItem.rate,
       singleItem.total
     ];
-    console.log("Item is...", item);
     Content.push(item);
   });
-  console.log("getting.....", JSON.stringify(Content));
   return Content;
 };
 

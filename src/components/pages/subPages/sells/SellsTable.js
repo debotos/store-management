@@ -45,11 +45,15 @@ class TableComponent extends Component {
       SUM = parseFloat(SUM) + parseFloat(singleItem.total);
     });
     let finalDiscountAmount =
-      SUM.toFixed(2) * parseFloat(this.state.discount) / 100;
+      SUM.toFixed(2) *
+      (this.state.discount ? parseFloat(this.state.discount) : 0) /
+      100;
     if (finalDiscountAmount !== 0 && finalDiscountAmount) {
       this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
     }
-    return (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
+    let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
+    this.props.AllTotal(finalResult); // Setting up the all total
+    return finalResult;
   };
 
   handleDiscountChange = event => {
@@ -122,7 +126,7 @@ class TableComponent extends Component {
                 />
                 <h3>
                   SUM ={" "}
-                  {this.calculateSUM() !== 0 && this.calculateSUM() && this.state.discount ? (
+                  {this.calculateSUM() !== 0 && this.calculateSUM() ? (
                     <b>{this.calculateSUM()}</b>
                   ) : (
                     <b style={{ color: "red" }}>?</b>
