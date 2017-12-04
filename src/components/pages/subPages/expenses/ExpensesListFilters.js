@@ -20,10 +20,10 @@ const styles = {
 
 class ExpenseListFilters extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       calendarFocused: null
-    }
+    };
   }
   onDatesChange = ({ startDate, endDate }) => {
     this.props.setStartDate(startDate);
@@ -37,10 +37,10 @@ class ExpenseListFilters extends React.Component {
   };
   onSortChange = (event, index, value) => {
     if (value === "date") {
-      console.log('Sorting by Data');
+      console.log("Sorting by Data");
       this.props.sortByDate();
     } else if (value === "amount") {
-      console.log('Sorting by Amount');
+      console.log("Sorting by Amount");
       this.props.sortByAmount();
     }
   };

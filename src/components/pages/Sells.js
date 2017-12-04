@@ -16,14 +16,6 @@ import SnackBar from "../ui-element/SnackBar";
 import CustomerDetailsForm from "./subPages/sells/CustomerDetailsForm";
 // import Navigation from "../Navigation";
 
-const items = [
-  <MenuItem key={1} value="Debotos Das" primaryText="Debotos Das" />,
-  <MenuItem key={2} value="Sourov Das" primaryText="Sourov Das" />,
-  <MenuItem key={3} value="Ripon Das" primaryText="Ripon Das" />,
-  <MenuItem key={5} value="Raisul Sohag vi" primaryText="Raisul Sohag vi" />,
-  <MenuItem key={4} value="Akash Das" primaryText="Akash Das" />
-];
-
 class Sells extends Component {
   // SnackBar Functions
   handleActionTouchTap = () => {
@@ -111,6 +103,18 @@ class Sells extends Component {
     };
   }
 
+  renderStockItems = () => {
+    return this.props.stock.map(singleItem => {
+      return (
+        <MenuItem
+          key={singleItem.id}
+          value={singleItem.item}
+          primaryText={singleItem.item}
+        />
+      );
+    });
+  };
+
   AllTotal = AllTotal => {
     this.setState({ AllTotal });
   };
@@ -148,13 +152,19 @@ class Sells extends Component {
             {/* All Fields */}
             <div>
               <div className="col-sm-6">
-                <SelectField
-                  value={this.state.selectedItem}
-                  onChange={this.handleSelectedItemChange}
-                  floatingLabelText="Product from stock"
-                >
-                  {items}
-                </SelectField>
+                {this.props.stock.length > 0 ? (
+                  <SelectField
+                    value={this.state.selectedItem}
+                    onChange={this.handleSelectedItemChange}
+                    floatingLabelText="Product from stock"
+                  >
+                    {this.renderStockItems()}
+                  </SelectField>
+                ) : (
+                  <strong style={{ color: "red" }}>
+                    Stock Is Totally Empty. Please Add First!
+                  </strong>
+                )}
                 <br />
                 <TextField
                   type="number"
@@ -274,7 +284,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    sellsTable: state.sells
+    sellsTable: state.sells,
+    stock: state.stock
   };
 };
 

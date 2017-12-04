@@ -26,11 +26,11 @@ class Bank extends Component {
     this.state = {
       slideIndex: 0,
       snackBar: false,
-      snackBarMessage: ''
+      snackBarMessage: ""
     };
   }
   // SnackBar Functions
-  showSnackBar = (message) => {
+  showSnackBar = message => {
     this.setState({
       snackBar: true,
       snackBarMessage: message
@@ -39,7 +39,7 @@ class Bank extends Component {
 
   handleActionTouchTap = () => {
     this.setState({
-      snackBar: false,
+      snackBar: false
     });
   };
 
@@ -59,7 +59,7 @@ class Bank extends Component {
       <div>
         <AppBarMain />
         <div className="container">
-        <h1 style={{textAlign: 'center'}}>Manage your Bank </h1>
+          <h1 style={{ textAlign: "center" }}>Manage your Bank </h1>
           <div>
             <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
               <Tab label="D / W" value={0} />
@@ -70,14 +70,14 @@ class Bank extends Component {
               index={this.state.slideIndex}
               onChangeIndex={this.handleChange}
             >
-              <div >
-                <DepositWithdraw showSnackBar={this.showSnackBar}/>
+              <div>
+                <DepositWithdraw showSnackBar={this.showSnackBar} />
               </div>
               <div style={styles.slide}>
-                <AddBank showSnackBar={this.showSnackBar}/>
+                <AddBank showSnackBar={this.showSnackBar} />
               </div>
               <div style={styles.slide}>
-                <RemoveBank showSnackBar={this.showSnackBar}/>
+                <RemoveBank showSnackBar={this.showSnackBar} />
               </div>
             </SwipeableViews>
           </div>

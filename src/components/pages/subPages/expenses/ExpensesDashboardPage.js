@@ -10,11 +10,11 @@ const ExpenseDashboardPage = props => (
       <ExpensesSummary />
     </Card>
 
-    <Card className="expenses-list-filter-card">
+    <Card className="container" style={{ marginTop: 10, padding: 10 }}>
       <ExpenseListFilters />
     </Card>
 
-    <Card className="expenses-list-card">
+    <Card className="container" style={{ marginTop: 10, padding: 5 }}>
       <div className="list-header">
         <div>
           <strong>Expenses</strong>
@@ -24,7 +24,7 @@ const ExpenseDashboardPage = props => (
         </div>
       </div>
 
-      <ExpenseList />
+      <ExpenseList showSnackBar={props.showSnackBar} />
     </Card>
   </div>
 );

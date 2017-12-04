@@ -68,6 +68,7 @@ class ExpenseListItem extends React.Component {
   handleDelete = () => {
     this.closeEditExpensesModel();
     this.props.startRemoveExpense({ id: this.state.id });
+    this.props.showSnackBar("Delete Successful !");
   };
 
   handleUpdate = () => {
@@ -79,6 +80,7 @@ class ExpenseListItem extends React.Component {
     };
     this.closeEditExpensesModel();
     this.props.startEditExpense(this.state.id, expense);
+    this.props.showSnackBar("Update Successful !");
   };
 
   render() {
@@ -157,7 +159,6 @@ class ExpenseListItem extends React.Component {
               floatingLabelStyle={{ color: orange500 }}
               floatingLabelFocusStyle={{ color: blue500 }}
             />
-
             <br />
             <TextField
               onChange={this.handleExpensesDetailsChange}
@@ -167,9 +168,8 @@ class ExpenseListItem extends React.Component {
               floatingLabelStyle={{ color: orange500 }}
               floatingLabelFocusStyle={{ color: blue500 }}
               multiLine={true}
-              rows={1}
             />
-            <br />
+
             <div className="single-date-picker">
               <label style={{ color: "orange" }}>Select Data</label>
               <br />

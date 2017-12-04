@@ -7,12 +7,20 @@ export const ExpenseList = props => (
   <div className="content-container">
     <div className="list-body">
       {props.expenses.length === 0 ? (
-        <div style={{textAlign: 'center'}}>
-          <span style={{ color: 'red'}}><b>No expenses</b></span>
+        <div style={{ textAlign: "center" }}>
+          <span style={{ color: "red" }}>
+            <b>No expenses</b>
+          </span>
         </div>
       ) : (
         props.expenses.map(expense => {
-          return <ExpenseListItem key={expense.id} {...expense} />;
+          return (
+            <ExpenseListItem
+              showSnackBar={props.showSnackBar}
+              key={expense.id}
+              {...expense}
+            />
+          );
         })
       )}
     </div>

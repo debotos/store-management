@@ -45,11 +45,21 @@ class Stock extends Component {
   // End
   addStockItemName = () => {
     if (this.state.stockItemName) {
-      const data = {
-        item: this.state.stockItemName
-      };
-      this.props.startAddItemToStock(data);
-      // this.setState({stockItemName: ""})
+      let alreadyHaveThatItem = false;
+      this.props.stock.forEach(singleItem => {
+        if (singleItem.item === this.state.stockItemName) {
+          alreadyHaveThatItem = true;
+        }
+      });
+      if (!alreadyHaveThatItem) {
+        const data = {
+          item: this.state.stockItemName
+        };
+        this.props.startAddItemToStock(data);
+        // this.setState({stockItemName: ""})
+      } else {
+        this.showSnackBar("Error ! Item Already Exists!");
+      }
     } else {
       this.showSnackBar("Error !! Valid Input Please !");
     }
