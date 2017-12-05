@@ -1,12 +1,7 @@
 import React, { Component } from "react";
-import { Card, CardActions } from "material-ui/Card";
-import FlatButton from "material-ui/FlatButton";
+import { Card } from "material-ui/Card";
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
-import TextField from "material-ui/TextField";
-import Toggle from "material-ui/Toggle";
-import { connect } from "react-redux";
-import uuid from "uuid/v4";
 import { Tabs, Tab } from "material-ui/Tabs";
 import SwipeableViews from "react-swipeable-views";
 
@@ -15,10 +10,9 @@ import Glass from "./subPages/sells/Forms/Glass";
 import SS from "./subPages/sells/Forms/SS";
 import Others from "./subPages/sells/Forms/Others";
 import AppBarMain from "../ui-element/AppBarMain";
-import SellsTable from "./subPages/sells/SellsTable";
-import { addSellItem } from "../../actions/sells/sells-actions";
 import SnackBar from "../ui-element/SnackBar";
 import CustomerDetailsForm from "./subPages/sells/CustomerDetailsForm";
+import TableGenerator from './subPages/sells/Tables/TableGenerator'
 
 const tabStyles = {
   slide: {
@@ -107,20 +101,15 @@ class Sells extends Component {
                   </SelectField>
                 </Card>
               </div>
-              <div className="container">
-                {this.state.selectedItem === "Thai Aluminium" && <Aluminium />}
-                {this.state.selectedItem === "Glass" && <Glass />}
-                {this.state.selectedItem === "SS" && <SS />}
-                {this.state.selectedItem === "Others" && <Others />}
+              <div className="container" style={{marginBottom: 10}}>
+                {this.state.selectedItem === "Thai Aluminium" && <Aluminium showSnackBar={this.showSnackBar}/>}
+                {this.state.selectedItem === "Glass" && <Glass showSnackBar={this.showSnackBar}/>}
+                {this.state.selectedItem === "SS" && <SS showSnackBar={this.showSnackBar}/>}
+                {this.state.selectedItem === "Others" && <Others showSnackBar={this.showSnackBar}/>}
               </div>
 
               {/*Below div Sells Table Section*/}
-              {/* <div>
-                <SellsTable
-                  showSnackBar={this.showSnackBar}
-                  AllTotal={this.AllTotal}
-                />
-              </div> */}
+              <TableGenerator />
               {/* Below div is Customer Details Getting Form */}
               {/* <div>
                 <CustomerDetailsForm
@@ -147,19 +136,5 @@ class Sells extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addSellItem: sellItemData => {
-      dispatch(addSellItem(sellItemData));
-    }
-  };
-};
 
-const mapStateToProps = state => {
-  return {
-    sellsTable: state.sells,
-    stock: state.stock
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Sells);
+export default Sells;

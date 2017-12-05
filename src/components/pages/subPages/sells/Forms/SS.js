@@ -2,8 +2,24 @@ import React, { Component } from 'react';
 import { Card } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
+import uuid from "uuid/v4";
+
+import { addSellItem } from "../../../../../actions/sells/sells-actions";
+import { connect } from "react-redux";
 
 class SS extends Component {
+  friendlyHandleReset = () => {
+    this.setState({ quantity: "" });
+    this.setState({ rate: "" });
+  };
+  handleReset = () => {
+    this.setState({ productName: "" });
+    this.setState({ companyName: "" });
+    this.setState({ length: "" });
+    this.setState({ thickness: "" });
+    this.setState({ quantity: "" });
+    this.setState({ rate: "" });
+  };
   handleProductNameChange = event => {
     const productName = event.target.value;
     this.setState({ productName });
@@ -28,6 +44,24 @@ class SS extends Component {
     const length = event.target.value;
     this.setState({ length });
   };
+  handleSubmit = () => {
+    let sellsItemData = {
+      id: uuid(),
+      productCategoryToSell: this.state.productCategoryToSell,
+      companyName: this.state.companyName,
+      length: this.state.length,
+      thickness: this.state.thickness,
+      productName: this.state.productName,
+      quantity: this.state.quantity,
+      rate: this.state.rate,
+      total: (
+        parseFloat(this.state.quantity) * parseFloat(this.state.rate)
+      ).toFixed(2)
+    };
+    this.props.addSellItem(sellsItemData);
+    this.friendlyHandleReset();
+    this.props.showSnackBar("Item added Successfully !");
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -36,17 +70,10 @@ class SS extends Component {
       thickness: "",
       productName: "",
       quantity: "",
-      rate: ""
+      rate: "",
+      productCategoryToSell: "ss"
     };
   }
-  handleReset = () => {
-    this.setState({ productName: "" });
-    this.setState({ companyName: "" });
-    this.setState({ length: "" });
-    this.setState({ thickness: "" });
-    this.setState({ quantity: "" });
-    this.setState({ rate: "" });
-  };
   render() {
     return(
       <Card style={{ marginTop: 10, paddingLeft: 40, paddingRight: 40, paddingBottom: 20 }}>
@@ -130,4 +157,18 @@ class SS extends Component {
   }
 }
 
-export default SS;
+const mapDispatchToProps = dispatch => {
+  return {
+    addSellItem: sellItemData => {
+      dispatch(addSellItem(sellItemData));
+    }
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    sellsTable: state.sells
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SS);

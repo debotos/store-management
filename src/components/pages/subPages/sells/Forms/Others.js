@@ -2,8 +2,16 @@ import React, { Component } from 'react';
 import { Card } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
+import uuid from "uuid/v4";
+
+import { addSellItem } from "../../../../../actions/sells/sells-actions";
+import { connect } from "react-redux";
 
 class Others extends Component {
+  friendlyHandleReset = () => {
+    this.setState({ quantity: "" });
+    this.setState({ rate: "" });
+  };
   handleReset = () => {
     this.setState({ productName: "" });
     this.setState({ quantity: "" });
@@ -21,12 +29,28 @@ class Others extends Component {
     const rate = event.target.value;
     this.setState({ rate });
   };
+  handleSubmit = () => {
+    let sellsItemData = {
+      id: uuid(),
+      productCategoryToSell: this.state.productCategoryToSell,
+      productName: this.state.productName,
+      quantity: this.state.quantity,
+      rate: this.state.rate,
+      total: (
+        parseFloat(this.state.quantity) * parseFloat(this.state.rate)
+      ).toFixed(2)
+    };
+    this.props.addSellItem(sellsItemData);
+    this.friendlyHandleReset();
+    this.props.showSnackBar("Item added Successfully !");
+  };
   constructor(props) {
     super(props);
     this.state = {
       productName: "",
       quantity: "",
-      rate: ""
+      rate: "",
+      productCategoryToSell: "others"
     };
   }
   
@@ -48,6 +72,7 @@ class Others extends Component {
           hint="Product Name"
           floatingLabelText="Place Product Name"
         />
+
         <TextField
           type="number"
           value={this.state.quantity}
@@ -90,4 +115,18 @@ class Others extends Component {
   }
 }
 
-export default Others;
+const mapDispatchToProps = dispatch => {
+  return {
+    addSellItem: sellItemData => {
+      dispatch(addSellItem(sellItemData));
+    }
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    sellsTable: state.sells
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Others);

@@ -4,6 +4,10 @@ import FlatButton from "material-ui/FlatButton";
 import MenuItem from "material-ui/MenuItem";
 import TextField from "material-ui/TextField";
 import uuid from "uuid/v4";
+import { connect } from "react-redux";
+
+// import AluminiumTable from "../Tables/AluminiumTable";
+import { addSellItem } from "../../../../../actions/sells/sells-actions";
 
 class Aluminium extends Component {
   handleToggle = (event, isInputChecked) => {
@@ -22,6 +26,11 @@ class Aluminium extends Component {
     this.setState({ rate: "" });
     this.setState({ productName: "" });
     this.setState({ companyName: "" });
+  };
+
+  friendlyHandleReset = () => {
+    this.setState({ quantity: "" });
+    this.setState({ rate: "" });
   };
 
   handleColorChange = color => {
@@ -70,22 +79,23 @@ class Aluminium extends Component {
   };
 
   handleSubmit = () => {
-    let color = this.state.toggle ? this.state.color : null;
     let sellsItemData = {
       id: uuid(),
-      item: this.state.selectedItem,
-      quantity: this.state.quantity,
-      rate: this.state.rate,
+      productCategoryToSell: this.state.productCategoryToSell,
+      companyName: this.state.companyName,
+      color: this.state.color,
       length: this.state.length,
       dia: this.state.dia,
-      color,
+      productName: this.state.productName,
+      quantity: this.state.quantity,
+      rate: this.state.rate,
       total: (
         parseFloat(this.state.quantity) * parseFloat(this.state.rate)
       ).toFixed(2)
     };
     this.props.addSellItem(sellsItemData);
-    this.handleReset();
-    this.showSnackBar("Item added to the list Successfully !");
+    this.friendlyHandleReset();
+    this.props.showSnackBar("Item added Successfully !");
   };
 
   constructor(props) {
@@ -97,7 +107,8 @@ class Aluminium extends Component {
       dia: "",
       productName: "",
       quantity: "",
-      rate: ""
+      rate: "",
+      productCategoryToSell: 'aluminium'
     };
   }
   handleProductNameChange = event => {
@@ -142,9 +153,6 @@ class Aluminium extends Component {
             hintText="Length"
             floatingLabelText="Place the Length "
           />
-
-          <br />
-
           <TextField
             type="number"
             value={this.state.dia}
@@ -204,4 +212,19 @@ class Aluminium extends Component {
   }
 }
 
-export default Aluminium;
+const mapDispatchToProps = dispatch => {
+  return {
+    addSellItem: sellItemData => {
+      dispatch(addSellItem(sellItemData));
+    }
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    sellsTable: state.sells
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Aluminium);

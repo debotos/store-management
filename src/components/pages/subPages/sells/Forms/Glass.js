@@ -2,10 +2,18 @@ import React, { Component } from "react";
 import { Card } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
+import uuid from "uuid/v4";
+
+import { addSellItem } from "../../../../../actions/sells/sells-actions";
+import { connect } from "react-redux";
 
 class Glass extends Component {
   handleReset = () => {
     this.setState({ productName: "" });
+    this.setState({ sft: "" });
+    this.setState({ rate: "" });
+  };
+  friendlyHandleReset = () => {
     this.setState({ sft: "" });
     this.setState({ rate: "" });
   };
@@ -21,12 +29,28 @@ class Glass extends Component {
     const rate = event.target.value;
     this.setState({ rate });
   };
+  handleSubmit = () => {
+    let sellsItemData = {
+      id: uuid(),
+      productCategoryToSell: this.state.productCategoryToSell,
+      sft: this.state.sft,
+      productName: this.state.productName,
+      rate: this.state.rate,
+      total: (
+        parseFloat(this.state.sft) * parseFloat(this.state.rate)
+      ).toFixed(2)
+    };
+    this.props.addSellItem(sellsItemData);
+    this.friendlyHandleReset();
+    this.props.showSnackBar("Item added Successfully !");
+  };
   constructor(props) {
     super(props);
     this.state = {
       productName: "",
       sft: "",
-      rate: ""
+      rate: "",
+      productCategoryToSell: "glass"
     };
   }
   
@@ -90,4 +114,18 @@ class Glass extends Component {
   }
 }
 
-export default Glass;
+const mapDispatchToProps = dispatch => {
+  return {
+    addSellItem: sellItemData => {
+      dispatch(addSellItem(sellItemData));
+    }
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    sellsTable: state.sells
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Glass);
