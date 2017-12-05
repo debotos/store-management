@@ -18,7 +18,7 @@ class NotFoundpage extends Component {
           <img
             style={{ marginTop: 10 }}
             src={NotFoundPageImage}
-            alt="Not Found Page Image"
+            alt="Not found page logo"
           />
         </div>
       </div>

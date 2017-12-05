@@ -4,9 +4,8 @@ import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 import SnackBar from "../ui-element/SnackBar";
-import uuid from "uuid";
 import Chip from "material-ui/Chip";
-import { blue300, indigo900 } from "material-ui/styles/colors";
+import { blue300 } from "material-ui/styles/colors";
 
 import {
   startAddItemToStock,
@@ -56,7 +55,7 @@ class Stock extends Component {
           item: this.state.stockItemName
         };
         this.props.startAddItemToStock(data);
-        // this.setState({stockItemName: ""})
+        this.setState({stockItemName: ""})
       } else {
         this.showSnackBar("Error ! Item Already Exists!");
       }
