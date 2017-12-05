@@ -7,14 +7,31 @@ import TextField from "material-ui/TextField";
 import Toggle from "material-ui/Toggle";
 import { connect } from "react-redux";
 import uuid from "uuid/v4";
+import { Tabs, Tab } from "material-ui/Tabs";
+import SwipeableViews from "react-swipeable-views";
 
+import Aluminium from "./subPages/sells/Forms/Aluminium";
+import Glass from "./subPages/sells/Forms/Glass";
+import SS from "./subPages/sells/Forms/SS";
+import Others from "./subPages/sells/Forms/Others";
 import AppBarMain from "../ui-element/AppBarMain";
-import ColorPicker from "../ui-element/ColorPicker";
 import SellsTable from "./subPages/sells/SellsTable";
 import { addSellItem } from "../../actions/sells/sells-actions";
 import SnackBar from "../ui-element/SnackBar";
 import CustomerDetailsForm from "./subPages/sells/CustomerDetailsForm";
-// import Navigation from "../Navigation";
+
+const tabStyles = {
+  slide: {
+    padding: 10
+  }
+};
+
+const items = [
+  <MenuItem key={1} value="Thai Aluminium" primaryText="Thai Aluminium" />,
+  <MenuItem key={2} value="Glass" primaryText="Glass" />,
+  <MenuItem key={3} value="SS" primaryText="SS" />,
+  <MenuItem key={4} value="Others" primaryText="Others" />
+];
 
 class Sells extends Component {
   // SnackBar Functions
@@ -37,232 +54,88 @@ class Sells extends Component {
   // End
   handleSelectedItemChange = (event, index, value) =>
     this.setState({ selectedItem: value });
-  handleToggle = (event, isInputChecked) => {
-    if (isInputChecked) {
-      this.setState({ toggle: true });
-    } else {
-      this.setState({ toggle: false });
-    }
-  };
-  handleReset = () => {
-    this.setState({ quantity: "" });
-    this.setState({ length: "" });
-    this.setState({ dia: "" });
-    this.setState({ rate: "" });
-    this.setState({ toggle: false });
-    this.setState({ selectedItem: null });
-  };
-  handleColorChange = color => {
-    this.setState({ color });
-    console.log("Setting the color:", color);
-  };
-  handleQuantyChange = event => {
-    const quantity = event.target.value;
-    if (!quantity || quantity.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      this.setState({ quantity });
-    }
-  };
-  handleLengthChange = event => {
-    const length = event.target.value;
-    if (!length || length.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      this.setState({ length });
-    }
-  };
 
-  handleDiaChange = event => {
-    const dia = event.target.value;
-    if (!dia || dia.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      this.setState({ dia });
-    }
-  };
-  handleRateChange = event => {
-    const rate = event.target.value;
-    if (!rate || rate.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      this.setState({ rate });
-    }
+  handleTabChange = value => {
+    this.setState({
+      slideIndex: value
+    });
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      rate: "",
-      dia: "",
-      length: "",
-      quantity: "",
+      slideIndex: 0,
       selectedItem: null,
-      toggle: false,
-      color: {
-        r: "0",
-        g: "188",
-        b: "212",
-        a: "100"
-      },
       snackBar: false,
-      snackBarMessage: "",
-      AllTotal: 0
+      snackBarMessage: ""
     };
   }
-
-  renderStockItems = () => {
-    return this.props.stock.map(singleItem => {
-      return (
-        <MenuItem
-          key={singleItem.id}
-          value={singleItem.item}
-          primaryText={singleItem.item}
-        />
-      );
-    });
-  };
-
-  AllTotal = AllTotal => {
-    this.setState({ AllTotal });
-  };
-
-  handleSubmit = () => {
-    let color = this.state.toggle ? this.state.color : null;
-    let sellsItemData = {
-      id: uuid(),
-      item: this.state.selectedItem,
-      quantity: this.state.quantity,
-      rate: this.state.rate,
-      length: this.state.length,
-      dia: this.state.dia,
-      color,
-      total: (
-        parseFloat(this.state.quantity) * parseFloat(this.state.rate)
-      ).toFixed(2)
-    };
-    this.props.addSellItem(sellsItemData);
-    this.handleReset();
-    this.showSnackBar("Item added to the list Successfully !");
-  };
 
   render() {
     return (
       <div>
         {/* Main App Bar */}
         <AppBarMain />
-        {/* Input Section */}
-        <div className="container" style={{ marginTop: 15, marginBotton: 15 }}>
-          <Card className="container" style={{ margin: 5, padding: 30 }}>
-            <h4>
-              <b>Input Product Details</b>
-            </h4>
-            {/* All Fields */}
+        {/* Tab Section */}
+
+        <div>
+          <Tabs
+            className="container"
+            style={{ marginTop: 10 }}
+            onChange={this.handleTabChange}
+            value={this.state.slideIndex}
+          >
+            <Tab label="Sell" value={0} />
+            <Tab label="History" value={1} />
+          </Tabs>
+          <SwipeableViews
+            index={this.state.slideIndex}
+            onChangeIndex={this.handleTabChange}
+          >
+            {/* First Tab Started */}
             <div>
-              <div className="col-sm-6">
-                {this.props.stock.length > 0 ? (
+              <div
+                className="container"
+                style={{ textAlign: "center", marginTop: 5, marginBottom: 5 }}
+              >
+                <Card>
                   <SelectField
                     value={this.state.selectedItem}
                     onChange={this.handleSelectedItemChange}
-                    floatingLabelText="Product from stock"
                   >
-                    {this.renderStockItems()}
+                    {items}
                   </SelectField>
-                ) : (
-                  <strong style={{ color: "red" }}>
-                    Stock Is Totally Empty. Please Add First!
-                  </strong>
-                )}
-                <br />
-                <TextField
-                  type="number"
-                  value={this.state.quantity}
-                  onChange={this.handleQuantyChange}
-                  hintText="Quantity"
-                  floatingLabelText="Place the Quantity "
-                />
-                <br />
-                <h4>Select Color</h4>
-                <Toggle
-                  defaultToggled={this.state.toggle}
-                  onToggle={this.handleToggle}
-                />
-                {this.state.toggle ? (
-                  <ColorPicker
-                    color={this.state.color}
-                    handleColorChange={this.handleColorChange}
-                  />
-                ) : (
-                  <h4>Turn it on to select color!</h4>
-                )}
+                </Card>
               </div>
-              <div className="col-sm-6">
-                <TextField
-                  type="number"
-                  value={this.state.length}
-                  onChange={this.handleLengthChange}
-                  hintText="Length"
-                  floatingLabelText="Place the Length "
-                />{" "}
-                <br />
-                <TextField
-                  type="number"
-                  value={this.state.dia}
-                  onChange={this.handleDiaChange}
-                  hintText="DIA"
-                  floatingLabelText="Place the DIA "
-                />
-                <br />
-                <TextField
-                  type="number"
-                  value={this.state.rate}
-                  onChange={this.handleRateChange}
-                  hintText="Price/Rate"
-                  floatingLabelText="Place the Price/Rate "
-                />
+              <div className="container">
+                {this.state.selectedItem === "Thai Aluminium" && <Aluminium />}
+                {this.state.selectedItem === "Glass" && <Glass />}
+                {this.state.selectedItem === "SS" && <SS />}
+                {this.state.selectedItem === "Others" && <Others />}
               </div>
+
+              {/*Below div Sells Table Section*/}
+              {/* <div>
+                <SellsTable
+                  showSnackBar={this.showSnackBar}
+                  AllTotal={this.AllTotal}
+                />
+              </div> */}
+              {/* Below div is Customer Details Getting Form */}
+              {/* <div>
+                <CustomerDetailsForm
+                  sellsTable={this.props.sellsTable}
+                  AllTotal={this.state.AllTotal}
+                  showSnackBar={this.showSnackBar}
+                />
+              </div> */}
             </div>
-            <br />
-            <div />
-            <CardActions style={{ float: "right" }}>
-              <FlatButton
-                disabled={
-                  this.state.selectedItem ||
-                  this.state.quantity ||
-                  this.state.length ||
-                  this.state.dia ||
-                  this.state.rate
-                    ? false
-                    : true
-                }
-                secondary={true}
-                label="Reset"
-                onClick={this.handleReset}
-              />
-              <FlatButton
-                disabled={
-                  this.state.selectedItem &&
-                  this.state.quantity &&
-                  this.state.length &&
-                  this.state.dia &&
-                  this.state.rate
-                    ? false
-                    : true
-                }
-                primary={true}
-                label="Add"
-                onClick={this.handleSubmit}
-              />
-            </CardActions>
-          </Card>
+            {/* End of the First Tab */}
+            {/* Second Tab Started */}
+            <div style={tabStyles.slide}>I am second tab</div>
+          </SwipeableViews>
         </div>
-        {/* Sells Table Section*/}
-        <div>
-          <SellsTable
-            showSnackBar={this.showSnackBar}
-            AllTotal={this.AllTotal}
-          />
-        </div>
-        {/* Customer Details Getting Form */}
-        <div>
-          <CustomerDetailsForm
-            sellsTable={this.props.sellsTable}
-            AllTotal={this.state.AllTotal}
-            showSnackBar={this.showSnackBar}
-          />
-        </div>
+
         <SnackBar
           snackBar={this.state.snackBar}
           snackBarMessage={this.state.snackBarMessage}
