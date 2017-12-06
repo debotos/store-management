@@ -109,7 +109,7 @@ class Sells extends Component {
               </div>
 
               {/*Below div Sells Table Section*/}
-              <TableGenerator />
+              <TableGenerator showSnackBar={this.showSnackBar}/>
               {/* Below div is Customer Details Getting Form */}
               {/* <div>
                 <CustomerDetailsForm

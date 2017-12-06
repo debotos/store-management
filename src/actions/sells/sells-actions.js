@@ -11,9 +11,10 @@ export const addSellItem = data => ({
   data
 });
 
-export const removeSellItem = id => ({
+export const removeSellItem = (id, productCategoryToSell) => ({
   type: REMOVE_A_SELL_ITEM,
-  id
+  id,
+  productCategoryToSell
 });
 
 export const removeAllSellsItem = () => ({

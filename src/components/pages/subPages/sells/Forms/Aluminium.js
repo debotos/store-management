@@ -108,7 +108,7 @@ class Aluminium extends Component {
       productName: "",
       quantity: "",
       rate: "",
-      productCategoryToSell: 'aluminium'
+      productCategoryToSell: "aluminium"
     };
   }
   handleProductNameChange = event => {
@@ -125,7 +125,14 @@ class Aluminium extends Component {
   };
   render() {
     return (
-      <Card style={{ marginTop: 10, paddingLeft: 40, paddingRight: 40, paddingBottom: 20 }}>
+      <Card
+        style={{
+          marginTop: 10,
+          paddingLeft: 40,
+          paddingRight: 40,
+          paddingBottom: 20
+        }}
+      >
         {/* All Fields */}
         <div>
           <TextField
@@ -175,7 +182,7 @@ class Aluminium extends Component {
             floatingLabelText="Place the Price/Rate "
           />
           <FlatButton
-            style={{marginLeft: 10, marginTop: 5}}
+            style={{ marginLeft: 10, marginTop: 5 }}
             disabled={
               this.state.companyName ||
               this.state.productName ||
@@ -225,6 +232,5 @@ const mapStateToProps = state => {
     sellsTable: state.sells
   };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Aluminium);
