@@ -394,7 +394,7 @@ class TableGenerator extends Component {
       <div>
         {/* Aluminium Table div start */}
         {this.haveAluminiumType() && (
-          <div>
+          <div style={{border: "2px solid  #00BCD4", margin: "3px"}}>
             <Table
               height="300px"
               fixedHeader={true}
@@ -451,12 +451,13 @@ class TableGenerator extends Component {
                   style={{
                     padding: 5,
                     display: "flex",
-                    flexWrap: "wrap"
+                    flexWrap: "wrap",
+                    justifyContent: "center"
                   }}
                 >
                   <TableRowColumn>
                     <Toggle
-                      style={{ marginTop: 5 }}
+                      style={{ marginTop: 8 }}
                       defaultToggled={this.state.aluminiumDiscountToggle}
                       onToggle={this.handleAluminiumDiscountToggle}
                     />
@@ -465,6 +466,7 @@ class TableGenerator extends Component {
                     {this.state.aluminiumDiscountToggle && (
                       <div>
                         <TextField
+                          style={{ marginBottom: 10 }}
                           type="number"
                           value={this.state.aluminiumDiscount}
                           onChange={this.handleAluminiumDiscountChange}
@@ -475,7 +477,7 @@ class TableGenerator extends Component {
                   </TableRowColumn>
                   <TableRowColumn>
                     {this.state.aluminiumDiscountToggle && (
-                      <h3 style={{ paddingBottom: 5 }}>
+                      <h3 style={{ marginTop: 8 }}>
                         Discount ={" "}
                         {this.calculateAluminiumSUM()[0] && (
                           <b>{this.calculateAluminiumSUM()[0]}</b>
@@ -485,7 +487,7 @@ class TableGenerator extends Component {
                   </TableRowColumn>
 
                   <TableRowColumn>
-                    <h3 style={{ paddingBottom: 5 }}>
+                    <h3 style={{ marginTop: 8 }}>
                       Result ={" "}
                       {this.calculateAluminiumSUM()[1] !== 0 &&
                       this.calculateAluminiumSUM()[1] ? (
@@ -497,6 +499,7 @@ class TableGenerator extends Component {
                   </TableRowColumn>
                   <TableRowColumn>
                     <TextField
+                      style={{ marginBottom: 10 }}
                       type="number"
                       value={this.state.overideTotalSumOfAluminium}
                       onChange={this.handleoverideTotalSumOfAluminium}
@@ -511,7 +514,7 @@ class TableGenerator extends Component {
         {/* Aluminium Table div stop */}
         {/* Glass Table Row Start*/}
         {this.haveGlassType() && (
-          <div>
+          <div style={{border: "2px solid  #00BCD4", margin: "3px"}}>
             <Table
               height="300px"
               fixedHeader={true}
@@ -556,12 +559,13 @@ class TableGenerator extends Component {
                   style={{
                     padding: 5,
                     display: "flex",
-                    flexWrap: "wrap"
+                    flexWrap: "wrap",
+                    justifyContent: "center"
                   }}
                 >
                   <TableRowColumn>
                     <Toggle
-                      style={{ marginBottom: 7 }}
+                      style={{ marginTop: 8 }}
                       defaultToggled={this.state.glassDiscountToggle}
                       onToggle={this.handleGlassDiscountToggle}
                     />
@@ -570,6 +574,7 @@ class TableGenerator extends Component {
                     {this.state.glassDiscountToggle && (
                       <div>
                         <TextField
+                          style={{ marginBottom: 10 }}
                           type="number"
                           value={this.state.glassDiscount}
                           onChange={this.handleGlassDiscountChange}
@@ -582,7 +587,7 @@ class TableGenerator extends Component {
 
                   <TableRowColumn>
                     {this.state.glassDiscountToggle && (
-                      <h3 style={{ paddingBottom: 5 }}>
+                      <h3 style={{ marginTop: 8 }}>
                         Discount ={" "}
                         {this.calculateGlassSUM()[0] && (
                           <b>{this.calculateGlassSUM()[0]}</b>
@@ -591,7 +596,7 @@ class TableGenerator extends Component {
                     )}
                   </TableRowColumn>
                   <TableRowColumn>
-                    <h3>
+                    <h3 style={{ marginTop: 8 }}>
                       Result ={" "}
                       {this.calculateGlassSUM()[1] !== 0 &&
                       this.calculateGlassSUM()[1] ? (
@@ -603,6 +608,7 @@ class TableGenerator extends Component {
                   </TableRowColumn>
                   <TableRowColumn>
                     <TextField
+                      style={{ marginBottom: 10 }}
                       type="number"
                       value={this.state.overideTotalSumOfGlass}
                       onChange={this.handleoverideTotalSumOfGlass}
@@ -617,7 +623,7 @@ class TableGenerator extends Component {
         {/* Glass Table Row Stop */}
         {/* SS Table Row Start */}
         {this.haveSSType() && (
-          <div>
+          <div style={{border: "2px solid  #00BCD4", margin: "3px"}}>
             <Table
               height="300px"
               fixedHeader={true}
@@ -671,12 +677,13 @@ class TableGenerator extends Component {
                   style={{
                     padding: 5,
                     display: "flex",
-                    flexWrap: "wrap"
+                    flexWrap: "wrap",
+                    justifyContent: "center"
                   }}
                 >
                   <TableRowColumn>
                     <Toggle
-                      style={{ marginBottom: 7 }}
+                      style={{ marginTop: 8 }}
                       defaultToggled={this.state.ssDiscountToggle}
                       onToggle={this.handleSSDiscountToggle}
                     />
@@ -685,6 +692,7 @@ class TableGenerator extends Component {
                     {this.state.ssDiscountToggle && (
                       <div>
                         <TextField
+                          style={{ marginBottom: 10 }}
                           type="number"
                           value={this.state.ssDiscount}
                           onChange={this.handleSSDiscountChange}
@@ -696,7 +704,7 @@ class TableGenerator extends Component {
                   </TableRowColumn>
                   <TableRowColumn>
                     {this.state.ssDiscountToggle && (
-                      <h3 style={{ paddingBottom: 5 }}>
+                      <h3 style={{ marginTop: 8 }}>
                         Discount ={" "}
                         {this.calculateSSSUM()[0] && (
                           <b>{this.calculateSSSUM()[0]}</b>
@@ -705,7 +713,7 @@ class TableGenerator extends Component {
                     )}
                   </TableRowColumn>
                   <TableRowColumn>
-                    <h3>
+                    <h3 style={{ marginTop: 8 }}>
                       Result ={" "}
                       {this.calculateSSSUM()[1] !== 0 &&
                       this.calculateSSSUM()[1] ? (
@@ -717,6 +725,7 @@ class TableGenerator extends Component {
                   </TableRowColumn>
                   <TableRowColumn>
                     <TextField
+                      style={{ marginBottom: 10 }}
                       type="number"
                       value={this.state.overideTotalSumOfSS}
                       onChange={this.handleoverideTotalSumOfSS}
@@ -731,7 +740,7 @@ class TableGenerator extends Component {
         {/* SS Table Row Stop */}
         {/* Others Table Row Start */}
         {this.haveOthersType() && (
-          <div>
+          <div style={{border: "3px solid  #00BCD4", margin: "3px"}}>
             <Table
               height="300px"
               fixedHeader={true}
@@ -776,12 +785,13 @@ class TableGenerator extends Component {
                   style={{
                     padding: 5,
                     display: "flex",
-                    flexWrap: "wrap"
+                    flexWrap: "wrap",
+                    justifyContent: "center"
                   }}
                 >
                   <TableRowColumn>
                     <Toggle
-                      style={{ marginBottom: 7 }}
+                      style={{ marginTop: 8 }}
                       defaultToggled={this.state.othersDiscountToggle}
                       onToggle={this.handleOthersDiscountToggle}
                     />
@@ -790,6 +800,7 @@ class TableGenerator extends Component {
                     {this.state.othersDiscountToggle && (
                       <div>
                         <TextField
+                          style={{ marginBottom: 10 }}
                           type="number"
                           value={this.state.othersDiscount}
                           onChange={this.handleOthersDiscountChange}
@@ -801,7 +812,7 @@ class TableGenerator extends Component {
                   </TableRowColumn>
                   <TableRowColumn>
                     {this.state.othersDiscountToggle && (
-                      <h3 style={{ paddingBottom: 5 }}>
+                      <h3 style={{ marginTop: 8 }}>
                         Discount ={" "}
                         {this.calculateOthersSUM()[0] && (
                           <b>{this.calculateOthersSUM()[0]}</b>
@@ -810,7 +821,7 @@ class TableGenerator extends Component {
                     )}
                   </TableRowColumn>
                   <TableRowColumn>
-                    <h3>
+                    <h3 style={{ marginTop: 8 }}>
                       Result ={" "}
                       {this.calculateOthersSUM()[1] !== 0 &&
                       this.calculateOthersSUM()[1] ? (
@@ -822,6 +833,7 @@ class TableGenerator extends Component {
                   </TableRowColumn>
                   <TableRowColumn>
                     <TextField
+                      style={{ marginBottom: 10 }}
                       type="number"
                       value={this.state.overideTotalSumOfOthers}
                       onChange={this.handleoverideTotalSumOfOthers}
