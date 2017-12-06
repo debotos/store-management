@@ -23,6 +23,7 @@ class TableGenerator extends Component {
       this.setState({ aluminiumDiscountToggle: true });
     } else {
       this.setState({ aluminiumDiscountToggle: false });
+      this.setState({ aluminiumDiscount: 0 });
     }
   };
   handleGlassDiscountToggle = (event, isInputChecked) => {
@@ -30,6 +31,7 @@ class TableGenerator extends Component {
       this.setState({ glassDiscountToggle: true });
     } else {
       this.setState({ glassDiscountToggle: false });
+      this.setState({ glassDiscount: 0 });
     }
   };
   handleSSDiscountToggle = (event, isInputChecked) => {
@@ -37,6 +39,7 @@ class TableGenerator extends Component {
       this.setState({ ssDiscountToggle: true });
     } else {
       this.setState({ ssDiscountToggle: false });
+      this.setState({ ssDiscount: 0 });
     }
   };
   handleOthersDiscountToggle = (event, isInputChecked) => {
@@ -44,6 +47,7 @@ class TableGenerator extends Component {
       this.setState({ othersDiscountToggle: true });
     } else {
       this.setState({ othersDiscountToggle: false });
+      this.setState({ othersDiscount: 0 });
     }
   };
   handleAluminiumRowClick = (row, column, event) => {
@@ -302,11 +306,11 @@ class TableGenerator extends Component {
         ? parseFloat(this.state.aluminiumDiscount)
         : 0) /
       100;
-    if (finalDiscountAmount !== 0 && finalDiscountAmount) {
-      this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
-    }
+    // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
+    //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
+    // }
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return finalResult;
+    return [finalDiscountAmount, finalResult];
   };
   calculateGlassSUM = () => {
     let SUM = 0;
@@ -317,11 +321,11 @@ class TableGenerator extends Component {
       SUM.toFixed(2) *
       (this.state.glassDiscount ? parseFloat(this.state.glassDiscount) : 0) /
       100;
-    if (finalDiscountAmount !== 0 && finalDiscountAmount) {
-      this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
-    }
+    // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
+    //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
+    // }
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return finalResult;
+    return [finalDiscountAmount, finalResult];
   };
   calculateSSSUM = () => {
     let SUM = 0;
@@ -332,11 +336,11 @@ class TableGenerator extends Component {
       SUM.toFixed(2) *
       (this.state.ssDiscount ? parseFloat(this.state.ssDiscount) : 0) /
       100;
-    if (finalDiscountAmount !== 0 && finalDiscountAmount) {
-      this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
-    }
+    // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
+    //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
+    // }
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return finalResult;
+    return [finalDiscountAmount, finalResult];
   };
   calculateOthersSUM = () => {
     let SUM = 0;
@@ -347,29 +351,29 @@ class TableGenerator extends Component {
       SUM.toFixed(2) *
       (this.state.othersDiscount ? parseFloat(this.state.othersDiscount) : 0) /
       100;
-    if (finalDiscountAmount !== 0 && finalDiscountAmount) {
-      this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
-    }
+    // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
+    //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
+    // }
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return finalResult;
+    return [finalDiscountAmount, finalResult];
   };
   constructor(props) {
     super(props);
     this.state = {
-      aluminiumDiscount: 0,
-      glassDiscount: 0,
-      ssDiscount: 0,
-      othersDiscount: 0,
+      aluminiumDiscount: null,
+      glassDiscount: null,
+      ssDiscount: null,
+      othersDiscount: null,
       detailsModelOpen: false,
       ModalData: "",
       aluminiumDiscountToggle: false,
       glassDiscountToggle: false,
       ssDiscountToggle: false,
       othersDiscountToggle: false,
-      overideTotalSumOfAluminium: 0,
-      overideTotalSumOfGlass: 0,
-      overideTotalSumOfSS: 0,
-      overideTotalSumOfOthers: 0
+      overideTotalSumOfAluminium: null,
+      overideTotalSumOfGlass: null,
+      overideTotalSumOfSS: null,
+      overideTotalSumOfOthers: null
     };
   }
   render() {
@@ -443,41 +447,60 @@ class TableGenerator extends Component {
                 {this.renderAluminiumTableRow()}
               </TableBody>
               <TableFooter>
-                <TableRow>
+                <TableRow
+                  style={{
+                    padding: 5,
+                    display: "flex",
+                    flexWrap: "wrap"
+                  }}
+                >
                   <TableRowColumn>
                     <Toggle
-                      style={{ marginBottom: 7 }}
+                      style={{ marginTop: 5 }}
                       defaultToggled={this.state.aluminiumDiscountToggle}
                       onToggle={this.handleAluminiumDiscountToggle}
                     />
                   </TableRowColumn>
-                  <TableRowColumn colSpan="8" className="table-footer">
-                    {this.state.aluminiumDiscountToggle ? (
-                      <TextField
-                        type="number"
-                        value={this.state.aluminiumDiscount}
-                        onChange={this.handleAluminiumDiscountChange}
-                        hintText="Discount (%)"
-                        className="table-footer-discount"
-                      />
-                    ) : (
-                      <strong>Toggle on for Discount</strong>
+                  <TableRowColumn>
+                    {this.state.aluminiumDiscountToggle && (
+                      <div>
+                        <TextField
+                          type="number"
+                          value={this.state.aluminiumDiscount}
+                          onChange={this.handleAluminiumDiscountChange}
+                          hintText="Discount (%)"
+                        />
+                      </div>
                     )}
+                  </TableRowColumn>
+                  <TableRowColumn>
+                    {this.state.aluminiumDiscountToggle && (
+                      <h3 style={{ paddingBottom: 5 }}>
+                        Discount ={" "}
+                        {this.calculateAluminiumSUM()[0] && (
+                          <b>{this.calculateAluminiumSUM()[0]}</b>
+                        )}
+                      </h3>
+                    )}
+                  </TableRowColumn>
 
-                    <h3>
-                      SUM ={" "}
-                      {this.calculateAluminiumSUM() !== 0 &&
-                      this.calculateAluminiumSUM() ? (
-                        <b>{this.calculateAluminiumSUM()}</b>
+                  <TableRowColumn>
+                    <h3 style={{ paddingBottom: 5 }}>
+                      Result ={" "}
+                      {this.calculateAluminiumSUM()[1] !== 0 &&
+                      this.calculateAluminiumSUM()[1] ? (
+                        <b>{this.calculateAluminiumSUM()[1]}</b>
                       ) : (
                         <b style={{ color: "red" }}>?</b>
                       )}
                     </h3>
+                  </TableRowColumn>
+                  <TableRowColumn>
                     <TextField
                       type="number"
                       value={this.state.overideTotalSumOfAluminium}
                       onChange={this.handleoverideTotalSumOfAluminium}
-                      hintText="After User defined Discount"
+                      hintText="Finally"
                     />
                   </TableRowColumn>
                 </TableRow>
@@ -529,7 +552,13 @@ class TableGenerator extends Component {
                 {this.renderGlassTableRow()}
               </TableBody>
               <TableFooter>
-                <TableRow>
+                <TableRow
+                  style={{
+                    padding: 5,
+                    display: "flex",
+                    flexWrap: "wrap"
+                  }}
+                >
                   <TableRowColumn>
                     <Toggle
                       style={{ marginBottom: 7 }}
@@ -537,33 +566,47 @@ class TableGenerator extends Component {
                       onToggle={this.handleGlassDiscountToggle}
                     />
                   </TableRowColumn>
-                  <TableRowColumn colSpan="4" className="table-footer">
-                    {this.state.glassDiscountToggle ? (
-                      <TextField
-                        type="number"
-                        value={this.state.glassDiscount}
-                        onChange={this.handleGlassDiscountChange}
-                        hintText="Discount (%)"
-                        className="table-footer-discount"
-                      />
-                    ) : (
-                      <strong>Toggle on for Discount</strong>
+                  <TableRowColumn>
+                    {this.state.glassDiscountToggle && (
+                      <div>
+                        <TextField
+                          type="number"
+                          value={this.state.glassDiscount}
+                          onChange={this.handleGlassDiscountChange}
+                          hintText="Discount (%)"
+                          className="table-footer-discount"
+                        />
+                      </div>
                     )}
+                  </TableRowColumn>
 
+                  <TableRowColumn>
+                    {this.state.glassDiscountToggle && (
+                      <h3 style={{ paddingBottom: 5 }}>
+                        Discount ={" "}
+                        {this.calculateGlassSUM()[0] && (
+                          <b>{this.calculateGlassSUM()[0]}</b>
+                        )}
+                      </h3>
+                    )}
+                  </TableRowColumn>
+                  <TableRowColumn>
                     <h3>
-                      SUM ={" "}
-                      {this.calculateGlassSUM() !== 0 &&
-                      this.calculateGlassSUM() ? (
-                        <b>{this.calculateGlassSUM()}</b>
+                      Result ={" "}
+                      {this.calculateGlassSUM()[1] !== 0 &&
+                      this.calculateGlassSUM()[1] ? (
+                        <b>{this.calculateGlassSUM()[1]}</b>
                       ) : (
                         <b style={{ color: "red" }}>?</b>
                       )}
                     </h3>
+                  </TableRowColumn>
+                  <TableRowColumn>
                     <TextField
                       type="number"
                       value={this.state.overideTotalSumOfGlass}
                       onChange={this.handleoverideTotalSumOfGlass}
-                      hintText="After User defined Discount"
+                      hintText="Finally"
                     />
                   </TableRowColumn>
                 </TableRow>
@@ -624,7 +667,13 @@ class TableGenerator extends Component {
                 {this.renderSSTableRow()}
               </TableBody>
               <TableFooter>
-                <TableRow>
+                <TableRow
+                  style={{
+                    padding: 5,
+                    display: "flex",
+                    flexWrap: "wrap"
+                  }}
+                >
                   <TableRowColumn>
                     <Toggle
                       style={{ marginBottom: 7 }}
@@ -632,32 +681,46 @@ class TableGenerator extends Component {
                       onToggle={this.handleSSDiscountToggle}
                     />
                   </TableRowColumn>
-                  <TableRowColumn colSpan="7" className="table-footer">
-                    {this.state.ssDiscountToggle ? (
-                      <TextField
-                        type="number"
-                        value={this.state.ssDiscount}
-                        onChange={this.handleSSDiscountChange}
-                        hintText="Discount (%)"
-                        className="table-footer-discount"
-                      />
-                    ) : (
-                      <strong>Toggle on for Discount</strong>
+                  <TableRowColumn>
+                    {this.state.ssDiscountToggle && (
+                      <div>
+                        <TextField
+                          type="number"
+                          value={this.state.ssDiscount}
+                          onChange={this.handleSSDiscountChange}
+                          hintText="Discount (%)"
+                          className="table-footer-discount"
+                        />
+                      </div>
                     )}
-
+                  </TableRowColumn>
+                  <TableRowColumn>
+                    {this.state.ssDiscountToggle && (
+                      <h3 style={{ paddingBottom: 5 }}>
+                        Discount ={" "}
+                        {this.calculateSSSUM()[0] && (
+                          <b>{this.calculateSSSUM()[0]}</b>
+                        )}
+                      </h3>
+                    )}
+                  </TableRowColumn>
+                  <TableRowColumn>
                     <h3>
-                      SUM ={" "}
-                      {this.calculateSSSUM() !== 0 && this.calculateSSSUM() ? (
-                        <b>{this.calculateSSSUM()}</b>
+                      Result ={" "}
+                      {this.calculateSSSUM()[1] !== 0 &&
+                      this.calculateSSSUM()[1] ? (
+                        <b>{this.calculateSSSUM()[1]}</b>
                       ) : (
                         <b style={{ color: "red" }}>?</b>
                       )}
                     </h3>
+                  </TableRowColumn>
+                  <TableRowColumn>
                     <TextField
                       type="number"
                       value={this.state.overideTotalSumOfSS}
                       onChange={this.handleoverideTotalSumOfSS}
-                      hintText="After User defined Discount"
+                      hintText="Finally"
                     />
                   </TableRowColumn>
                 </TableRow>
@@ -709,7 +772,13 @@ class TableGenerator extends Component {
                 {this.renderOthersTableRow()}
               </TableBody>
               <TableFooter>
-                <TableRow>
+                <TableRow
+                  style={{
+                    padding: 5,
+                    display: "flex",
+                    flexWrap: "wrap"
+                  }}
+                >
                   <TableRowColumn>
                     <Toggle
                       style={{ marginBottom: 7 }}
@@ -717,33 +786,46 @@ class TableGenerator extends Component {
                       onToggle={this.handleOthersDiscountToggle}
                     />
                   </TableRowColumn>
-                  <TableRowColumn colSpan="4" className="table-footer">
-                    {this.state.othersDiscountToggle ? (
-                      <TextField
-                        type="number"
-                        value={this.state.othersDiscount}
-                        onChange={this.handleOthersDiscountChange}
-                        hintText="Discount (%)"
-                        className="table-footer-discount"
-                      />
-                    ) : (
-                      <strong>Toggle on for Discount</strong>
+                  <TableRowColumn>
+                    {this.state.othersDiscountToggle && (
+                      <div>
+                        <TextField
+                          type="number"
+                          value={this.state.othersDiscount}
+                          onChange={this.handleOthersDiscountChange}
+                          hintText="Discount (%)"
+                          className="table-footer-discount"
+                        />
+                      </div>
                     )}
-
+                  </TableRowColumn>
+                  <TableRowColumn>
+                    {this.state.othersDiscountToggle && (
+                      <h3 style={{ paddingBottom: 5 }}>
+                        Discount ={" "}
+                        {this.calculateOthersSUM()[0] && (
+                          <b>{this.calculateOthersSUM()[0]}</b>
+                        )}
+                      </h3>
+                    )}
+                  </TableRowColumn>
+                  <TableRowColumn>
                     <h3>
-                      SUM ={" "}
-                      {this.calculateOthersSUM() !== 0 &&
-                      this.calculateOthersSUM() ? (
-                        <b>{this.calculateOthersSUM()}</b>
+                      Result ={" "}
+                      {this.calculateOthersSUM()[1] !== 0 &&
+                      this.calculateOthersSUM()[1] ? (
+                        <b>{this.calculateOthersSUM()[1]}</b>
                       ) : (
                         <b style={{ color: "red" }}>?</b>
                       )}
                     </h3>
+                  </TableRowColumn>
+                  <TableRowColumn>
                     <TextField
                       type="number"
                       value={this.state.overideTotalSumOfOthers}
                       onChange={this.handleoverideTotalSumOfOthers}
-                      hintText="After User defined Discount"
+                      hintText="Finally"
                     />
                   </TableRowColumn>
                 </TableRow>
