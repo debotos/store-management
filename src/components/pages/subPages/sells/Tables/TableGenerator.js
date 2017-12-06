@@ -13,6 +13,7 @@ import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import Toggle from "material-ui/Toggle";
+import { Card } from "material-ui/Card";
 
 import "../../../../../style/sells/table.css";
 import { removeSellItem } from "../../../../../actions/sells/sells-actions";
@@ -73,7 +74,6 @@ class TableGenerator extends Component {
     this.setState({ detailsModelOpen: false });
   };
   showDetailsToModel = productCategoryToSell => {
-    console.log("model product category to sell", productCategoryToSell);
     if (productCategoryToSell === "aluminium") {
       return (
         <div>
@@ -357,6 +357,24 @@ class TableGenerator extends Component {
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
     return [finalDiscountAmount, finalResult];
   };
+  finallyAllTotal = () => {
+    const aluminiumSum = this.state.overideTotalSumOfAluminium
+      ? parseFloat(this.state.overideTotalSumOfAluminium)
+      : parseFloat(this.calculateAluminiumSUM()[1]);
+    const glassSum = this.state.overideTotalSumOfGlass
+      ? parseFloat(this.state.overideTotalSumOfGlass)
+      : parseFloat(this.calculateGlassSUM()[1]);
+    const ssSum = this.state.overideTotalSumOfSS
+      ? parseFloat(this.state.overideTotalSumOfSS)
+      : parseFloat(this.calculateSSSUM()[1]);
+    const othersSum = this.state.overideTotalSumOfOthers
+      ? parseFloat(this.state.overideTotalSumOfOthers)
+      : parseFloat(this.calculateOthersSUM()[1]);
+
+    let total = (aluminiumSum + glassSum + ssSum + othersSum).toFixed(2);
+    this.props.setAllTotal(total);
+    return total;
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -394,7 +412,7 @@ class TableGenerator extends Component {
       <div>
         {/* Aluminium Table div start */}
         {this.haveAluminiumType() && (
-          <div style={{border: "2px solid  #00BCD4", margin: "3px"}}>
+          <div style={{ border: "2px solid  #00BCD4", margin: "3px" }}>
             <Table
               height="300px"
               fixedHeader={true}
@@ -514,7 +532,7 @@ class TableGenerator extends Component {
         {/* Aluminium Table div stop */}
         {/* Glass Table Row Start*/}
         {this.haveGlassType() && (
-          <div style={{border: "2px solid  #00BCD4", margin: "3px"}}>
+          <div style={{ border: "2px solid  #00BCD4", margin: "3px" }}>
             <Table
               height="300px"
               fixedHeader={true}
@@ -623,7 +641,7 @@ class TableGenerator extends Component {
         {/* Glass Table Row Stop */}
         {/* SS Table Row Start */}
         {this.haveSSType() && (
-          <div style={{border: "2px solid  #00BCD4", margin: "3px"}}>
+          <div style={{ border: "2px solid  #00BCD4", margin: "3px" }}>
             <Table
               height="300px"
               fixedHeader={true}
@@ -740,7 +758,7 @@ class TableGenerator extends Component {
         {/* SS Table Row Stop */}
         {/* Others Table Row Start */}
         {this.haveOthersType() && (
-          <div style={{border: "3px solid  #00BCD4", margin: "3px"}}>
+          <div style={{ border: "3px solid  #00BCD4", margin: "3px" }}>
             <Table
               height="300px"
               fixedHeader={true}
@@ -846,6 +864,13 @@ class TableGenerator extends Component {
           </div>
         )}
         {/* Others Table Row Stop */}
+        {/* Finally All Table Total */}
+        <Card
+          className="container"
+          style={{ padding: 10, textAlign: "center" }}
+        >
+          <h2>Totally = {this.finallyAllTotal()}</h2>
+        </Card>
         {/* Model to Delete and Details */}
         <div>
           <Dialog

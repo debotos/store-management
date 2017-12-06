@@ -61,10 +61,13 @@ class Sells extends Component {
       slideIndex: 0,
       selectedItem: null,
       snackBar: false,
-      snackBarMessage: ""
+      snackBarMessage: "",
+      allTotal: 0
     };
   }
-
+  setAllTotal = (total) => {
+    this.setState({allTotal: total});
+  }
   render() {
     return (
       <div>
@@ -109,15 +112,14 @@ class Sells extends Component {
               </div>
 
               {/*Below div Sells Table Section*/}
-              <TableGenerator showSnackBar={this.showSnackBar}/>
+              <TableGenerator showSnackBar={this.showSnackBar} setAllTotal={this.setAllTotal}/>
               {/* Below div is Customer Details Getting Form */}
-              {/* <div>
+              <div>
                 <CustomerDetailsForm
-                  sellsTable={this.props.sellsTable}
-                  AllTotal={this.state.AllTotal}
                   showSnackBar={this.showSnackBar}
+                  allTotal={this.state.allTotal}
                 />
-              </div> */}
+              </div>
             </div>
             {/* End of the First Tab */}
             {/* Second Tab Started */}

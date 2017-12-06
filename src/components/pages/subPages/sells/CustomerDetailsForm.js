@@ -3,8 +3,10 @@ import { Card, CardActions } from "material-ui/Card";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
 import isEmail from "validator/lib/isEmail";
+import { connect } from "react-redux";
 
 import GENERATE_PDF from "./PDF";
+import { addCustomer } from "../../../../actions/sells/sells-actions";
 
 class CustomerDetailsForm extends Component {
   handleReset = () => {
@@ -31,6 +33,12 @@ class CustomerDetailsForm extends Component {
     const address = event.target.value;
     this.setState({ address });
   };
+  calculateAllTotal = () => {
+    let Total = 0;
+    this.props.sellsTables.total.forEach(singleTotal => {
+      Total += parseFloat(singleTotal);
+    });
+  }
   collectAllData = () => ({
     customer: {
       name: this.state.name,
@@ -38,8 +46,8 @@ class CustomerDetailsForm extends Component {
       mail: this.state.mail,
       address: this.state.address
     },
-    sellingItems: this.props.sellsTable,
-    allTotal: this.props.AllTotal
+    sellingItems: this.props.sellsTables,
+    allTotal: this.props.allTotal
   });
 
   constructor(props) {
@@ -55,12 +63,13 @@ class CustomerDetailsForm extends Component {
     const data = this.collectAllData();
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
-        GENERATE_PDF(data);
+        // GENERATE_PDF(data);
       } else {
         this.props.showSnackBar("Error ! Invalid Email !");
       }
     } else {
-      GENERATE_PDF(data);
+      console.log("Sending ...", data)
+      // GENERATE_PDF(data);
     }
   };
   render() {
@@ -85,7 +94,7 @@ class CustomerDetailsForm extends Component {
                 value={this.state.number}
                 onChange={this.handleNumber}
                 hintText="Phone Number"
-                floatingLabelText="Place Customer Contact no "
+                floatingLabelText="Phone (Unique) "
               />
             </div>
             <div className="col-sm-6">
@@ -123,8 +132,7 @@ class CustomerDetailsForm extends Component {
               disabled={
                 this.state.name &&
                 this.state.number &&
-                this.state.address &&
-                this.props.sellsTable[0]
+                this.state.address 
                   ? false
                   : true
               }
@@ -139,4 +147,18 @@ class CustomerDetailsForm extends Component {
   }
 }
 
-export default CustomerDetailsForm;
+const mapDispatchToProps = dispatch => {
+  return {
+    addCustomer: (data) => {
+      dispatch(addCustomer(data));
+    }
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    sellsTables: state.sells
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetailsForm);

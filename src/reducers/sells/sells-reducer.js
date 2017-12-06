@@ -2,15 +2,15 @@ import {
   ADD_A_SELL_ITEM,
   REMOVE_A_SELL_ITEM,
   REMOVE_ALL_SELL_ITEMS,
-  ADD_A_CUSTOMER,
-  REMOVE_CUSTOMERS
+  ADD_TOTAL_TO_STORE
 } from "../../actions/constants";
 
 const sellsReducerDefaultState = {
   aluminium: [],
   glass: [],
   ss: [],
-  others: []
+  others: [],
+  total: []
 };
 
 export const sellsReducer = (state = sellsReducerDefaultState, action) => {
@@ -62,18 +62,3 @@ export const sellsReducer = (state = sellsReducerDefaultState, action) => {
   }
 };
 
-const sellsReducerDefaultCustomers = [];
-
-export const customerReducer = (
-  state = sellsReducerDefaultCustomers,
-  action
-) => {
-  switch (action.type) {
-    case ADD_A_CUSTOMER:
-      return [...state, action.data];
-    case REMOVE_CUSTOMERS:
-      return sellsReducerDefaultCustomers;
-    default:
-      return state;
-  }
-};
