@@ -309,6 +309,7 @@ class TableGenerator extends Component {
     // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
     //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
     // }
+    finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
     return [finalDiscountAmount, finalResult];
   };
@@ -324,6 +325,7 @@ class TableGenerator extends Component {
     // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
     //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
     // }
+    finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
     return [finalDiscountAmount, finalResult];
   };
@@ -339,6 +341,7 @@ class TableGenerator extends Component {
     // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
     //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
     // }
+    finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
     return [finalDiscountAmount, finalResult];
   };
@@ -354,6 +357,7 @@ class TableGenerator extends Component {
     // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
     //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
     // }
+    finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
     return [finalDiscountAmount, finalResult];
   };

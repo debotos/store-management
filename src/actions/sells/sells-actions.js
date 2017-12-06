@@ -20,12 +20,3 @@ export const removeSellItem = (id, productCategoryToSell) => ({
 export const removeAllSellsItem = () => ({
   type: REMOVE_ALL_SELL_ITEMS
 });
-
-export const addCustomer = data => ({
-  type: ADD_A_CUSTOMER,
-  data
-});
-
-export const removeCustomers = () => ({
-  type: REMOVE_CUSTOMERS
-});

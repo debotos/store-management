@@ -6,7 +6,7 @@ import isEmail from "validator/lib/isEmail";
 import { connect } from "react-redux";
 
 import GENERATE_PDF from "./PDF";
-import { addCustomer } from "../../../../actions/sells/sells-actions";
+import { addSellUnderCustomerHistory } from '../../../../actions/sells/sells-history-actions'
 
 class CustomerDetailsForm extends Component {
   handleReset = () => {
@@ -39,17 +39,6 @@ class CustomerDetailsForm extends Component {
       Total += parseFloat(singleTotal);
     });
   }
-  collectAllData = () => ({
-    customer: {
-      name: this.state.name,
-      number: this.state.number,
-      mail: this.state.mail,
-      address: this.state.address
-    },
-    sellingItems: this.props.sellsTables,
-    allTotal: this.props.allTotal
-  });
-
   constructor(props) {
     super(props);
     this.state = {
@@ -59,8 +48,20 @@ class CustomerDetailsForm extends Component {
       address: ""
     };
   }
-  handleGeneratePDF = () => {
+  collectAllData = () => ({
+    number: this.state.number,
+    customer: {
+      name: this.state.name,
+      number: this.state.number,
+      mail: this.state.mail,
+      address: this.state.address
+    },
+    sellingItems: this.props.sellsTables,
+    allTotal: this.props.allTotal
+  });
+  handleSaveAndGeneratePDF = () => {
     const data = this.collectAllData();
+    this.props.addSellUnderCustomerHistory(data);
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
         // GENERATE_PDF(data);
@@ -68,7 +69,7 @@ class CustomerDetailsForm extends Component {
         this.props.showSnackBar("Error ! Invalid Email !");
       }
     } else {
-      console.log("Sending ...", data)
+
       // GENERATE_PDF(data);
     }
   };
@@ -138,7 +139,7 @@ class CustomerDetailsForm extends Component {
               }
               primary={true}
               label="GET PDF"
-              onClick={this.handleGeneratePDF}
+              onClick={this.handleSaveAndGeneratePDF}
             />
           </CardActions>
         </Card>
@@ -149,15 +150,16 @@ class CustomerDetailsForm extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addCustomer: (data) => {
-      dispatch(addCustomer(data));
+    addSellUnderCustomerHistory: (data) => {
+      dispatch(addSellUnderCustomerHistory(data));
     }
   };
 };
 
 const mapStateToProps = state => {
   return {
-    sellsTables: state.sells
+    sellsTables: state.sells,
+    sellsHistory: state.sellsHistory
   };
 };
 
