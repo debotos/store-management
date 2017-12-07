@@ -39,25 +39,38 @@ class CustomerDetailsForm extends Component {
       Total += parseFloat(singleTotal);
     });
   }
+  handleDeposit = (event) => {
+    const deposit  = event.target.value;
+    this.setState({deposit});
+  }
+  setPrevDue = () => {
+    const due = (parseFloat(this.props.allTotal) - parseFloat(this.state.deposit)).toFixed(2);
+    return due;
+  }
   constructor(props) {
     super(props);
     this.state = {
       name: "",
       number: "",
       mail: "",
-      address: ""
+      address: "",
+      deposit: 0,
+      prevDue: 0
     };
   }
   collectAllData = () => ({
     number: this.state.number,
-    customer: {
-      name: this.state.name,
-      number: this.state.number,
-      mail: this.state.mail,
-      address: this.state.address
+    history: {
+      customer: {
+        name: this.state.name,
+        number: this.state.number,
+        mail: this.state.mail,
+        address: this.state.address
+      },
+      sellingItems: this.props.sellsTables,
+      allTotal: this.props.allTotal
     },
-    sellingItems: this.props.sellsTables,
-    allTotal: this.props.allTotal
+    prevDue: this.setPrevDue()
   });
   handleSaveAndGeneratePDF = () => {
     const data = this.collectAllData();
@@ -96,6 +109,13 @@ class CustomerDetailsForm extends Component {
                 onChange={this.handleNumber}
                 hintText="Phone Number"
                 floatingLabelText="Phone (Unique) "
+              />
+              <TextField
+                type="number"
+                value={this.state.deposit}
+                onChange={this.handleDeposit}
+                hintText="Deposit"
+                floatingLabelText="Deposit Amount"
               />
             </div>
             <div className="col-sm-6">

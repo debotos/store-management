@@ -16,11 +16,23 @@ export const sellsHistoryReducer = (
         }
       }
       if (flag) {
-        const name = action.data.number;
-        return { ...state, [name]: [...state[name], action.data] }; // This line
+        const number = action.data.number;
+        return {
+          ...state,
+          [number]: {
+            history: [...state[number].history, action.data.history],
+            prevDue: action.data.prevDue
+          }
+        }; // concentrate! you learned a lot from here debotos
       } else {
         const newNumber = action.data.number;
-        return { ...state, [newNumber]: [action.data] };
+        return {
+          ...state,
+          [newNumber]: {
+            history: [action.data.history],
+            prevDue: action.data.prevDue
+          }
+        };
       }
     default:
       return state;
