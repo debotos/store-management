@@ -48,14 +48,20 @@ class CustomerDetailsForm extends Component {
   userAlreadyExists = () => {
     const searchingFor = this.state.number;
     let flag = false;
+    let prevDue = 0;
     this.props.due.forEach(singleItem => {
-      if((singleItem.number).toString() === searchingFor.toString()) {
-        console.log('Fount')
+      if (singleItem.number.toString() === searchingFor.toString()) {
+        console.log("Existing user");
         flag = true;
+        prevDue = singleItem.amount;
       }
-    })
-    return flag;
-  }
+    });
+    return [flag, prevDue];
+  };
+  getPrevDue = () => {
+    if (this.userAlreadyExists()) {
+    }
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -63,7 +69,8 @@ class CustomerDetailsForm extends Component {
       number: "",
       mail: "",
       address: "",
-      deposit: ""
+      deposit: "",
+      allTotal: this.props.allTotal
     };
   }
 
@@ -76,8 +83,17 @@ class CustomerDetailsForm extends Component {
       }
     } else {
       // GENERATE_PDF(data);
-      this.props.addPrevDue(this.state.number, 0)
-      console.log('user have ', this.userAlreadyExists())
+      console.log("All Table Total ", this.props.allTotal);
+      console.log("Previous Due ", parseFloat(this.userAlreadyExists()[1]));
+      let allTotalWithPrevDue =
+        parseFloat(this.props.allTotal) +
+        parseFloat(this.userAlreadyExists()[1]);
+      console.log("All total with previous due ", allTotalWithPrevDue);
+      let deposit = this.state.deposit;
+      console.log("Deposit amount ", deposit);
+      let newDue = allTotalWithPrevDue - parseFloat(deposit);
+      console.log("New Due", newDue);
+      this.props.addPrevDue(this.state.number, newDue);
     }
   };
   render() {
