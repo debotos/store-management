@@ -6,8 +6,7 @@ import isEmail from "validator/lib/isEmail";
 import { connect } from "react-redux";
 
 import GENERATE_PDF from "./PDF";
-import { addSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
-import { addPrevDue } from "../../../../actions/sells/prevDue-actions";
+import { addSellUnderCustomerHistory } from '../../../../actions/sells/sells-history-actions'
 
 class CustomerDetailsForm extends Component {
   handleReset = () => {
@@ -34,28 +33,58 @@ class CustomerDetailsForm extends Component {
     this.props.sellsTables.total.forEach(singleTotal => {
       Total += parseFloat(singleTotal);
     });
-  };
-  handleDeposit = event => {
-    const deposit = event.target.value;
-    this.setState({ deposit });
-  };
+  }
+  handleDeposit = (event) => {
+    const deposit  = event.target.value;
+    this.setState({deposit});
+  }
+  setPrevDue = () => {
+    const due = (parseFloat(this.props.allTotal) - parseFloat(this.state.deposit)).toFixed(2);
+    return due;
+  }
+  customerAlreadyExists = (number) => {
+    const searchingFor = number;
+    const sellsHistory = this.props.sellsHistory;
+    let prevDue = 0;
+    let have = false;
+    for (let number in sellsHistory) {
+      if(number === searchingFor) {
+        prevDue = sellsHistory[number].prevDue;
+        console.log('From customerAlreadyExists() ', prevDue)
+        have = true;
+      }
+    }
+    return [have, prevDue]
+  }
+  funcForUtility = () => {
+    let number = this.state.number;
+    if(this.customerAlreadyExists(number)[0]) {
+      let total = parseFloat(this.props.allTotal);
+      console.log('Total All ', total)
+      let prevDue = parseFloat(this.customerAlreadyExists()[1])
+      console.log('Due Previous ',this.customerAlreadyExists()[1])
+      let allTotalWithDue = total + prevDue;
+      console.log('Total with prev due ', allTotalWithDue)
+      this.setState({allTotalWithDue})
+      this.setState({alreadyUser: true})
+    }
+  }
   handleNumber = event => {
     const number = event.target.value;
     if (!number || number.match(/^\d{1,}(\.\d{0,2})?$/)) {
       this.setState({ number });
+      if(this.customerAlreadyExists(number)[0]) {
+        let total = parseFloat(this.props.allTotal);
+        console.log('Total All ', total)
+        let prevDue = parseFloat(this.customerAlreadyExists()[1])
+        console.log('Due Previous ',prevDue)
+        let allTotalWithDue = total + prevDue;
+        console.log('Total with prev due ', allTotalWithDue)
+        this.setState({allTotalWithDue})
+        this.setState({alreadyUser: true})
+      }
     }
   };
-  userAlreadyExists = () => {
-    const searchingFor = this.state.number;
-    let flag = false;
-    this.props.due.forEach(singleItem => {
-      if((singleItem.number).toString() === searchingFor.toString()) {
-        console.log('Fount')
-        flag = true;
-      }
-    })
-    return flag;
-  }
   constructor(props) {
     super(props);
     this.state = {
@@ -63,11 +92,32 @@ class CustomerDetailsForm extends Component {
       number: "",
       mail: "",
       address: "",
-      deposit: ""
+      deposit: 0,
+      prevDue: 0,
+      allTotalWithDue: 0,
+      alreadyUser: false
     };
   }
 
+  collectAllData = () => ({
+    number: this.state.number,
+    history: {
+      customer: {
+        name: this.state.name,
+        number: this.state.number,
+        mail: this.state.mail,
+        address: this.state.address
+      },
+      sellingItems: this.props.sellsTables,
+      allTotal: this.props.allTotal
+    },
+    prevDue: this.setPrevDue()
+  });
+
   handleSaveAndGeneratePDF = () => {
+    this.funcForUtility();
+    const data = this.collectAllData();
+    this.props.addSellUnderCustomerHistory(data);
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
         // GENERATE_PDF(data);
@@ -75,9 +125,8 @@ class CustomerDetailsForm extends Component {
         this.props.showSnackBar("Error ! Invalid Email !");
       }
     } else {
+
       // GENERATE_PDF(data);
-      this.props.addPrevDue(this.state.number, 0)
-      console.log('user have ', this.userAlreadyExists())
     }
   };
   render() {
@@ -87,6 +136,10 @@ class CustomerDetailsForm extends Component {
           <h4>
             <b>Input Customer Details</b>
           </h4>
+          {
+            this.state.alreadyUser ?
+            <p>User exists. Due = {this.state.allTotalWithDue}</p>: <p>Not Existing</p>
+          }
           {/* All Fields */}
           <div>
             <div className="col-sm-6">
@@ -145,12 +198,14 @@ class CustomerDetailsForm extends Component {
             />
             <FlatButton
               disabled={
-                this.state.name && this.state.number && this.state.address
+                this.state.name &&
+                this.state.number &&
+                this.state.address 
                   ? false
                   : true
               }
               primary={true}
-              label="Save & Get PDF"
+              label="GET PDF"
               onClick={this.handleSaveAndGeneratePDF}
             />
           </CardActions>
@@ -162,11 +217,8 @@ class CustomerDetailsForm extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addSellUnderCustomerHistory: data => {
+    addSellUnderCustomerHistory: (data) => {
       dispatch(addSellUnderCustomerHistory(data));
-    },
-    addPrevDue: (number, amount) => {
-      dispatch(addPrevDue(number, amount));
     }
   };
 };
@@ -174,11 +226,8 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     sellsTables: state.sells,
-    sellsHistory: state.sellsHistory,
-    due: state.due
+    sellsHistory: state.sellsHistory
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  CustomerDetailsForm
-);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetailsForm);
