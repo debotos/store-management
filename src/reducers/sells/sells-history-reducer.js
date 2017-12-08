@@ -25,7 +25,8 @@ export const sellsHistoryReducer = (
           return {
             ...state,
             [number]: {
-              history: [...state[number].history, action.data.history]
+              history: [...state[number].history, action.data.history],
+              date: action.data.date
             }
           }; // concentrate! you learned a lot from here debotos
         } else {
@@ -33,7 +34,8 @@ export const sellsHistoryReducer = (
           return {
             ...state,
             [newNumber]: {
-              history: [action.data.history]
+              history: [action.data.history],
+              date: action.data.date
             }
           };
         }
@@ -42,7 +44,8 @@ export const sellsHistoryReducer = (
         return {
           ...state,
           [newNumber]: {
-            history: [action.data.history]
+            history: [action.data.history],
+            date: action.data.date
           }
         };
       }

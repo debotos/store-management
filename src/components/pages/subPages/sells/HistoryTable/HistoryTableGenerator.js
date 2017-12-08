@@ -35,7 +35,7 @@ class HistoryTableGenerator extends Component {
   renderOthersTable = others => {
     return (
       <div>
-        <Table height="200px" fixedHeader={true} fixedFooter={true}>
+        <Table height="150px" fixedHeader={true} fixedFooter={true}>
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}
@@ -93,7 +93,7 @@ class HistoryTableGenerator extends Component {
   renderSSTable = ss => {
     return (
       <div>
-        <Table height="200px" fixedHeader={true} fixedFooter={true}>
+        <Table height="150px" fixedHeader={true} fixedFooter={true}>
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}
@@ -162,7 +162,7 @@ class HistoryTableGenerator extends Component {
   renderAluminiumTable = aluminium => {
     return (
       <div>
-        <Table height="200px" fixedHeader={true} fixedFooter={true}>
+        <Table height="150px" fixedHeader={true} fixedFooter={true}>
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}
@@ -227,7 +227,7 @@ class HistoryTableGenerator extends Component {
   renderGlassTable = glass => {
     return (
       <div>
-        <Table height="200px" fixedHeader={true} fixedFooter={true}>
+        <Table height="150px" fixedHeader={true} fixedFooter={true}>
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}
@@ -261,7 +261,7 @@ class HistoryTableGenerator extends Component {
   };
 
   renderTable = () => {
-    return this.props.allTables.map(singleSell => {
+    return this.props.allTables.map((singleSell, index) => {
       // {singleSell} is an [Object]
       // Destructuring the singleItem Object
       const { aluminium, glass, ss, others } = singleSell;
@@ -270,24 +270,20 @@ class HistoryTableGenerator extends Component {
       console.log(aluminium);
       console.log(ss);
       console.log(others);
-      return [
-        this.renderAluminiumTable(aluminium),
-        this.renderGlassTable(glass),
-        this.renderSSTable(ss),
-        this.renderOthersTable(others)
-      ];
+      return (
+        <div key={index} style={{ border: "3px solid  #00BCD4", margin: "3px" }}>
+          <h2 style={{textAlign: 'center'}}><strong>Date: {this.props.date}</strong></h2>
+          {this.renderAluminiumTable(aluminium)}
+          {this.renderGlassTable(glass)}
+          {this.renderSSTable(ss)}
+          {this.renderOthersTable(others)}
+        </div>
+      );
     });
   };
 
   render() {
-    return (
-      <div style={{ border: "2px solid  #00BCD4", margin: "3px" }}>
-        {this.renderTable()[0]}
-        {this.renderTable()[1]}
-        {this.renderTable()[2]}
-        {this.renderTable()[3]}
-      </div>
-    );
+    return <div>{this.renderTable()}</div>;
   }
 }
 

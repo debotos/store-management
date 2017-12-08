@@ -418,7 +418,7 @@ class TableGenerator extends Component {
         {this.haveAluminiumType() && (
           <div style={{ border: "2px solid  #00BCD4", margin: "3px" }}>
             <Table
-              height="300px"
+              height="200px"
               fixedHeader={true}
               fixedFooter={true}
               onCellClick={this.handleAluminiumRowClick}
@@ -538,7 +538,7 @@ class TableGenerator extends Component {
         {this.haveGlassType() && (
           <div style={{ border: "2px solid  #00BCD4", margin: "3px" }}>
             <Table
-              height="300px"
+              height="200px"
               fixedHeader={true}
               fixedFooter={true}
               onCellClick={this.handleGlassRowClick}
@@ -647,7 +647,7 @@ class TableGenerator extends Component {
         {this.haveSSType() && (
           <div style={{ border: "2px solid  #00BCD4", margin: "3px" }}>
             <Table
-              height="300px"
+              height="200px"
               fixedHeader={true}
               fixedFooter={true}
               onCellClick={this.handleSSRowClick}
@@ -764,7 +764,7 @@ class TableGenerator extends Component {
         {this.haveOthersType() && (
           <div style={{ border: "3px solid  #00BCD4", margin: "3px" }}>
             <Table
-              height="300px"
+              height="200px"
               fixedHeader={true}
               fixedFooter={true}
               onCellClick={this.handleOthersRowClick}

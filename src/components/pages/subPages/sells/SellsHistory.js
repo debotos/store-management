@@ -46,7 +46,7 @@ class SellsHistory extends Component {
       }
     }
     if(flag) {
-      return <HistoryTableGenerator allTables={historyINeed.history}/>;
+      return <HistoryTableGenerator allTables={historyINeed.history} date={historyINeed.date}/>;
     }
   }
   render() {

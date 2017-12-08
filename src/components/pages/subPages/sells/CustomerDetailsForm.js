@@ -109,7 +109,6 @@ class CustomerDetailsForm extends Component {
       let deposit = this.state.deposit;
       let newDue = allTotalWithPrevDue - parseFloat(deposit);
       this.props.addPrevDue(this.state.number, newDue);
-      console.log("History Saving ", this.collectSellsData());
       console.log("History Saving in store");
       this.props.addSellUnderCustomerHistory(this.collectSellsData());
       const modelData = {
@@ -187,6 +186,7 @@ class CustomerDetailsForm extends Component {
                 hintText="Phone Number"
                 floatingLabelText="Phone (Unique) "
               />
+              <br />
               <TextField
                 type="number"
                 value={this.state.deposit}
