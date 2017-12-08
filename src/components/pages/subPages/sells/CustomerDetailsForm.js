@@ -103,16 +103,11 @@ class CustomerDetailsForm extends Component {
       }
     } else {
       // GENERATE_PDF(data);
-      console.log("All Table Total ", this.props.allTotal);
-      console.log("Previous Due ", parseFloat(this.userAlreadyExists()[1]));
       let allTotalWithPrevDue =
         parseFloat(this.props.allTotal) +
         parseFloat(this.userAlreadyExists()[1]);
-      console.log("All total with previous due ", allTotalWithPrevDue);
       let deposit = this.state.deposit;
-      console.log("Deposit amount ", deposit);
       let newDue = allTotalWithPrevDue - parseFloat(deposit);
-      console.log("New Due", newDue);
       this.props.addPrevDue(this.state.number, newDue);
       console.log("History Saving ", this.collectSellsData());
       console.log("History Saving in store");

@@ -12,7 +12,8 @@ import Others from "./subPages/sells/Forms/Others";
 import AppBarMain from "../ui-element/AppBarMain";
 import SnackBar from "../ui-element/SnackBar";
 import CustomerDetailsForm from "./subPages/sells/CustomerDetailsForm";
-import TableGenerator from './subPages/sells/Tables/TableGenerator'
+import TableGenerator from "./subPages/sells/Tables/TableGenerator";
+import SellsHistory from "./subPages/sells/SellsHistory";
 
 const tabStyles = {
   slide: {
@@ -65,9 +66,9 @@ class Sells extends Component {
       allTotal: 0
     };
   }
-  setAllTotal = (total) => {
-    this.setState({allTotal: total});
-  }
+  setAllTotal = total => {
+    this.setState({ allTotal: total });
+  };
   render() {
     return (
       <div>
@@ -97,6 +98,8 @@ class Sells extends Component {
               >
                 <Card>
                   <SelectField
+                    style={{ marginTop: 5 }}
+                    hintText="Select Item"
                     value={this.state.selectedItem}
                     onChange={this.handleSelectedItemChange}
                   >
@@ -104,15 +107,26 @@ class Sells extends Component {
                   </SelectField>
                 </Card>
               </div>
-              <div className="container" style={{marginBottom: 10}}>
-                {this.state.selectedItem === "Thai Aluminium" && <Aluminium showSnackBar={this.showSnackBar}/>}
-                {this.state.selectedItem === "Glass" && <Glass showSnackBar={this.showSnackBar}/>}
-                {this.state.selectedItem === "SS" && <SS showSnackBar={this.showSnackBar}/>}
-                {this.state.selectedItem === "Others" && <Others showSnackBar={this.showSnackBar}/>}
+              <div className="container" style={{ marginBottom: 10 }}>
+                {this.state.selectedItem === "Thai Aluminium" && (
+                  <Aluminium showSnackBar={this.showSnackBar} />
+                )}
+                {this.state.selectedItem === "Glass" && (
+                  <Glass showSnackBar={this.showSnackBar} />
+                )}
+                {this.state.selectedItem === "SS" && (
+                  <SS showSnackBar={this.showSnackBar} />
+                )}
+                {this.state.selectedItem === "Others" && (
+                  <Others showSnackBar={this.showSnackBar} />
+                )}
               </div>
 
               {/*Below div Sells Table Section*/}
-              <TableGenerator showSnackBar={this.showSnackBar} setAllTotal={this.setAllTotal}/>
+              <TableGenerator
+                showSnackBar={this.showSnackBar}
+                setAllTotal={this.setAllTotal}
+              />
               {/* Below div is Customer Details Getting Form */}
               <div>
                 <CustomerDetailsForm
@@ -123,7 +137,9 @@ class Sells extends Component {
             </div>
             {/* End of the First Tab */}
             {/* Second Tab Started */}
-            <div style={tabStyles.slide}>I am second tab</div>
+            <div style={tabStyles.slide}>
+              <SellsHistory showSnackBar={this.showSnackBar} />
+            </div>
           </SwipeableViews>
         </div>
 
@@ -137,6 +153,5 @@ class Sells extends Component {
     );
   }
 }
-
 
 export default Sells;
