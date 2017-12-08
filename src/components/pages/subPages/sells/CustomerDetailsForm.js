@@ -4,12 +4,19 @@ import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
 import isEmail from "validator/lib/isEmail";
 import { connect } from "react-redux";
+import Dialog from "material-ui/Dialog";
 
 import GENERATE_PDF from "./PDF";
 import { addSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
 import { addPrevDue } from "../../../../actions/sells/prevDue-actions";
 
 class CustomerDetailsForm extends Component {
+  handleDialogOpen = () => {
+    this.setState({ dialogOpen: true });
+  };
+  handleDialogClose = () => {
+    this.setState({ dialogOpen: false });
+  };
   handleReset = () => {
     this.setState({ name: "" });
     this.setState({ number: "" });
@@ -65,26 +72,28 @@ class CustomerDetailsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      dialogOpen: false,
       name: "",
       number: "",
       mail: "",
       address: "",
       deposit: "",
-      allTotal: this.props.allTotal
+      allTotal: this.props.allTotal,
+      modelData: ""
     };
   }
   collectSellsData = () => ({
     number: this.state.number,
     allTotal: this.props.allTotal,
     date: Date().substr(0, 15),
-    customer:{
+    customer: {
       name: this.state.name,
       number: this.state.number,
       mail: this.state.mail,
       address: this.state.address
     },
     history: this.props.sellsTables
-  })
+  });
   handleSaveAndGeneratePDF = () => {
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
@@ -105,12 +114,61 @@ class CustomerDetailsForm extends Component {
       let newDue = allTotalWithPrevDue - parseFloat(deposit);
       console.log("New Due", newDue);
       this.props.addPrevDue(this.state.number, newDue);
-      console.log("History Saving ", this.collectSellsData())
+      console.log("History Saving ", this.collectSellsData());
       console.log("History Saving in store");
-      this.props.addSellUnderCustomerHistory(this.collectSellsData())
+      this.props.addSellUnderCustomerHistory(this.collectSellsData());
+      const modelData = {
+        allTotal: this.props.allTotal,
+        prevDue: this.userAlreadyExists()[1],
+        totalWithDue: allTotalWithPrevDue,
+        depositNow: deposit,
+        newDue
+      };
+      this.setState({ modelData });
+      this.handleDialogOpen();
     }
   };
+  showModelData = modelData => {
+    const {
+      allTotal,
+      prevDue,
+      totalWithDue,
+      depositNow,
+      newDue
+    } = this.state.modelData;
+    return (
+      <div>
+        All Table Total: {allTotal}
+        <br />
+        <strong>Previous Due: </strong>
+        <b style={{ color: "red" }}>
+          {parseFloat(prevDue).toFixed(2) === parseFloat(0).toFixed(2)
+            ? "No Previous Due"
+            : parseFloat(prevDue).toFixed(2)}
+        </b>
+        <br />
+        All Total + Previous Due: {totalWithDue}
+        <br />
+        Deposit Now: {depositNow}
+        <br />
+        <strong>New Due From Now: </strong>
+        <b style={{ color: "red" }}>
+          {parseFloat(newDue).toFixed(2) === parseFloat(0).toFixed(2)
+            ? "No Due"
+            : parseFloat(newDue).toFixed(2)}
+        </b>
+        <br />
+      </div>
+    );
+  };
   render() {
+    const dialogActions = [
+      <FlatButton
+        label="Okey"
+        primary={true}
+        onClick={this.handleDialogClose}
+      />
+    ];
     return (
       <div className="container" style={{ marginTop: 15, marginBotton: 15 }}>
         <Card className="container" style={{ margin: 5, padding: 30 }}>
@@ -185,6 +243,14 @@ class CustomerDetailsForm extends Component {
             />
           </CardActions>
         </Card>
+        <Dialog
+          title="Addetional Information:"
+          actions={dialogActions}
+          modal={true}
+          open={this.state.dialogOpen}
+        >
+          {this.showModelData()}
+        </Dialog>
       </div>
     );
   }
