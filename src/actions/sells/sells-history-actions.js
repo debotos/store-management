@@ -2,7 +2,7 @@ import database from "../../secrets/firebase";
 
 import {
   ADD_SELL_UNDER_CUSTOMER_HISTORY,
-  SET_ADD_SELL_UNDER_CUSTOMER_HISTORY
+  // SET_ADD_SELL_UNDER_CUSTOMER_HISTORY
 } from "../constants";
 
 export const addSellUnderCustomerHistory = data => {

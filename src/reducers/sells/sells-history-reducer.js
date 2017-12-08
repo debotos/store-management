@@ -1,4 +1,7 @@
-import { ADD_SELL_UNDER_CUSTOMER_HISTORY, SET_ADD_SELL_UNDER_CUSTOMER_HISTORY } from "../../actions/constants";
+import {
+  ADD_SELL_UNDER_CUSTOMER_HISTORY
+  // SET_ADD_SELL_UNDER_CUSTOMER_HISTORY
+} from "../../actions/constants";
 
 const sellsHistoryDefaultReducer = {};
 
@@ -8,29 +11,38 @@ export const sellsHistoryReducer = (
 ) => {
   switch (action.type) {
     case ADD_SELL_UNDER_CUSTOMER_HISTORY:
-      let flag = false;
-      for (let number in state) {
-        if (number === action.data.number) {
-          console.log("Same number");
-          flag = true;
-        }
-      }
-      if (flag) {
-        const number = action.data.number;
-        return {
-          ...state,
-          [number]: {
-            history: [...state[number].history, action.data.history],
-            prevDue: action.data.prevDue
+      let objectSize = Object.keys(state).length;
+      if (objectSize > 0) {
+        let flag = false;
+        for (let number in state) {
+          if (number === action.data.number) {
+            console.log("Same number");
+            flag = true;
           }
-        }; // concentrate! you learned a lot from here debotos
+        }
+        if (flag) {
+          const number = action.data.number;
+          return {
+            ...state,
+            [number]: {
+              history: [...state[number].history, action.data.history]
+            }
+          }; // concentrate! you learned a lot from here debotos
+        } else {
+          const newNumber = action.data.number;
+          return {
+            ...state,
+            [newNumber]: {
+              history: [action.data.history]
+            }
+          };
+        }
       } else {
         const newNumber = action.data.number;
         return {
           ...state,
           [newNumber]: {
-            history: [action.data.history],
-            prevDue: action.data.prevDue
+            history: [action.data.history]
           }
         };
       }

@@ -73,7 +73,18 @@ class CustomerDetailsForm extends Component {
       allTotal: this.props.allTotal
     };
   }
-
+  collectSellsData = () => ({
+    number: this.state.number,
+    allTotal: this.props.allTotal,
+    date: Date().substr(0, 15),
+    customer:{
+      name: this.state.name,
+      number: this.state.number,
+      mail: this.state.mail,
+      address: this.state.address
+    },
+    history: this.props.sellsTables
+  })
   handleSaveAndGeneratePDF = () => {
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
@@ -94,6 +105,9 @@ class CustomerDetailsForm extends Component {
       let newDue = allTotalWithPrevDue - parseFloat(deposit);
       console.log("New Due", newDue);
       this.props.addPrevDue(this.state.number, newDue);
+      console.log("History Saving ", this.collectSellsData())
+      console.log("History Saving in store");
+      this.props.addSellUnderCustomerHistory(this.collectSellsData())
     }
   };
   render() {

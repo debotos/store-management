@@ -9,8 +9,7 @@ const sellsReducerDefaultState = {
   aluminium: [],
   glass: [],
   ss: [],
-  others: [],
-  total: []
+  others: []
 };
 
 export const sellsReducer = (state = sellsReducerDefaultState, action) => {
