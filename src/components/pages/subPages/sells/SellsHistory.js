@@ -4,23 +4,11 @@ import MenuItem from "material-ui/MenuItem";
 import { Card } from "material-ui/Card";
 import { connect } from "react-redux";
 
-const selectItems = [
-  <MenuItem key={1} value={1} primaryText="Never" />,
-  <MenuItem key={2} value={2} primaryText="Every Night" />,
-  <MenuItem key={3} value={3} primaryText="Weeknights" />,
-  <MenuItem key={4} value={4} primaryText="Weekends" />,
-  <MenuItem key={5} value={5} primaryText="Weekly" />
-];
+import HistoryTableGenerator from './HistoryTable/HistoryTableGenerator'
 
 class SellsHistory extends Component {
   handleSelectChange = (event, index, value) =>
     this.setState({ selectValue: value });
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectValue: null
-    };
-  }
   makeMenuItemsByHistoyObject = () => {
     const history = this.props.sellsHistory;
     const customerNumbers = [];
@@ -31,9 +19,36 @@ class SellsHistory extends Component {
       }
     }
     return customerNumbers.map((singleItem, index) => {
-      return <MenuItem key={index} value={singleItem} primaryText={singleItem} />
-    })
+      return (
+        <MenuItem key={index} value={singleItem} primaryText={singleItem} />
+      );
+    });
   };
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectValue: null
+    };
+  }
+  renderTableUsingHistory = (phone) => {
+    const searchingFor = phone;
+    const history = this.props.sellsHistory;
+    let objectSize = Object.keys(history).length;
+
+    let flag = false;
+    let historyINeed;
+    if (objectSize > 0 && phone) {
+      for (let numberKey in history) {
+        if(numberKey.toString() === searchingFor.toString()) {
+          flag = true;
+          historyINeed = history[numberKey];
+        }
+      }
+    }
+    if(flag) {
+      return <HistoryTableGenerator allTables={historyINeed.history}/>;
+    }
+  }
   render() {
     return (
       <div>
@@ -49,9 +64,12 @@ class SellsHistory extends Component {
               onChange={this.handleSelectChange}
             >
               {this.makeMenuItemsByHistoyObject()}
-              {/* {selectItems} */}
             </SelectField>
           </Card>
+        </div>
+        {/* Showing the tables */}
+        <div >
+        {this.renderTableUsingHistory(this.state.selectValue)}
         </div>
       </div>
     );
