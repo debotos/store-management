@@ -8,15 +8,69 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-function GENERATE_PDF(data) {
-  let { customer, sellingItems, allTotal } = data;
-  //Start
+// it will take an object that contain an array and return an array object of table instance
+const renderTables = tables => {
+  let { aluminium, glass, ss, others } = tables;
 
+  let aluminiumTable = {};
+  let glassTable = {};
+  let ssTable = {};
+  let othersTable = {};
+
+  if (aluminium.length > 0) {
+    aluminiumTable = {
+      style: "tableDesign",
+      table: {
+        widths: [17, "*", "*", 40, 40, 45, 45, 40, "*"],
+        headerRows: 2,
+        body: renderAluminiumContent(aluminium)
+      }
+    };
+  }
+  if (glass.length > 0) {
+    glassTable = {
+      style: "tableDesign",
+      table: {
+        widths: [17, "*", "*", "*", "*"],
+        headerRows: 2,
+        body: renderGlassContent(glass)
+      }
+    };
+  }
+  if (ss.length > 0) {
+    ssTable = {
+      style: "tableDesign",
+      table: {
+        widths: [17, "*", "*", "*", "*", "*", "*", "*"],
+        headerRows: 2,
+        body: renderSSContent(ss)
+      }
+    };
+  }
+  if (others.length > 0) {
+    othersTable = {
+      style: "tableDesign",
+      table: {
+        widths: [17, "*", "*", "*", "*"],
+        headerRows: 2,
+        body: renderOthersContent(others)
+      }
+    };
+  }
+
+  return [aluminiumTable, glassTable, ssTable, othersTable];
+};
+
+function GENERATE_PDF(data) {
+  let { tables, customer } = data;
+  //Start
+  // Defining constant memo number
+  let memoNumber = 1010;
   var docDefinition = {
     watermark: {
       text: COMPANY_NAME,
       color: "blue",
-      opacity: 0.3,
+      opacity: 0.2,
       bold: true,
       italics: false
     },
@@ -52,21 +106,55 @@ function GENERATE_PDF(data) {
           "Address: " + customer.address
         ]
       },
-
-      { text: "\n\n" },
-
       {
-        style: "tableDesign",
-        table: {
-          widths: [15, 80, 100, 40, 30, 45, 40, 90],
-          body: renderContent(sellingItems)
-        }
+        text: "Memo No. " + memoNumber,
+        italics: true,
+        style: "subheader",
+        alignment: "right"
+      },
+      { text: "\n\n" },
+      // I have to create a function that will render tables
+      renderTables(tables),
+
+      { text: "\n" },
+      {
+        text: "SUM = " + customer.allTotal,
+        style: "subheader",
+        alignment: "right"
       },
       { text: "\n" },
-      { text: "SUM = " + allTotal, style: "subheader", alignment: "right" },
+      {
+        text: "Previous Due = " + customer.prevDue,
+        color: "red",
+        italics: true,
+        style: "subheader",
+        alignment: "right"
+      },
+      { text: "\n" },
+      {
+        text: "All Total With Previous Due = " + customer.totalWithDue,
+        style: "subheader",
+        alignment: "right"
+      },
+      { text: "\n" },
+      {
+        text: "Deposit Now = " + customer.depositNow,
+        style: "subheader",
+        alignment: "right"
+      },
+      { text: "\n" },
+      {
+        text: "New Due From Now = " + customer.newDue,
+        color: "red",
+        italics: true,
+        style: "subheader",
+        alignment: "right"
+      },
       { text: "\n\n" },
-      { text: "------------------------------------", alignment: "right" },
-      { text: COMPANY_NAME, alignment: "right" }
+      { text: "-------------------------------------------", alignment: "left" },
+      { text: "Receivers Signature", alignment: "left" },
+      { text: "-------------------------------------------", alignment: "right" },
+      { text: "For " + COMPANY_NAME, alignment: "right" }
     ],
     styles: {
       header: {
@@ -100,33 +188,150 @@ function GENERATE_PDF(data) {
     .download(customer.name + "-" + Date().substr(0, 15));
 }
 
-const setColorProperty = color => {
-  if (color) {
-    return `r:${color.r}, g:${color.g}, b:${color.b}, a:${color.a}`;
-  } else {
-    return "No Selection";
-  }
-};
-
-const renderContent = sellingItems => {
+const renderAluminiumContent = sellingItems => {
   let TableHeader = [
     "ID",
     "Item",
-    "Color",
+    "Company",
     "Length",
     "Dia",
+    "Color",
     "Quantity",
     "Rate",
     "Total"
   ];
-  let Content = [TableHeader];
+  let Content = [
+    [
+      {
+        text: "Aluminium Table",
+        style: "tableHeader",
+        colSpan: 9,
+        alignment: "center"
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ],
+    TableHeader
+  ];
   sellingItems.forEach((singleItem, index) => {
     let item = [
       (index + 1).toString(),
-      singleItem.item,
-      setColorProperty(singleItem.color),
+      singleItem.productName,
+      singleItem.companyName,
       singleItem.length,
       singleItem.dia,
+      singleItem.color,
+      singleItem.quantity,
+      singleItem.rate,
+      singleItem.total
+    ];
+    Content.push(item);
+  });
+  return Content;
+};
+
+const renderGlassContent = sellingItems => {
+  let TableHeader = ["ID", "Item", "SFT", "Rate", "Total"];
+  let Content = [
+    [
+      {
+        text: "Glass Table",
+        style: "tableHeader",
+        colSpan: 5,
+        alignment: "center"
+      },
+      {},
+      {},
+      {},
+      {}
+    ],
+    TableHeader
+  ];
+  sellingItems.forEach((singleItem, index) => {
+    let item = [
+      (index + 1).toString(),
+      singleItem.productName,
+      singleItem.sft,
+      singleItem.rate,
+      singleItem.total
+    ];
+    Content.push(item);
+  });
+  return Content;
+};
+
+const renderSSContent = sellingItems => {
+  let TableHeader = [
+    "ID",
+    "Item",
+    "Company",
+    "Thickness",
+    "Length",
+    "Quantity",
+    "Rate",
+    "Total"
+  ];
+  let Content = [
+    [
+      {
+        text: "SS Table",
+        style: "tableHeader",
+        colSpan: 8,
+        alignment: "center"
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ],
+    TableHeader
+  ];
+  sellingItems.forEach((singleItem, index) => {
+    let item = [
+      (index + 1).toString(),
+      singleItem.productName,
+      singleItem.companyName,
+      singleItem.thickness,
+      singleItem.length,
+      singleItem.quantity,
+      singleItem.rate,
+      singleItem.total
+    ];
+    Content.push(item);
+  });
+  return Content;
+};
+
+const renderOthersContent = sellingItems => {
+  let TableHeader = ["ID", "Item", "SFT", "Rate", "Total"];
+  let Content = [
+    [
+      {
+        text: "Others Table",
+        style: "tableHeader",
+        colSpan: 5,
+        alignment: "center"
+      },
+      {},
+      {},
+      {},
+      {}
+    ],
+    TableHeader
+  ];
+  sellingItems.forEach((singleItem, index) => {
+    let item = [
+      (index + 1).toString(),
+      singleItem.productName,
       singleItem.quantity,
       singleItem.rate,
       singleItem.total

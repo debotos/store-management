@@ -94,7 +94,7 @@ class CustomerDetailsForm extends Component {
     },
     history: this.props.sellsTables
   });
-
+  
   handleSaveAndGeneratePDF = () => {
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
@@ -125,9 +125,25 @@ class CustomerDetailsForm extends Component {
         };
         this.setState({ modelData });
         this.handleDialogOpen();
-        // this.props.removeAllSellsItem()
+        const dataForPDF = {
+          tables: this.props.sellsTables,
+          customer: {
+            name: this.state.name,
+            number: this.state.number,
+            mail: this.state.mail,
+            address: this.state.address,
+            allTotal: this.props.allTotal,
+            prevDue: this.userAlreadyExists()[1],
+            totalWithDue: allTotalWithPrevDue,
+            depositNow: deposit,
+            newDue
+          }
+        }
+
+
+        GENERATE_PDF(dataForPDF);
+
         this.handleReset();
-        // GENERATE_PDF(data);
       } else {
         this.props.showSnackBar("Error! Valid Deposit Please!");
       }
