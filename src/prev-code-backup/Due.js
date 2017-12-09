@@ -1,36 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Card } from "material-ui/Card";
-import TextField from "material-ui/TextField";
 
 import AppBarMain from "../ui-element/AppBarMain";
 import "../../style/due/due.css";
-import { setDueTextFilter } from '../../actions/due/due-filter-actions';
-import dueFilter from './subPages/due/utility-func/due-filter'
 // import Navigation from "../Navigation";
 
 class Due extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dueSearchText: ""
-    }
-  }
-  handleDueSearch = (event) => {
-    const dueSearchText = event.target.value;
-    this.props.setDueTextFilter(dueSearchText)
-  }
   render() {
     return (
       <div>
         <AppBarMain />
         <Card style={{ padding: 7, margin: 5, textAlign: "center" }}>
-          <TextField
-            type="number"
-            floatingLabelText="Search Specific Due by Number"
-            value={this.props.filter}
-            onChange={this.handleDueSearch}
-          />
+          <h2>All Due in One Place</h2>
         </Card>
         <Card className="container" style={{ marginTop: 10, padding: 5 }}>
           <div className="list-header">
@@ -78,16 +60,8 @@ class Due extends Component {
 
 const mapStateToProps = state => {
   return {
-    allDue: dueFilter(state.due, state.dueFilter)
+    allDue: state.due
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setDueTextFilter: (text) => {
-      dispatch(setDueTextFilter(text))
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Due);
+export default connect(mapStateToProps, null)(Due);

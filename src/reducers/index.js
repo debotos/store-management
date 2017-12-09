@@ -7,6 +7,7 @@ import { sellsReducer } from "./sells/sells-reducer";
 import { stockReducer } from './stock/stock-reducer';
 import { sellsHistoryReducer } from './sells/sells-history-reducer'
 import { prevDueReducer } from './sells/prevDue-reducer';
+import dueFilterReducer from './due/due-filter-reducer';
 
 const RootReducer = combineReducers({
   bank: bankReducer,
@@ -15,7 +16,8 @@ const RootReducer = combineReducers({
   sells: sellsReducer,
   stock: stockReducer,
   sellsHistory: sellsHistoryReducer,
-  due: prevDueReducer
+  due: prevDueReducer,
+  dueFilter: dueFilterReducer
 });
 
 export default RootReducer;
