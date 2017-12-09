@@ -264,7 +264,7 @@ class HistoryTableGenerator extends Component {
     return this.props.allTables.map((singleSell, index) => {
       // {singleSell} is an [Object]
       // Destructuring the singleItem Object
-      const { aluminium, glass, ss, others } = singleSell;
+      const { aluminium, glass, ss, others, date } = singleSell;
       // {aluminium, glass, ss, others} each one containing an [array of objects]
       console.log(glass);
       console.log(aluminium);
@@ -276,7 +276,7 @@ class HistoryTableGenerator extends Component {
           style={{ border: "3px solid  #00BCD4", margin: "3px" }}
         >
           <h2 style={{ textAlign: "center" }}>
-            <strong>Date: {this.props.date}</strong>
+            <strong>Date: {date}</strong>
           </h2>
 
           {aluminium.length > 0 && this.renderAluminiumTable(aluminium)}

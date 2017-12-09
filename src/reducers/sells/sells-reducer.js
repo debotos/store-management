@@ -9,23 +9,40 @@ const sellsReducerDefaultState = {
   aluminium: [],
   glass: [],
   ss: [],
-  others: []
+  others: [],
+  date: Date().substr(0, 24)
 };
 
 export const sellsReducer = (state = sellsReducerDefaultState, action) => {
   switch (action.type) {
     case ADD_A_SELL_ITEM:
       if (action.data.productCategoryToSell === "aluminium") {
-        return { ...state, aluminium: [...state.aluminium, action.data] };
+        return {
+          ...state,
+          aluminium: [...state.aluminium, action.data],
+          date: Date().substr(0, 24)
+        };
       }
       if (action.data.productCategoryToSell === "glass") {
-        return { ...state, glass: [...state.glass, action.data] };
+        return {
+          ...state,
+          glass: [...state.glass, action.data],
+          date: Date().substr(0, 24)
+        };
       }
       if (action.data.productCategoryToSell === "ss") {
-        return { ...state, ss: [...state.ss, action.data] };
+        return {
+          ...state,
+          ss: [...state.ss, action.data],
+          date: Date().substr(0, 24)
+        };
       }
       if (action.data.productCategoryToSell === "others") {
-        return { ...state, others: [...state.others, action.data] };
+        return {
+          ...state,
+          others: [...state.others, action.data],
+          date: Date().substr(0, 24)
+        };
       }
     case REMOVE_A_SELL_ITEM:
       if (action.productCategoryToSell === "aluminium") {
@@ -33,25 +50,31 @@ export const sellsReducer = (state = sellsReducerDefaultState, action) => {
           ...state,
           aluminium: state.aluminium.filter(
             singleSell => singleSell.id !== action.id
-          )
+          ),
+          date: Date().substr(0, 24)
         };
       }
       if (action.productCategoryToSell === "glass") {
         return {
           ...state,
-          glass: state.glass.filter(singleSell => singleSell.id !== action.id)
+          glass: state.glass.filter(singleSell => singleSell.id !== action.id),
+          date: Date().substr(0, 24)
         };
       }
       if (action.productCategoryToSell === "ss") {
         return {
           ...state,
-          ss: state.ss.filter(singleSell => singleSell.id !== action.id)
+          ss: state.ss.filter(singleSell => singleSell.id !== action.id),
+          date: Date().substr(0, 24)
         };
       }
       if (action.productCategoryToSell === "others") {
         return {
           ...state,
-          others: state.others.filter(singleSell => singleSell.id !== action.id)
+          others: state.others.filter(
+            singleSell => singleSell.id !== action.id
+          ),
+          date: Date().substr(0, 24)
         };
       }
     case REMOVE_ALL_SELL_ITEMS:
@@ -60,4 +83,3 @@ export const sellsReducer = (state = sellsReducerDefaultState, action) => {
       return state;
   }
 };
-

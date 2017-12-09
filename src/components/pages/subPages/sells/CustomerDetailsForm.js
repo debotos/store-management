@@ -86,7 +86,6 @@ class CustomerDetailsForm extends Component {
   collectSellsData = () => ({
     number: this.state.number,
     allTotal: this.props.allTotal,
-    date: Date().substr(0, 24),
     customer: {
       name: this.state.name,
       number: this.state.number,
