@@ -4,6 +4,7 @@ import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 import { Tabs, Tab } from "material-ui/Tabs";
 import SwipeableViews from "react-swipeable-views";
+import { connect } from "react-redux";
 
 import Aluminium from "./subPages/sells/Forms/Aluminium";
 import Glass from "./subPages/sells/Forms/Glass";
@@ -123,17 +124,23 @@ class Sells extends Component {
               </div>
 
               {/*Below div Sells Table Section*/}
+
               <TableGenerator
                 showSnackBar={this.showSnackBar}
                 setAllTotal={this.setAllTotal}
               />
               {/* Below div is Customer Details Getting Form */}
-              <div>
-                <CustomerDetailsForm
-                  showSnackBar={this.showSnackBar}
-                  allTotal={this.state.allTotal}
-                />
-              </div>
+              {(this.props.allSells.aluminium.length > 0 ||
+                this.props.allSells.glass.length > 0 ||
+                this.props.allSells.ss.length > 0 ||
+                this.props.allSells.others.length > 0) && (
+                <div>
+                  <CustomerDetailsForm
+                    showSnackBar={this.showSnackBar}
+                    allTotal={this.state.allTotal}
+                  />
+                </div>
+              )}
             </div>
             {/* End of the First Tab */}
             {/* Second Tab Started */}
@@ -154,4 +161,10 @@ class Sells extends Component {
   }
 }
 
-export default Sells;
+const mapStateToProps = state => {
+  return {
+    allSells: state.sells
+  };
+};
+
+export default connect(mapStateToProps, null)(Sells);

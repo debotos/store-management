@@ -25,7 +25,7 @@ export const sellsHistoryReducer = (
           return {
             ...state,
             [number]: {
-              history: [...state[number].history, action.data.history],
+              history: [action.data.history, ...state[number].history],
               date: action.data.date
             }
           }; // concentrate! you learned a lot from here debotos

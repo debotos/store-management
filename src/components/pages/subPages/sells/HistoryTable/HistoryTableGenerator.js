@@ -271,12 +271,18 @@ class HistoryTableGenerator extends Component {
       console.log(ss);
       console.log(others);
       return (
-        <div key={index} style={{ border: "3px solid  #00BCD4", margin: "3px" }}>
-          <h2 style={{textAlign: 'center'}}><strong>Date: {this.props.date}</strong></h2>
-          {this.renderAluminiumTable(aluminium)}
-          {this.renderGlassTable(glass)}
-          {this.renderSSTable(ss)}
-          {this.renderOthersTable(others)}
+        <div
+          key={index}
+          style={{ border: "3px solid  #00BCD4", margin: "3px" }}
+        >
+          <h2 style={{ textAlign: "center" }}>
+            <strong>Date: {this.props.date}</strong>
+          </h2>
+
+          {aluminium.length > 0 && this.renderAluminiumTable(aluminium)}
+          {glass.length > 0 && this.renderGlassTable(glass)}
+          {ss.length > 0 && this.renderSSTable(ss)}
+          {others.length > 0 && this.renderOthersTable(others)}
         </div>
       );
     });

@@ -392,10 +392,10 @@ class TableGenerator extends Component {
       glassDiscountToggle: false,
       ssDiscountToggle: false,
       othersDiscountToggle: false,
-      overideTotalSumOfAluminium: null,
-      overideTotalSumOfGlass: null,
-      overideTotalSumOfSS: null,
-      overideTotalSumOfOthers: null
+      overideTotalSumOfAluminium: "",
+      overideTotalSumOfGlass: "",
+      overideTotalSumOfSS: "",
+      overideTotalSumOfOthers: ""
     };
   }
   render() {
@@ -869,12 +869,20 @@ class TableGenerator extends Component {
         )}
         {/* Others Table Row Stop */}
         {/* Finally All Table Total */}
-        <Card
-          className="container"
-          style={{ padding: 10, textAlign: "center" }}
-        >
-          <h2>Totally = {this.finallyAllTotal()}</h2>
-        </Card>
+        {(this.props.allSells.aluminium.length > 0 ||
+          this.props.allSells.glass.length > 0 ||
+          this.props.allSells.ss.length > 0 ||
+          this.props.allSells.others.length > 0) && (
+          <Card
+            className="container"
+            style={{ padding: 5, textAlign: "center", marginTop: 7 }}
+          >
+            <h2>
+              <strong>Totally = {this.finallyAllTotal()}</strong>
+            </h2>
+          </Card>
+        )}
+
         {/* Model to Delete and Details */}
         <div>
           <Dialog

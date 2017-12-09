@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import Dialog from "material-ui/Dialog";
 
 import GENERATE_PDF from "./PDF";
+// import { removeAllSellsItem } from '../../../../actions/sells/sells-actions'
 import { addSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
 import { addPrevDue } from "../../../../actions/sells/prevDue-actions";
 
@@ -85,7 +86,7 @@ class CustomerDetailsForm extends Component {
   collectSellsData = () => ({
     number: this.state.number,
     allTotal: this.props.allTotal,
-    date: Date().substr(0, 15),
+    date: Date().substr(0, 24),
     customer: {
       name: this.state.name,
       number: this.state.number,
@@ -94,32 +95,43 @@ class CustomerDetailsForm extends Component {
     },
     history: this.props.sellsTables
   });
+
   handleSaveAndGeneratePDF = () => {
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
-        // GENERATE_PDF(data);
+        if (parseFloat(this.props.allTotal) >= parseFloat(this.state.deposit)) {
+          // GENERATE_PDF(data);
+        } else {
+          this.props.showSnackBar("Error! Valid Deposit Please!");
+        }
       } else {
         this.props.showSnackBar("Error ! Invalid Email !");
       }
     } else {
-      // GENERATE_PDF(data);
-      let allTotalWithPrevDue =
-        parseFloat(this.props.allTotal) +
-        parseFloat(this.userAlreadyExists()[1]);
-      let deposit = this.state.deposit;
-      let newDue = allTotalWithPrevDue - parseFloat(deposit);
-      this.props.addPrevDue(this.state.number, newDue);
-      console.log("History Saving in store");
-      this.props.addSellUnderCustomerHistory(this.collectSellsData());
-      const modelData = {
-        allTotal: this.props.allTotal,
-        prevDue: this.userAlreadyExists()[1],
-        totalWithDue: allTotalWithPrevDue,
-        depositNow: deposit,
-        newDue
-      };
-      this.setState({ modelData });
-      this.handleDialogOpen();
+      if (parseFloat(this.props.allTotal) >= parseFloat(this.state.deposit)) {
+        let allTotalWithPrevDue =
+          parseFloat(this.props.allTotal) +
+          parseFloat(this.userAlreadyExists()[1]);
+        let deposit = this.state.deposit;
+        let newDue = allTotalWithPrevDue - parseFloat(deposit);
+        this.props.addPrevDue(this.state.number, newDue);
+        console.log("History Saving in store");
+        this.props.addSellUnderCustomerHistory(this.collectSellsData());
+        const modelData = {
+          allTotal: this.props.allTotal,
+          prevDue: this.userAlreadyExists()[1],
+          totalWithDue: allTotalWithPrevDue,
+          depositNow: deposit,
+          newDue
+        };
+        this.setState({ modelData });
+        this.handleDialogOpen();
+        // this.props.removeAllSellsItem()
+        this.handleReset();
+        // GENERATE_PDF(data);
+      } else {
+        this.props.showSnackBar("Error! Valid Deposit Please!");
+      }
     }
   };
   showModelData = modelData => {
@@ -259,6 +271,9 @@ const mapDispatchToProps = dispatch => {
     addPrevDue: (number, amount) => {
       dispatch(addPrevDue(number, amount));
     }
+    // removeAllSellsItem: () => {
+    //   dispatch(removeAllSellsItem())
+    // }
   };
 };
 
