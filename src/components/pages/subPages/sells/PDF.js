@@ -118,7 +118,7 @@ function GENERATE_PDF(data) {
 
       { text: "\n" },
       {
-        text: "SUM = " + customer.allTotal,
+        text: "All Tables Total = " + customer.allTotal,
         style: "subheader",
         alignment: "right"
       },
@@ -132,7 +132,7 @@ function GENERATE_PDF(data) {
       },
       { text: "\n" },
       {
-        text: "All Total With Previous Due = " + customer.totalWithDue,
+        text: "All Tables Total With Previous Due = " + customer.totalWithDue,
         style: "subheader",
         alignment: "right"
       },
@@ -150,6 +150,7 @@ function GENERATE_PDF(data) {
         style: "subheader",
         alignment: "right"
       },
+      
       { text: "\n\n" },
       { text: "-------------------------------------------", alignment: "left" },
       { text: "Receivers Signature", alignment: "left" },

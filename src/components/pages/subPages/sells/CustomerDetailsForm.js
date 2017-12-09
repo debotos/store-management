@@ -94,12 +94,46 @@ class CustomerDetailsForm extends Component {
     },
     history: this.props.sellsTables
   });
-  
+
   handleSaveAndGeneratePDF = () => {
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
         if (parseFloat(this.props.allTotal) >= parseFloat(this.state.deposit)) {
-          // GENERATE_PDF(data);
+          let allTotalWithPrevDue =
+            parseFloat(this.props.allTotal) +
+            parseFloat(this.userAlreadyExists()[1]);
+          let deposit = this.state.deposit;
+          let newDue = allTotalWithPrevDue - parseFloat(deposit);
+          this.props.addPrevDue(this.state.number, newDue);
+          console.log("History Saving in store");
+          this.props.addSellUnderCustomerHistory(this.collectSellsData());
+          const modelData = {
+            allTotal: this.props.allTotal,
+            prevDue: this.userAlreadyExists()[1],
+            totalWithDue: allTotalWithPrevDue,
+            depositNow: deposit,
+            newDue
+          };
+          this.setState({ modelData });
+          this.handleDialogOpen();
+          const dataForPDF = {
+            tables: this.props.sellsTables,
+            customer: {
+              name: this.state.name,
+              number: this.state.number,
+              mail: this.state.mail,
+              address: this.state.address,
+              allTotal: this.props.allTotal,
+              prevDue: this.userAlreadyExists()[1],
+              totalWithDue: allTotalWithPrevDue,
+              depositNow: deposit,
+              newDue
+            }
+          };
+
+          GENERATE_PDF(dataForPDF);
+
+          this.handleReset();
         } else {
           this.props.showSnackBar("Error! Valid Deposit Please!");
         }
@@ -138,8 +172,7 @@ class CustomerDetailsForm extends Component {
             depositNow: deposit,
             newDue
           }
-        }
-
+        };
 
         GENERATE_PDF(dataForPDF);
 
