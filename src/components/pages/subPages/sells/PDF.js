@@ -4,6 +4,7 @@ import {
   COMPANY_PHONE_NUMBER,
   COMPANY_OWENER
 } from "../../../global/global";
+
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -62,10 +63,8 @@ const renderTables = tables => {
 };
 
 function GENERATE_PDF(data) {
-  let { tables, customer } = data;
+  let { tables, customer, memoNumber } = data;
   //Start
-  // Defining constant memo number
-  let memoNumber = 1010;
   var docDefinition = {
     watermark: {
       text: COMPANY_NAME,
@@ -88,74 +87,87 @@ function GENERATE_PDF(data) {
         style: "subheader",
         alignment: "center"
       },
+      { text: "\n" },
 
+      { text: "Customer Details:\n", bold: true },
       {
-        text: "Date: " + Date().substr(0, 15),
-        style: "subheader",
-        alignment: "center"
-      },
-
-      { text: "\n\n" },
-
-      "Customer Details:\n",
-      {
-        ul: [
-          "Name: " + customer.name,
-          "Phone Number: " + customer.number,
-          "E-mail: " + customer.mail,
-          "Address: " + customer.address
+        columns: [
+          {
+            ul: [
+              "Name: " + customer.name,
+              "Phone Number: " + customer.number,
+              "E-mail: " + customer.mail,
+              "Address: " + customer.address
+            ]
+          },
+          {
+            type: "none",
+            ul: [
+              {
+                text: "Memo No. " + memoNumber,
+                italics: true,
+                fontSize: 16,
+                bold: true,
+                alignment: "right"
+              },
+              {
+                text: "Date: " + Date().substr(0, 15),
+                alignment: "right"
+              }
+            ]
+          }
         ]
       },
-      {
-        text: "Memo No. " + memoNumber,
-        italics: true,
-        style: "subheader",
-        alignment: "right"
-      },
+
       { text: "\n\n" },
       // I have to create a function that will render tables
       renderTables(tables),
 
       { text: "\n" },
       {
-        text: "All Tables Total = " + customer.allTotal,
-        style: "subheader",
-        alignment: "right"
+        alignment: "right",
+        type: "none",
+        ul: [
+          "All Tables Total = " + customer.allTotal,
+          {
+            text: "Previous Due = " + customer.prevDue,
+            italics: true,
+            color: "red"
+          },
+          "All Tables Total With Previous Due = " + customer.totalWithDue,
+          "Deposit Now = " + customer.depositNow,
+          {
+            text: "New Due From Now = " + customer.newDue,
+            italics: true,
+            color: "red"
+          }
+        ]
       },
-      { text: "\n" },
-      {
-        text: "Previous Due = " + customer.prevDue,
-        color: "red",
-        italics: true,
-        style: "subheader",
-        alignment: "right"
-      },
-      { text: "\n" },
-      {
-        text: "All Tables Total With Previous Due = " + customer.totalWithDue,
-        style: "subheader",
-        alignment: "right"
-      },
-      { text: "\n" },
-      {
-        text: "Deposit Now = " + customer.depositNow,
-        style: "subheader",
-        alignment: "right"
-      },
-      { text: "\n" },
-      {
-        text: "New Due From Now = " + customer.newDue,
-        color: "red",
-        italics: true,
-        style: "subheader",
-        alignment: "right"
-      },
-      
       { text: "\n\n" },
-      { text: "-------------------------------------------", alignment: "left" },
-      { text: "Receivers Signature", alignment: "left" },
-      { text: "-------------------------------------------", alignment: "right" },
-      { text: "For " + COMPANY_NAME, alignment: "right" }
+      {
+        columns: [
+          {
+            type: "none",
+            ul: [
+              {
+                text: "---------------------------------",
+                alignment: "left"
+              },
+              { text: "Receivers Signature", alignment: "left" }
+            ]
+          },
+          {
+            type: "none",
+            ul: [
+              {
+                text: "----------------------------------------",
+                alignment: "right"
+              },
+              { text: "For " + COMPANY_NAME, alignment: "right" }
+            ]
+          }
+        ]
+      }
     ],
     styles: {
       header: {

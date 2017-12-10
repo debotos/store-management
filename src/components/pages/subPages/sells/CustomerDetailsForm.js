@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import Dialog from "material-ui/Dialog";
 
 import GENERATE_PDF from "./PDF";
+import { incrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
 // import { removeAllSellsItem } from '../../../../actions/sells/sells-actions'
 import { addSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
 import { addPrevDue } from "../../../../actions/sells/prevDue-actions";
@@ -102,8 +103,8 @@ class CustomerDetailsForm extends Component {
           let allTotalWithPrevDue =
             parseFloat(this.props.allTotal) +
             parseFloat(this.userAlreadyExists()[1]);
-          let deposit = this.state.deposit;
-          let newDue = allTotalWithPrevDue - parseFloat(deposit);
+          let deposit = parseFloat(this.state.deposit).toFixed(2);
+          let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
           this.props.addPrevDue(this.state.number, newDue);
           console.log("History Saving in store");
           this.props.addSellUnderCustomerHistory(this.collectSellsData());
@@ -128,12 +129,14 @@ class CustomerDetailsForm extends Component {
               totalWithDue: allTotalWithPrevDue,
               depositNow: deposit,
               newDue
-            }
+            },
+            memoNumber: this.props.memoNumber
           };
 
           GENERATE_PDF(dataForPDF);
 
           this.handleReset();
+          this.props.incrementMemoNumber();
         } else {
           this.props.showSnackBar("Error! Valid Deposit Please!");
         }
@@ -145,8 +148,8 @@ class CustomerDetailsForm extends Component {
         let allTotalWithPrevDue =
           parseFloat(this.props.allTotal) +
           parseFloat(this.userAlreadyExists()[1]);
-        let deposit = this.state.deposit;
-        let newDue = allTotalWithPrevDue - parseFloat(deposit);
+        let deposit = parseFloat(this.state.deposit).toFixed(2);
+        let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
         this.props.addPrevDue(this.state.number, newDue);
         console.log("History Saving in store");
         this.props.addSellUnderCustomerHistory(this.collectSellsData());
@@ -171,12 +174,14 @@ class CustomerDetailsForm extends Component {
             totalWithDue: allTotalWithPrevDue,
             depositNow: deposit,
             newDue
-          }
+          },
+          memoNumber: this.props.memoNumber
         };
 
         GENERATE_PDF(dataForPDF);
 
         this.handleReset();
+        this.props.incrementMemoNumber();
       } else {
         this.props.showSnackBar("Error! Valid Deposit Please!");
       }
@@ -318,6 +323,9 @@ const mapDispatchToProps = dispatch => {
     },
     addPrevDue: (number, amount) => {
       dispatch(addPrevDue(number, amount));
+    },
+    incrementMemoNumber: () => {
+      dispatch(incrementMemoNumber());
     }
     // removeAllSellsItem: () => {
     //   dispatch(removeAllSellsItem())
@@ -329,7 +337,8 @@ const mapStateToProps = state => {
   return {
     sellsTables: state.sells,
     sellsHistory: state.sellsHistory,
-    due: state.due
+    due: state.due,
+    memoNumber: state.memoNumber
   };
 };
 
