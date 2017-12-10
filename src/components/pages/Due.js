@@ -61,7 +61,7 @@ class Due extends Component {
                           </h3>
                         </div>
                         <h3 className="list-item-amount">
-                          {(singleDue.amount).toFixed(2)} &#x9f3;
+                          {parseFloat(singleDue.amount).toFixed(2)} &#x9f3;
                         </h3>
                       </div>
                     </Card>
