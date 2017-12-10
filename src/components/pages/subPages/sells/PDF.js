@@ -42,7 +42,7 @@ const renderTables = tables => {
     ssTable = {
       style: "tableDesign",
       table: {
-        widths: [17, "*", "*", "*", "*", "*", "*", "*"],
+        widths: [17, "*", "*", 55, 40, 45, 40, "*"],
         headerRows: 2,
         body: renderSSContent(ss)
       }
