@@ -29,7 +29,7 @@ export const startAddPrevDue = (number, amount, id = "") => {
       .then(() => {
         // checking if any due exists
         console.log(
-          "Already Have Due in the database is -->> ",
+          "Number of Already Have Due in the database is  ",
           dueInDatabase.length
         );
         console.log("Due In Firebase ", dueInDatabase);
@@ -50,10 +50,6 @@ export const startAddPrevDue = (number, amount, id = "") => {
           // Now i know that already have or not, so...go for it
           if (dueItemAlreadyExists) {
             // Overide the value that exists
-            console.log(
-              "Hey Hey i caught you[second]",
-              dueItemIdThatAlreadyExists
-            );
             return database
               .ref(`due/${dueItemIdThatAlreadyExists}`)
               .update(due)

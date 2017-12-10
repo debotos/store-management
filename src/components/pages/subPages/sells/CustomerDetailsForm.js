@@ -9,7 +9,7 @@ import Dialog from "material-ui/Dialog";
 import GENERATE_PDF from "./PDF";
 import { incrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
 import { removeAllSellsItem } from "../../../../actions/sells/sells-actions";
-import { addSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
+import { startAddSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
 import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
 
 class CustomerDetailsForm extends Component {
@@ -109,7 +109,7 @@ class CustomerDetailsForm extends Component {
           let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
           this.props.startAddPrevDue(this.state.number, newDue);
           console.log("History Saving in store");
-          this.props.addSellUnderCustomerHistory(this.collectSellsData());
+          this.props.startAddSellUnderCustomerHistory(this.collectSellsData());
           const modelData = {
             allTotal: this.props.allTotal,
             prevDue: this.userAlreadyExists()[1],
@@ -151,7 +151,7 @@ class CustomerDetailsForm extends Component {
         let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
         this.props.startAddPrevDue(this.state.number, newDue);
         console.log("History Saving in store");
-        this.props.addSellUnderCustomerHistory(this.collectSellsData());
+        this.props.startAddSellUnderCustomerHistory(this.collectSellsData());
         const modelData = {
           allTotal: this.props.allTotal,
           prevDue: this.userAlreadyExists()[1],
@@ -317,8 +317,8 @@ class CustomerDetailsForm extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addSellUnderCustomerHistory: data => {
-      dispatch(addSellUnderCustomerHistory(data));
+    startAddSellUnderCustomerHistory: data => {
+      dispatch(startAddSellUnderCustomerHistory(data));
     },
     startAddPrevDue: (number, amount) => {
       dispatch(startAddPrevDue(number, amount));
