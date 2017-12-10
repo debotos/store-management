@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import Dialog from "material-ui/Dialog";
 
 import GENERATE_PDF from "./PDF";
-import { incrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
+import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
 import { removeAllSellsItem } from "../../../../actions/sells/sells-actions";
 import { startAddSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
 import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
@@ -138,7 +138,7 @@ class CustomerDetailsForm extends Component {
           GENERATE_PDF(dataForPDF);
 
           this.handleReset();
-          this.props.incrementMemoNumber();
+          this.props.startIncrementMemoNumber();
         } else {
           this.props.showSnackBar("Error! Valid Deposit Please!");
         }
@@ -180,7 +180,7 @@ class CustomerDetailsForm extends Component {
         GENERATE_PDF(dataForPDF);
 
         this.handleReset();
-        this.props.incrementMemoNumber();
+        this.props.startIncrementMemoNumber();
       } else {
         this.props.showSnackBar("Error! Valid Deposit Please!");
       }
@@ -323,8 +323,8 @@ const mapDispatchToProps = dispatch => {
     startAddPrevDue: (number, amount) => {
       dispatch(startAddPrevDue(number, amount));
     },
-    incrementMemoNumber: () => {
-      dispatch(incrementMemoNumber());
+    startIncrementMemoNumber: () => {
+      dispatch(startIncrementMemoNumber());
     },
     removeAllSellsItem: () => {
       dispatch(removeAllSellsItem());
@@ -337,7 +337,7 @@ const mapStateToProps = state => {
     sellsTables: state.sells,
     sellsHistory: state.sellsHistory,
     due: state.due,
-    memoNumber: state.memoNumber
+    memoNumber: state.memoNumber.memoNumber
   };
 };
 

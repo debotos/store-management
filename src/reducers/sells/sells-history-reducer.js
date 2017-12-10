@@ -1,6 +1,6 @@
 import {
-  ADD_SELL_UNDER_CUSTOMER_HISTORY
-  // SET_ADD_SELL_UNDER_CUSTOMER_HISTORY
+  ADD_SELL_UNDER_CUSTOMER_HISTORY,
+  SET_ADD_SELL_UNDER_CUSTOMER_HISTORY
 } from "../../actions/constants";
 
 const sellsHistoryDefaultReducer = {};
@@ -46,8 +46,8 @@ export const sellsHistoryReducer = (
           }
         };
       }
-    // case SET_ADD_SELL_UNDER_CUSTOMER_HISTORY:
-    //   return action.data;
+    case SET_ADD_SELL_UNDER_CUSTOMER_HISTORY:
+      return action.data;
     default:
       return state;
   }

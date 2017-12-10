@@ -281,10 +281,10 @@ class HistoryTableGenerator extends Component {
             <strong>Date: {date}</strong>
           </h2>
 
-          {aluminium.length > 0 && this.renderAluminiumTable(aluminium)}
-          {glass.length > 0 && this.renderGlassTable(glass)}
-          {ss.length > 0 && this.renderSSTable(ss)}
-          {others.length > 0 && this.renderOthersTable(others)}
+          {(aluminium && (aluminium.length > 0)) && this.renderAluminiumTable(aluminium)}
+          {(glass && (glass.length > 0)) && this.renderGlassTable(glass)}
+          {(ss && (ss.length > 0)) && this.renderSSTable(ss)}
+          {(others && (others.length > 0)) && this.renderOthersTable(others)}
         </div>
       );
     });

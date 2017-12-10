@@ -1,8 +1,8 @@
 import database from "../../secrets/firebase";
 
 import {
-  ADD_SELL_UNDER_CUSTOMER_HISTORY
-  // SET_ADD_SELL_UNDER_CUSTOMER_HISTORY
+  ADD_SELL_UNDER_CUSTOMER_HISTORY,
+  SET_ADD_SELL_UNDER_CUSTOMER_HISTORY
 } from "../constants";
 
 export const addSellUnderCustomerHistory = data => {
@@ -13,8 +13,8 @@ export const addSellUnderCustomerHistory = data => {
 };
 
 export const startAddSellUnderCustomerHistory = data => {
-  console.log("Getting Data As History ", data.history)
-  console.log("Type of the History : ", typeof data.history)
+  console.log("Getting Data As History ", data.history);
+  console.log("Type of the History : ", typeof data.history);
   return dispatch => {
     let pushData = {
       number: data.number,
@@ -97,6 +97,30 @@ export const startAddSellUnderCustomerHistory = data => {
               dispatch(addSellUnderCustomerHistory(saveDataLocal));
             });
         }
+      });
+  };
+};
+
+export const setAddSellUnderCustomerHistory = data => ({
+  type: SET_ADD_SELL_UNDER_CUSTOMER_HISTORY,
+  data
+});
+
+export const startSetAddSellUnderCustomerHistory = () => {
+  return dispatch => {
+    return database
+      .ref("history")
+      .once("value")
+      .then(snapshot => {
+        const history = {};
+
+        snapshot.forEach(childSnapshot => {
+          history[childSnapshot.val().number] = {
+            history: childSnapshot.val().history
+          }
+        });
+
+        dispatch(setAddSellUnderCustomerHistory(history));
       });
   };
 };
