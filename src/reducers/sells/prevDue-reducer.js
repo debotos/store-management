@@ -1,4 +1,4 @@
-import { ADD_A_PREV_DUE } from "../../actions/constants";
+import { ADD_A_PREV_DUE, SET_DUE } from "../../actions/constants";
 
 const prevDueDefaultState = [];
 
@@ -26,6 +26,8 @@ export const prevDueReducer = (state = prevDueDefaultState, action) => {
       } else {
         return [...state, action.data];
       }
+    case SET_DUE:
+      return action.data;
     default:
       return state;
   }

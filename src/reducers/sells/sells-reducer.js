@@ -10,7 +10,7 @@ const sellsReducerDefaultState = {
   glass: [],
   ss: [],
   others: [],
-  date: Date().substr(0, 24)
+  date: (Date().substr(0, 24)).toString()
 };
 
 export const sellsReducer = (state = sellsReducerDefaultState, action) => {
@@ -20,28 +20,28 @@ export const sellsReducer = (state = sellsReducerDefaultState, action) => {
         return {
           ...state,
           aluminium: [...state.aluminium, action.data],
-          date: Date().substr(0, 24)
+          date: (Date().substr(0, 24)).toString()
         };
       }
       if (action.data.productCategoryToSell === "glass") {
         return {
           ...state,
           glass: [...state.glass, action.data],
-          date: Date().substr(0, 24)
+          date: (Date().substr(0, 24)).toString()
         };
       }
       if (action.data.productCategoryToSell === "ss") {
         return {
           ...state,
           ss: [...state.ss, action.data],
-          date: Date().substr(0, 24)
+          date: (Date().substr(0, 24)).toString()
         };
       }
       if (action.data.productCategoryToSell === "others") {
         return {
           ...state,
           others: [...state.others, action.data],
-          date: Date().substr(0, 24)
+          date: (Date().substr(0, 24)).toString()
         };
       }
     case REMOVE_A_SELL_ITEM:
@@ -51,21 +51,21 @@ export const sellsReducer = (state = sellsReducerDefaultState, action) => {
           aluminium: state.aluminium.filter(
             singleSell => singleSell.id !== action.id
           ),
-          date: Date().substr(0, 24)
+          date: (Date().substr(0, 24)).toString()
         };
       }
       if (action.productCategoryToSell === "glass") {
         return {
           ...state,
           glass: state.glass.filter(singleSell => singleSell.id !== action.id),
-          date: Date().substr(0, 24)
+          date: (Date().substr(0, 24)).toString()
         };
       }
       if (action.productCategoryToSell === "ss") {
         return {
           ...state,
           ss: state.ss.filter(singleSell => singleSell.id !== action.id),
-          date: Date().substr(0, 24)
+          date: (Date().substr(0, 24)).toString()
         };
       }
       if (action.productCategoryToSell === "others") {
@@ -74,7 +74,7 @@ export const sellsReducer = (state = sellsReducerDefaultState, action) => {
           others: state.others.filter(
             singleSell => singleSell.id !== action.id
           ),
-          date: Date().substr(0, 24)
+          date: (Date().substr(0, 24)).toString()
         };
       }
     case REMOVE_ALL_SELL_ITEMS:

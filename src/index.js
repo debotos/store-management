@@ -8,6 +8,7 @@ import "./style/style.css";
 import configureStore from "./store/configureStore";
 import MainRouter from "./components/Router";
 import registerServiceWorker from "./registerServiceWorker";
+import { startSetExistingDueFromServer } from './actions/sells/prevDue-actions'
 // import { startSetExpenses } from "./actions/expenses/expenses-actions";
 // import { startSetStock } from "./actions/stock/stock-action";
 // import { startSetAddSellUnderCustomerHistory } from "./actions/sells/sells-history-actions";
@@ -37,6 +38,10 @@ store.subscribe(() => {
 //   ReactDOM.render(jsx, document.getElementById("root"));
 // });
 
-ReactDOM.render(jsx, document.getElementById("root"));
+store.dispatch(startSetExistingDueFromServer()).then(() => {
+  ReactDOM.render(jsx, document.getElementById("root"));
+});
+
+// ReactDOM.render(jsx, document.getElementById("root"));
 
 registerServiceWorker();

@@ -27,18 +27,18 @@ class MainRouter extends Component {
         <div>
           <Switch>
             <Route path="/" component={Home} exact={true} />
-            <Route path="/bank" component={Bank} />
-            <Route path="/due" component={Due} />
-            <Route path="/employee" component={Employee} />
-            <Route path="/expenses" component={Expenses} />
-            <Route path="/fabrication" component={Fabrication} />
-            <Route path="/moneyreceipt" component={MoneyReceipt} />
-            <Route path="/pad" component={Pad} />
-            <Route path="/readycash" component={ReadyCash} />
-            <Route path="/salary" component={Salary} />
-            <Route path="/sell" component={Sell} />
-            <Route path="/stock" component={Stock} />
-            <Route component={NotFoundpage} />
+            <Route path="/bank" component={Bank} exact={true}/>
+            <Route path="/due" component={Due} exact={true}/>
+            <Route path="/employee" component={Employee} exact={true}/>
+            <Route path="/expenses" component={Expenses} exact={true}/>
+            <Route path="/fabrication" component={Fabrication} exact={true}/>
+            <Route path="/moneyreceipt" component={MoneyReceipt} exact={true}/>
+            <Route path="/pad" component={Pad} exact={true}/>
+            <Route path="/readycash" component={ReadyCash} exact={true}/>
+            <Route path="/salary" component={Salary} exact={true}/>
+            <Route path="/sell" component={Sell} exact={true}/>
+            <Route path="/stock" component={Stock} exact={true}/>
+            <Route component={NotFoundpage} exact={true}/>
           </Switch>
         </div>
       </Router>

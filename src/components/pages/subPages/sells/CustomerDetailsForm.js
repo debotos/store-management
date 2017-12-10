@@ -8,7 +8,7 @@ import Dialog from "material-ui/Dialog";
 
 import GENERATE_PDF from "./PDF";
 import { incrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
-// import { removeAllSellsItem } from '../../../../actions/sells/sells-actions'
+import { removeAllSellsItem } from '../../../../actions/sells/sells-actions'
 import { addSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
 import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
 
@@ -18,6 +18,7 @@ class CustomerDetailsForm extends Component {
   };
   handleDialogClose = () => {
     this.setState({ dialogOpen: false });
+    this.props.removeAllSellsItem()
   };
   handleReset = () => {
     this.setState({ name: "" });
@@ -326,10 +327,10 @@ const mapDispatchToProps = dispatch => {
     },
     incrementMemoNumber: () => {
       dispatch(incrementMemoNumber());
+    },
+    removeAllSellsItem: () => {
+      dispatch(removeAllSellsItem())
     }
-    // removeAllSellsItem: () => {
-    //   dispatch(removeAllSellsItem())
-    // }
   };
 };
 
