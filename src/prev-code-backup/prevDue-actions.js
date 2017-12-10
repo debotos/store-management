@@ -23,7 +23,7 @@ export const startAddPrevDue = (number, amount, id = "") => {
       .once("value")
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
-          dueInDatabase.push({id: childSnapshot.key, ...childSnapshot.val()});
+          dueInDatabase.push(childSnapshot.val());
         });
       })
       .then(() => {
@@ -32,7 +32,6 @@ export const startAddPrevDue = (number, amount, id = "") => {
           "Already Have Due in the database is -->> ",
           dueInDatabase.length
         );
-        console.log("Due In Firebase ", dueInDatabase)
         if (dueInDatabase.length > 0) {
           // checking due that i want... already exists that account
           let dueItemAlreadyExists = false;
@@ -41,25 +40,26 @@ export const startAddPrevDue = (number, amount, id = "") => {
             if (singleDue.number === number) {
               dueItemAlreadyExists = true;
               dueItemIdThatAlreadyExists = singleDue.id;
-              console.log("Hey Hey i caught you[First]", dueItemIdThatAlreadyExists);
             }
           });
           // Now i know that already have or not, so...go for it
           if (dueItemAlreadyExists) {
             // Overide the value that exists
-            console.log("Hey Hey i caught you[second]", dueItemIdThatAlreadyExists);
+            console.log("Hey Hey i caught you", dueItemIdThatAlreadyExists)
             return database
               .ref(`due/${dueItemIdThatAlreadyExists}`)
               .update(due)
               .then(() => {
-                console.log("[Firebase] Due Updated !");
+                dispatch(
+                  addPrevDue((id = dueItemIdThatAlreadyExists), number, amount)
+                );
               });
           } else {
             return database
               .ref("due")
               .push(due)
               .then(ref => {
-                console.log("setting up the key/ref --> ", ref.key);
+                console.log("setting up the key/ref --> ", ref.key)
                 dispatch(addPrevDue((id = ref.key), number, amount));
               });
           }
@@ -68,7 +68,7 @@ export const startAddPrevDue = (number, amount, id = "") => {
             .ref("due")
             .push(due)
             .then(ref => {
-              console.log("setting up the key/ref --> ", ref.key);
+              console.log("setting up the key/ref --> ", ref.key)
               dispatch(addPrevDue((id = ref.key), number, amount));
             });
         }

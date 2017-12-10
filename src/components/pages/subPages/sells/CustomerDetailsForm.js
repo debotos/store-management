@@ -10,7 +10,7 @@ import GENERATE_PDF from "./PDF";
 import { incrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
 // import { removeAllSellsItem } from '../../../../actions/sells/sells-actions'
 import { addSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
-import { addPrevDue } from "../../../../actions/sells/prevDue-actions";
+import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
 
 class CustomerDetailsForm extends Component {
   handleDialogOpen = () => {
@@ -105,7 +105,7 @@ class CustomerDetailsForm extends Component {
             parseFloat(this.userAlreadyExists()[1]);
           let deposit = parseFloat(this.state.deposit).toFixed(2);
           let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
-          this.props.addPrevDue(this.state.number, newDue);
+          this.props.startAddPrevDue(this.state.number, newDue);
           console.log("History Saving in store");
           this.props.addSellUnderCustomerHistory(this.collectSellsData());
           const modelData = {
@@ -150,7 +150,7 @@ class CustomerDetailsForm extends Component {
           parseFloat(this.userAlreadyExists()[1]);
         let deposit = parseFloat(this.state.deposit).toFixed(2);
         let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
-        this.props.addPrevDue(this.state.number, newDue);
+        this.props.startAddPrevDue(this.state.number, newDue);
         console.log("History Saving in store");
         this.props.addSellUnderCustomerHistory(this.collectSellsData());
         const modelData = {
@@ -321,8 +321,8 @@ const mapDispatchToProps = dispatch => {
     addSellUnderCustomerHistory: data => {
       dispatch(addSellUnderCustomerHistory(data));
     },
-    addPrevDue: (number, amount) => {
-      dispatch(addPrevDue(number, amount));
+    startAddPrevDue: (number, amount) => {
+      dispatch(startAddPrevDue(number, amount));
     },
     incrementMemoNumber: () => {
       dispatch(incrementMemoNumber());
