@@ -54,14 +54,13 @@ export const startAddPrevDue = (number, amount, id = "") => {
               .ref(`due/${dueItemIdThatAlreadyExists}`)
               .update(due)
               .then(() => {
-                console.log("[Firebase] Due Updated !");
+                dispatch(addPrevDue((id = dueItemIdThatAlreadyExists), number, amount));
               });
           } else {
             return database
               .ref("due")
               .push(due)
               .then(ref => {
-                console.log("setting up the key/ref --> ", ref.key);
                 dispatch(addPrevDue((id = ref.key), number, amount));
               });
           }
@@ -70,7 +69,6 @@ export const startAddPrevDue = (number, amount, id = "") => {
             .ref("due")
             .push(due)
             .then(ref => {
-              console.log("setting up the key/ref --> ", ref.key);
               dispatch(addPrevDue((id = ref.key), number, amount));
             });
         }

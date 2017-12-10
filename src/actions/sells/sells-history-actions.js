@@ -63,7 +63,13 @@ export const startAddSellUnderCustomerHistory = data => {
               .ref(`history/${historyItemIdThatAlreadyExists}`)
               .update(updateData)
               .then(() => {
+                const saveDataLocal = {
+                  id: historyItemIdThatAlreadyExists,
+                  number: data.number,
+                  history: data.history
+                };
                 console.log("[Firebase] History Updated !");
+                dispatch(addSellUnderCustomerHistory(saveDataLocal));
               });
           } else {
             return database
