@@ -13,10 +13,12 @@ export const addSellUnderCustomerHistory = data => {
 };
 
 export const startAddSellUnderCustomerHistory = data => {
+  console.log("Getting Data As History ", data.history)
+  console.log("Type of the History : ", typeof data.history)
   return dispatch => {
     let pushData = {
       number: data.number,
-      history: [data.history]
+      history: [data.history] // Array of objects
     };
     let historyInDatabase = [];
     // Putting all id in an array
@@ -71,7 +73,7 @@ export const startAddSellUnderCustomerHistory = data => {
                 const saveDataLocal = {
                   id: ref.key,
                   number: data.number,
-                  history: [data.history]
+                  history: data.history
                 };
                 dispatch(addSellUnderCustomerHistory(saveDataLocal));
               });
@@ -84,7 +86,7 @@ export const startAddSellUnderCustomerHistory = data => {
               const saveDataLocal = {
                 id: ref.key,
                 number: data.number,
-                history: [data.history]
+                history: data.history
               };
               dispatch(addSellUnderCustomerHistory(saveDataLocal));
             });

@@ -264,7 +264,9 @@ class HistoryTableGenerator extends Component {
     return this.props.allTables.map((singleSell, index) => {
       // {singleSell} is an [Object]
       // Destructuring the singleItem Object
-      const { aluminium, glass, ss, others, date } = singleSell;
+      console.log("History i want to see ", singleSell)
+      console.log("So i want an object but getting ==>> ", typeof singleSell)
+      let { aluminium, glass, ss, others, date } = singleSell;
       // {aluminium, glass, ss, others} each one containing an [array of objects]
       console.log(glass);
       console.log(aluminium);
