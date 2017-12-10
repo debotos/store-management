@@ -8,7 +8,7 @@ import Dialog from "material-ui/Dialog";
 
 import GENERATE_PDF from "./PDF";
 import { incrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
-import { removeAllSellsItem } from '../../../../actions/sells/sells-actions'
+import { removeAllSellsItem } from "../../../../actions/sells/sells-actions";
 import { addSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
 import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
 
@@ -18,7 +18,7 @@ class CustomerDetailsForm extends Component {
   };
   handleDialogClose = () => {
     this.setState({ dialogOpen: false });
-    this.props.removeAllSellsItem()
+    this.props.removeAllSellsItem();
   };
   handleReset = () => {
     this.setState({ name: "" });
@@ -47,7 +47,9 @@ class CustomerDetailsForm extends Component {
   };
   handleDeposit = event => {
     const deposit = event.target.value;
-    this.setState({ deposit });
+    if (!deposit || deposit.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ deposit });
+    }
   };
   handleNumber = event => {
     const number = event.target.value;
@@ -98,12 +100,11 @@ class CustomerDetailsForm extends Component {
   });
 
   handleSaveAndGeneratePDF = () => {
+    let allTotalWithPrevDue =
+      parseFloat(this.props.allTotal) + parseFloat(this.userAlreadyExists()[1]);
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
-        if (parseFloat(this.props.allTotal) >= parseFloat(this.state.deposit)) {
-          let allTotalWithPrevDue =
-            parseFloat(this.props.allTotal) +
-            parseFloat(this.userAlreadyExists()[1]);
+        if (parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)) {
           let deposit = parseFloat(this.state.deposit).toFixed(2);
           let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
           this.props.startAddPrevDue(this.state.number, newDue);
@@ -145,10 +146,7 @@ class CustomerDetailsForm extends Component {
         this.props.showSnackBar("Error ! Invalid Email !");
       }
     } else {
-      if (parseFloat(this.props.allTotal) >= parseFloat(this.state.deposit)) {
-        let allTotalWithPrevDue =
-          parseFloat(this.props.allTotal) +
-          parseFloat(this.userAlreadyExists()[1]);
+      if (parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)) {
         let deposit = parseFloat(this.state.deposit).toFixed(2);
         let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
         this.props.startAddPrevDue(this.state.number, newDue);
@@ -329,7 +327,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(incrementMemoNumber());
     },
     removeAllSellsItem: () => {
-      dispatch(removeAllSellsItem())
+      dispatch(removeAllSellsItem());
     }
   };
 };
