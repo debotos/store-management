@@ -10,7 +10,7 @@ import AppBarMain from "../ui-element/AppBarMain";
 import "../../style/due/due.css";
 import { setDueTextFilter } from '../../actions/due/due-filter-actions';
 import dueFilter from './subPages/due/utility-func/due-filter';
-import { startRemovePrevDue } from '../../actions/sells/prevDue-actions';
+import { startRemovePrevDue, startUpdatePrevDue } from '../../actions/sells/prevDue-actions';
 // import Navigation from "../Navigation";
 
 class MoneyReceipt extends Component {
@@ -18,6 +18,7 @@ class MoneyReceipt extends Component {
   closeEditDueModel = () => {
     this.setState({ showEditDueModel: false });
     this.setState({ dueDepositAmount: "" });
+    this.setState({ fromNowDue: "" });
   };
   showEditDueModel = () => {
     this.setState({ showEditDueModel: true });
@@ -40,6 +41,7 @@ class MoneyReceipt extends Component {
     });
   };
   // End
+
   handleDueSearch = (event) => {
     const dueSearchText = event.target.value;
     this.props.setDueTextFilter(dueSearchText)
@@ -47,21 +49,25 @@ class MoneyReceipt extends Component {
   handleDueDepositAmountChange = (event) => {
     const amount = event.target.value;
     if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      this.setState(() => ({ dueDepositAmount: amount }));
+      if (!amount || (parseFloat(amount).toFixed(2) <= parseFloat(this.state.currentlySelectedDue).toFixed(2))) {
+        this.setState(() => ({ dueDepositAmount: amount }));
+        const fromNowDue = parseFloat(parseFloat(this.state.currentlySelectedDue).toFixed(2) - parseFloat(amount).toFixed(2)).toFixed(2);
+        this.setState({ fromNowDue });
+      } else {
+        this.showSnackBar("Go to Deposit Page to Deposit.");
+      }
     }
   }
   handleDelete = () => {
     this.closeEditDueModel();
     this.props.startRemovePrevDue(this.state.dueIdToRemove);
-    this.showSnackBar("Due Delete Successful !");
+    this.showSnackBar("Due Deleted Successfully !");
   };
 
   handleUpdate = () => {
-    const data = {
-
-    };
     this.closeEditDueModel();
-    this.showSnackBar("Due Update Successful !");
+    this.props.startUpdatePrevDue(this.state.dueIdToRemove, this.state.dueNumberToUpdate, this.state.fromNowDue);
+    this.showSnackBar("Due Updated Successfully !");
   };
   constructor(props) {
     super(props);
@@ -72,28 +78,30 @@ class MoneyReceipt extends Component {
       snackBarMessage: "",
       dueDepositAmount: "",
       currentlySelectedDue: 0,
-      dueIdToRemove: ""
+      dueIdToRemove: "",
+      dueNumberToUpdate: "",
+      fromNowDue: ""
     }
   }
 
   render() {
     const DefaultActionsOfEditDueModel = [
-    <FlatButton
-      label="Delete"
-      secondary={true}
-      onClick={this.handleDelete}
-    />,
-    <FlatButton label="Cancel" onClick={this.closeEditDueModel} />,
-    <FlatButton
-      label="Update"
-      primary={true}
-      disabled={
-        !this.state.dueDepositAmount
-          ? true
-          : false
-      }
-      onClick={this.handleUpdate}
-    />
+      <FlatButton
+        label="Delete"
+        secondary={true}
+        onClick={this.handleDelete}
+      />,
+      <FlatButton label="Cancel" onClick={this.closeEditDueModel} />,
+      <FlatButton
+        label="Update"
+        primary={true}
+        disabled={
+          !this.state.dueDepositAmount
+            ? true
+            : false
+        }
+        onClick={this.handleUpdate}
+      />
     ];
     return (
       <div>
@@ -134,6 +142,7 @@ class MoneyReceipt extends Component {
                           this.setState({ showEditDueModel: true })
                           this.setState({ currentlySelectedDue: parseFloat(singleDue.amount).toFixed(2) })
                           this.setState({ dueIdToRemove: singleDue.id })
+                          this.setState({ dueNumberToUpdate: singleDue.number })
                         }
                         } >
                         <div className="list-item">
@@ -162,14 +171,21 @@ class MoneyReceipt extends Component {
           repositionOnUpdate={false}
           autoDetectWindowHeight={false}
         >
-          <h5 style={{ color: 'red' }}>Due Have: <strong>{this.state.currentlySelectedDue}</strong></h5>
-          <TextField
-            onChange={this.handleDueDepositAmountChange}
-            value={this.state.dueDepositAmount}
-            type="number"
-            hintText="Deposit Amount"
-            floatingLabelText="Deposit Amount Here"
-          />
+          <div>
+            <h5 style={{ color: 'orange' }}>Previous Due: <strong>{this.state.currentlySelectedDue}</strong></h5>
+            {
+              this.state.fromNowDue && this.state.fromNowDue !== 'NaN' ? (
+                <h5 style={{ color: 'red' }}>From Now: <strong>{this.state.fromNowDue}</strong></h5>
+              ) : <div></div>
+            }
+            <TextField
+              onChange={this.handleDueDepositAmountChange}
+              value={this.state.dueDepositAmount}
+              type="number"
+              hintText="Deposit Amount"
+              floatingLabelText="Deposit Amount Here"
+            />
+          </div>
         </Dialog>
         <SnackBar
           snackBar={this.state.snackBar}
@@ -195,6 +211,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     startRemovePrevDue: (id) => {
       dispatch(startRemovePrevDue(id))
+    },
+    startUpdatePrevDue: (id, number, amount) => {
+      dispatch(startUpdatePrevDue(id, number, amount))
     }
   }
 }

@@ -75,6 +75,37 @@ export const startAddPrevDue = (number, amount, id = "") => {
       });
   };
 };
+
+// Update Due
+const updatePrevDue = (id, number, amount) => {
+  return {
+    type: UPDATE_A_PREV_DUE,
+    id,
+    amount,
+    number,
+    data: {
+      id,
+      amount,
+      number
+    }
+  };
+};
+
+export const startUpdatePrevDue = (id, number, amount) => {
+  return dispatch => {
+    const dueUpdates = {
+      number,
+      amount
+    }
+    return database
+      .ref(`due/${id}`)
+      .update(dueUpdates)
+      .then(() => {
+        dispatch(updatePrevDue(id, number, amount));
+      });
+  }
+}
+
 // Delete a Due completly
 const removePrevDue = (id) => {
   return {

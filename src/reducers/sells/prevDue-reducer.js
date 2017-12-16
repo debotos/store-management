@@ -26,6 +26,14 @@ export const prevDueReducer = (state = prevDueDefaultState, action) => {
       } else {
         return [...state, action.data];
       }
+    case UPDATE_A_PREV_DUE:
+      return state.map(singleItem => {
+        if (singleItem.id === action.id) {
+          return { ...action.data };
+        } else {
+          return singleItem;
+        }
+      });
     case REMOVE_A_PREV_DUE:
       return state.filter(({ id }) => id !== action.id);
     case SET_DUE:
