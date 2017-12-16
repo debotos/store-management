@@ -13,12 +13,18 @@ import dueFilter from './subPages/due/utility-func/due-filter';
 import { startRemovePrevDue, startUpdatePrevDue } from '../../actions/sells/prevDue-actions';
 // import Navigation from "../Navigation";
 
+const customDialogContentStyle = {
+  width: "90%",
+  maxWidth: "none",
+  minHeight: "50%"
+};
+
 class MoneyReceipt extends Component {
   // Dialog
   closeEditDueModel = () => {
     this.setState({ showEditDueModel: false });
     this.setState({ dueDepositAmount: "" });
-    this.setState({ fromNowDue: "" });
+    this.setState({ newDewFromNow: "" });
   };
   showEditDueModel = () => {
     this.setState({ showEditDueModel: true });
@@ -49,15 +55,18 @@ class MoneyReceipt extends Component {
   handleDueDepositAmountChange = (event) => {
     const amount = event.target.value;
     if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      if (!amount || (parseFloat(amount).toFixed(2) <= parseFloat(this.state.currentlySelectedDue).toFixed(2))) {
-        this.setState(() => ({ dueDepositAmount: amount }));
-        const fromNowDue = parseFloat(parseFloat(this.state.currentlySelectedDue).toFixed(2) - parseFloat(amount).toFixed(2)).toFixed(2);
-        this.setState({ fromNowDue });
-      } else {
-        this.showSnackBar("Go to Deposit Page to Deposit.");
+      this.setState(() => ({ dueDepositAmount: amount }));
+      let currentDue = parseFloat(this.state.currentlySelectedDue).toFixed(2);
+      let depositAmount = parseFloat(amount).toFixed(2);
+      let newDewFromNow = parseFloat(currentDue - depositAmount).toFixed(2);
+      if (parseFloat(currentDue) < parseFloat(depositAmount)) {
+        this.setState({ newDewFromNow: `Wrong Amount [MAX: ${currentDue}]` })
+      }else{
+        this.setState({ newDewFromNow })
       }
     }
   }
+
   handleDelete = () => {
     this.closeEditDueModel();
     this.props.startRemovePrevDue(this.state.dueIdToRemove);
@@ -65,9 +74,16 @@ class MoneyReceipt extends Component {
   };
 
   handleUpdate = () => {
-    this.closeEditDueModel();
-    this.props.startUpdatePrevDue(this.state.dueIdToRemove, this.state.dueNumberToUpdate, this.state.fromNowDue);
-    this.showSnackBar("Due Updated Successfully !");
+    let currentDue = parseFloat(this.state.currentlySelectedDue).toFixed(2);
+    let depositAmount = parseFloat(this.state.dueDepositAmount).toFixed(2);
+    if (parseFloat(currentDue) < parseFloat(depositAmount)) {
+      this.showSnackBar("Error! Deposit can't be Bigger than Due.");
+    } else {
+      this.closeEditDueModel();
+      this.props.startUpdatePrevDue(this.state.dueIdToRemove, this.state.dueNumberToUpdate, this.state.newDewFromNow);
+      this.showSnackBar("Due Updated Successfully !");
+    }
+
   };
   constructor(props) {
     super(props);
@@ -80,7 +96,7 @@ class MoneyReceipt extends Component {
       currentlySelectedDue: 0,
       dueIdToRemove: "",
       dueNumberToUpdate: "",
-      fromNowDue: ""
+      newDewFromNow: ""
     }
   }
 
@@ -170,12 +186,13 @@ class MoneyReceipt extends Component {
           autoScrollBodyContent={true}
           repositionOnUpdate={false}
           autoDetectWindowHeight={false}
+          contentStyle={customDialogContentStyle}
         >
           <div>
             <h5 style={{ color: 'orange' }}>Previous Due: <strong>{this.state.currentlySelectedDue}</strong></h5>
             {
-              this.state.fromNowDue && this.state.fromNowDue !== 'NaN' ? (
-                <h5 style={{ color: 'red' }}>From Now: <strong>{this.state.fromNowDue}</strong></h5>
+              this.state.newDewFromNow && this.state.newDewFromNow !== 'NaN' ? (
+                <h5 style={{ color: 'red' }}>From Now: <strong>{this.state.newDewFromNow}</strong></h5>
               ) : <div></div>
             }
             <TextField
