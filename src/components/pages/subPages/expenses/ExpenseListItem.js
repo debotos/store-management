@@ -91,8 +91,8 @@ class ExpenseListItem extends React.Component {
         secondary={true}
         disabled={
           !this.state.expensesAmount ||
-          !this.state.expensesTitle ||
-          !this.state.expensesDate
+            !this.state.expensesTitle ||
+            !this.state.expensesDate
             ? true
             : false
         }
@@ -103,8 +103,8 @@ class ExpenseListItem extends React.Component {
         primary={true}
         disabled={
           !this.state.expensesAmount ||
-          !this.state.expensesTitle ||
-          !this.state.expensesDate
+            !this.state.expensesTitle ||
+            !this.state.expensesDate
             ? true
             : false
         }

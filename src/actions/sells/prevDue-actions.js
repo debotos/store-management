@@ -1,5 +1,5 @@
 import database from "../../secrets/firebase";
-import { ADD_A_PREV_DUE, SET_DUE } from "../constants";
+import { ADD_A_PREV_DUE, SET_DUE, UPDATE_A_PREV_DUE, REMOVE_A_PREV_DUE } from "../constants";
 
 export const addPrevDue = (id, number, amount) => {
   return {
@@ -75,6 +75,23 @@ export const startAddPrevDue = (number, amount, id = "") => {
       });
   };
 };
+// Delete a Due completly
+const removePrevDue = (id) => {
+  return {
+    type: REMOVE_A_PREV_DUE,
+    id
+  };
+};
+
+export const startRemovePrevDue = (id) => {
+  return dispatch => {
+    return database.ref(`due/${id}`).remove().then(() => {
+      dispatch(removePrevDue(id));
+    });
+  }
+};
+
+
 
 export const setDue = data => ({
   type: SET_DUE,

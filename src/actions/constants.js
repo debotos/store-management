@@ -27,4 +27,6 @@ export const ADD_ITEM_TO_STOCK = "ADD_ITEM_TO_STOCK";
 export const REMOVE_ITEM_FROM_STOCK = "REMOVE_ITEM_FROM_STOCK";
 // Due.js
 export const SET_DUE_TEXT_FILTER = "SET_DUE_TEXT_FILTER";
-export const SET_DUE = 'SET_DUE'
+export const SET_DUE = 'SET_DUE';
+export const REMOVE_A_PREV_DUE = "REMOVE_A_PREV_DUE";
+export const UPDATE_A_PREV_DUE = "UPDATE_A_PREV_DUE";
