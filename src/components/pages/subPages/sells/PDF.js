@@ -198,7 +198,7 @@ function GENERATE_PDF(data) {
 
   pdfMake
     .createPdf(docDefinition)
-    .download(customer.name + "-" + Date().substr(0, 15));
+    .download(customer.number+"-"+customer.name + "-" + Date().substr(0, 15));
 }
 
 const renderAluminiumContent = sellingItems => {

@@ -1,14 +1,86 @@
 import React, { Component } from "react";
-
 import AppBarMain from "../ui-element/AppBarMain";
+import "../../style/pad/pad.css";
+import RaisedButton from "material-ui/RaisedButton";
+import { Card } from "material-ui/Card";
+import { COMPANY_NAME, COMPANY_ADDRESS, COMPANY_PHONE_NUMBER, COMPANY_OWENER } from '../global/global'
 // import Navigation from "../Navigation";
+var PrintTemplate = require('react-print');
 
 class Pad extends Component {
+  print = () => {
+    window.print();
+  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      note: ""
+    };
+  }
+  onNoteChange = (event) => {
+    const note = event.target.value;
+    this.setState({ note });
+  }
   render() {
     return (
       <div>
-        <AppBarMain />
-        <h1>Pad.js</h1>
+        <div id="react-no-print">
+          <AppBarMain />
+          <Card><h3 style={{ textAlign: 'center', padding: 10, marginTop: 0 }}>Pad</h3></Card>
+          <div className="container">
+            <Card style={{ padding: 15 }}>
+              <textarea
+                className="textarea"
+                placeholder="Add your note "
+                value={this.state.note}
+                onChange={this.onNoteChange}
+              ></textarea>
+            </Card>
+          </div>
+          <div style={{ textAlign: 'center', marginTop: 10, marginBottom: 20 }}>
+            <RaisedButton
+              onClick={this.print}
+              label="print"
+            />
+          </div>
+
+        </div>
+        <div id="print-mount">
+          <PrintTemplate>
+            <div>
+              <h1 style={{ textAlign: 'center' }}>{COMPANY_NAME}</h1>
+              <div className="header">
+                <div>
+                  {/* Left part */}
+                  <strong>For All Kinds of - </strong><br />
+                  Glass SS Pipe<br />
+                  Thai Aluminium<br />
+                  False Celling<br />
+                  Accessories
+                </div>
+                {/* middle part */}
+                <h3 style={{ justifyContent: 'center' }}>PAD</h3>
+                {/* Right part */}
+                <div>
+                  <strong>show Room & Sales Center</strong><br />
+                  {COMPANY_ADDRESS.substr(0, 28)}<br />{COMPANY_ADDRESS.substr(29, 36)}<br />
+                  phone numbers:<br />
+                  {COMPANY_PHONE_NUMBER.map(singleNumber => <span>{singleNumber}<br /></span>)}
+
+                </div>
+              </div>
+              <div className="form">
+                <strong>Name:</strong> <br />
+                <strong>Address: </strong>
+              </div><br /><br />
+              <div className="content" style={{ 'font-size': 'x-large' }}
+              >
+              {this.state.note}
+              </div>
+            </div>
+          </PrintTemplate>
+        </div>
+
       </div>
     );
   }
