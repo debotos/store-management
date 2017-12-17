@@ -1,23 +1,11 @@
 import React, { Component } from "react";
 import { Card } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
-// import MenuItem from "material-ui/MenuItem";
 import TextField from "material-ui/TextField";
 import uuid from "uuid/v4";
 import { connect } from "react-redux";
 
-// import AluminiumTable from "../Tables/AluminiumTable";
-import { addSellItem } from "../../../../../actions/sells/sells-actions";
-
 class Aluminium extends Component {
-  handleToggle = (event, isInputChecked) => {
-    if (isInputChecked) {
-      this.setState({ toggle: true });
-    } else {
-      this.setState({ toggle: false });
-    }
-  };
-
   handleReset = () => {
     this.setState({ quantity: "" });
     this.setState({ length: "" });
@@ -26,17 +14,15 @@ class Aluminium extends Component {
     this.setState({ rate: "" });
     this.setState({ productName: "" });
     this.setState({ companyName: "" });
+    this.setState({ productCode: "" });
   };
 
   friendlyHandleReset = () => {
+    this.setState({ productCode: "" });
     this.setState({ quantity: "" });
     this.setState({ rate: "" });
   };
 
-  // handleColorChange = color => {
-  //   this.setState({ color });
-  //   console.log("Setting the color:", color);
-  // };
   handleQuantyChange = event => {
     const quantity = event.target.value;
     if (!quantity || quantity.match(/^\d{1,}(\.\d{0,2})?$/)) {
@@ -62,25 +48,11 @@ class Aluminium extends Component {
       this.setState({ rate });
     }
   };
-  // renderStockItems = () => {
-  //   return this.props.stock.map(singleItem => {
-  //     return (
-  //       <MenuItem
-  //         key={singleItem.id}
-  //         value={singleItem.item}
-  //         primaryText={singleItem.item}
-  //       />
-  //     );
-  //   });
-  // };
-
-  AllTotal = AllTotal => {
-    this.setState({ AllTotal });
-  };
 
   handleSubmit = () => {
     let sellsItemData = {
       id: uuid(),
+      productCode: this.state.productCode,
       productCategoryToSell: this.state.productCategoryToSell,
       companyName: this.state.companyName,
       color: this.state.color,
@@ -88,29 +60,12 @@ class Aluminium extends Component {
       dia: this.state.dia,
       productName: this.state.productName,
       quantity: this.state.quantity,
-      rate: this.state.rate,
-      total: (
-        parseFloat(this.state.quantity) * parseFloat(this.state.rate)
-      ).toFixed(2)
+      rate: this.state.rate
     };
-    this.props.addSellItem(sellsItemData);
+    //Dispatch the function to add the details to the store
     this.friendlyHandleReset();
     this.props.showSnackBar("Item added Successfully !");
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      companyName: "",
-      color: "",
-      length: "",
-      dia: "",
-      productName: "",
-      quantity: "",
-      rate: "",
-      productCategoryToSell: "aluminium"
-    };
-  }
   handleProductNameChange = event => {
     const productName = event.target.value;
     this.setState({ productName });
@@ -123,18 +78,42 @@ class Aluminium extends Component {
     const color = event.target.value;
     this.setState({ color });
   };
+  handleProductCodeChange = event => {
+    const productCode = event.target.value;
+    this.setState({ productCode });
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      companyName: "",
+      color: "",
+      length: "",
+      dia: "",
+      productName: "",
+      quantity: "",
+      rate: "",
+      productCategoryToSell: "aluminium",
+      productCode: ""
+    };
+  }
   render() {
     return (
       <Card
         style={{
           marginTop: 10,
-          paddingLeft: 40,
-          paddingRight: 40,
+          padding: 13,
           paddingBottom: 20
         }}
       >
         {/* All Fields */}
         <div>
+          <TextField
+            value={this.state.productCode}
+            onChange={this.handleProductCodeChange}
+            hint="Product Code"
+            floatingLabelText="Unique Code to Identify"
+          />
           <TextField
             value={this.state.productName}
             onChange={this.handleProductNameChange}
@@ -181,38 +160,41 @@ class Aluminium extends Component {
             hintText="Price/Rate"
             floatingLabelText="Place the Price/Rate "
           />
-          <FlatButton
-            style={{ marginLeft: 10, marginTop: 5 }}
-            disabled={
-              this.state.companyName ||
-              this.state.productName ||
-              this.state.color ||
-              this.state.quantity ||
-              this.state.length ||
-              this.state.dia ||
-              this.state.rate
-                ? false
-                : true
-            }
-            secondary={true}
-            label="Reset"
-            onClick={this.handleReset}
-          />
-          <FlatButton
-            disabled={
-              this.state.companyName &&
-              this.state.productName &&
-              this.state.quantity &&
-              this.state.length &&
-              this.state.dia &&
-              this.state.rate
-                ? false
-                : true
-            }
-            primary={true}
-            label="Add"
-            onClick={this.handleSubmit}
-          />
+          <div style={{ textAlign: "center", marginTop: 5 }}>
+            <FlatButton
+              disabled={
+                this.state.productCode ||
+                this.state.companyName ||
+                this.state.productName ||
+                this.state.color ||
+                this.state.quantity ||
+                this.state.length ||
+                this.state.dia ||
+                this.state.rate
+                  ? false
+                  : true
+              }
+              secondary={true}
+              label="Reset"
+              onClick={this.handleReset}
+            />
+            <FlatButton
+              disabled={
+                this.state.productCode &&
+                this.state.companyName &&
+                this.state.productName &&
+                this.state.quantity &&
+                this.state.length &&
+                this.state.dia &&
+                this.state.rate
+                  ? false
+                  : true
+              }
+              primary={true}
+              label="Add"
+              onClick={this.handleSubmit}
+            />
+          </div>
         </div>
       </Card>
     );
@@ -220,17 +202,11 @@ class Aluminium extends Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-    addSellItem: sellItemData => {
-      dispatch(addSellItem(sellItemData));
-    }
-  };
+  return {};
 };
 
 const mapStateToProps = state => {
-  return {
-    sellsTable: state.sells
-  };
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Aluminium);

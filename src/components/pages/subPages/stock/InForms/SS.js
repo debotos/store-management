@@ -1,116 +1,25 @@
 import React, { Component } from "react";
 import { Card } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
-// import MenuItem from "material-ui/MenuItem";
 import TextField from "material-ui/TextField";
 import uuid from "uuid/v4";
 import { connect } from "react-redux";
 
-// import AluminiumTable from "../Tables/AluminiumTable";
-import { addSellItem } from "../../../../../actions/sells/sells-actions";
-
-class Aluminium extends Component {
-  handleToggle = (event, isInputChecked) => {
-    if (isInputChecked) {
-      this.setState({ toggle: true });
-    } else {
-      this.setState({ toggle: false });
-    }
-  };
-
-  handleReset = () => {
-    this.setState({ quantity: "" });
-    this.setState({ length: "" });
-    this.setState({ dia: "" });
-    this.setState({ color: "" });
-    this.setState({ rate: "" });
-    this.setState({ productName: "" });
-    this.setState({ companyName: "" });
-  };
-
+class SS extends Component {
   friendlyHandleReset = () => {
     this.setState({ quantity: "" });
     this.setState({ rate: "" });
+    this.setState({ productCode: "" });
   };
-
-  // handleColorChange = color => {
-  //   this.setState({ color });
-  //   console.log("Setting the color:", color);
-  // };
-  handleQuantyChange = event => {
-    const quantity = event.target.value;
-    if (!quantity || quantity.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      this.setState({ quantity });
-    }
+  handleReset = () => {
+    this.setState({ productName: "" });
+    this.setState({ companyName: "" });
+    this.setState({ length: "" });
+    this.setState({ thickness: "" });
+    this.setState({ quantity: "" });
+    this.setState({ rate: "" });
+    this.setState({ productCode: "" });
   };
-  handleLengthChange = event => {
-    const length = event.target.value;
-    if (!length || length.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      this.setState({ length });
-    }
-  };
-
-  handleDiaChange = event => {
-    const dia = event.target.value;
-    if (!dia || dia.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      this.setState({ dia });
-    }
-  };
-  handleRateChange = event => {
-    const rate = event.target.value;
-    if (!rate || rate.match(/^\d{1,}(\.\d{0,2})?$/)) {
-      this.setState({ rate });
-    }
-  };
-  // renderStockItems = () => {
-  //   return this.props.stock.map(singleItem => {
-  //     return (
-  //       <MenuItem
-  //         key={singleItem.id}
-  //         value={singleItem.item}
-  //         primaryText={singleItem.item}
-  //       />
-  //     );
-  //   });
-  // };
-
-  AllTotal = AllTotal => {
-    this.setState({ AllTotal });
-  };
-
-  handleSubmit = () => {
-    let sellsItemData = {
-      id: uuid(),
-      productCategoryToSell: this.state.productCategoryToSell,
-      companyName: this.state.companyName,
-      color: this.state.color,
-      length: this.state.length,
-      dia: this.state.dia,
-      productName: this.state.productName,
-      quantity: this.state.quantity,
-      rate: this.state.rate,
-      total: (
-        parseFloat(this.state.quantity) * parseFloat(this.state.rate)
-      ).toFixed(2)
-    };
-    this.props.addSellItem(sellsItemData);
-    this.friendlyHandleReset();
-    this.props.showSnackBar("Item added Successfully !");
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      companyName: "",
-      color: "",
-      length: "",
-      dia: "",
-      productName: "",
-      quantity: "",
-      rate: "",
-      productCategoryToSell: "aluminium"
-    };
-  }
   handleProductNameChange = event => {
     const productName = event.target.value;
     this.setState({ productName });
@@ -119,22 +28,72 @@ class Aluminium extends Component {
     const companyName = event.target.value;
     this.setState({ companyName });
   };
-  handleColorChange = event => {
-    const color = event.target.value;
-    this.setState({ color });
+  handleThicknessChange = event => {
+    const thickness = event.target.value;
+    this.setState({ thickness });
   };
+  handleRateChange = event => {
+    const rate = event.target.value;
+    this.setState({ rate });
+  };
+  handleQuantyChange = event => {
+    const quantity = event.target.value;
+    this.setState({ quantity });
+  };
+  handleLengthChange = event => {
+    const length = event.target.value;
+    this.setState({ length });
+  };
+  handleProductCodeChange = event => {
+    const productCode = event.target.value;
+    this.setState({ productCode });
+  };
+  handleSubmit = () => {
+    let sellsItemData = {
+      id: uuid(),
+      productCategoryToSell: this.state.productCategoryToSell,
+      companyName: this.state.companyName,
+      length: this.state.length,
+      thickness: this.state.thickness,
+      productName: this.state.productName,
+      quantity: this.state.quantity,
+      rate: this.state.rate,
+      productCode: this.state.productCode
+    };
+    //Dispatch the function to add the details to the store
+    this.friendlyHandleReset();
+    this.props.showSnackBar("Item added Successfully !");
+  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      companyName: "",
+      length: "",
+      thickness: "",
+      productName: "",
+      quantity: "",
+      rate: "",
+      productCategoryToSell: "ss",
+      productCode: ""
+    };
+  }
   render() {
     return (
       <Card
         style={{
           marginTop: 10,
-          paddingLeft: 40,
-          paddingRight: 40,
+          padding: 13,
           paddingBottom: 20
         }}
       >
         {/* All Fields */}
         <div>
+          <TextField
+            value={this.state.productCode}
+            onChange={this.handleProductCodeChange}
+            hint="Product Code"
+            floatingLabelText="Unique Code to Identify"
+          />
           <TextField
             value={this.state.productName}
             onChange={this.handleProductNameChange}
@@ -148,12 +107,6 @@ class Aluminium extends Component {
             floatingLabelText="Place Company Name"
           />
           <TextField
-            value={this.state.color}
-            onChange={this.handleColorChange}
-            hint="Color Name"
-            floatingLabelText="Place Color Name"
-          />
-          <TextField
             type="number"
             value={this.state.length}
             onChange={this.handleLengthChange}
@@ -162,10 +115,10 @@ class Aluminium extends Component {
           />
           <TextField
             type="number"
-            value={this.state.dia}
-            onChange={this.handleDiaChange}
-            hintText="DIA"
-            floatingLabelText="Place the DIA "
+            value={this.state.thickness}
+            onChange={this.handleThicknessChange}
+            hintText="Thickness"
+            floatingLabelText="Place the Thickness "
           />
           <TextField
             type="number"
@@ -184,12 +137,12 @@ class Aluminium extends Component {
           <FlatButton
             style={{ marginLeft: 10, marginTop: 5 }}
             disabled={
+              this.state.productCode ||
               this.state.companyName ||
               this.state.productName ||
-              this.state.color ||
               this.state.quantity ||
               this.state.length ||
-              this.state.dia ||
+              this.state.thickness ||
               this.state.rate
                 ? false
                 : true
@@ -200,11 +153,12 @@ class Aluminium extends Component {
           />
           <FlatButton
             disabled={
+              this.state.productCode &&
               this.state.companyName &&
               this.state.productName &&
               this.state.quantity &&
               this.state.length &&
-              this.state.dia &&
+              this.state.thickness &&
               this.state.rate
                 ? false
                 : true
@@ -220,17 +174,11 @@ class Aluminium extends Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-    addSellItem: sellItemData => {
-      dispatch(addSellItem(sellItemData));
-    }
-  };
+  return {};
 };
 
 const mapStateToProps = state => {
-  return {
-    sellsTable: state.sells
-  };
+  return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Aluminium);
+export default connect(mapStateToProps, mapDispatchToProps)(SS);

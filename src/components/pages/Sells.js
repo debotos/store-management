@@ -22,7 +22,7 @@ const tabStyles = {
   }
 };
 
-const items = [
+export const items = [
   <MenuItem key={1} value="Thai Aluminium" primaryText="Thai Aluminium" />,
   <MenuItem key={2} value="Glass" primaryText="Glass" />,
   <MenuItem key={3} value="SS" primaryText="SS" />,

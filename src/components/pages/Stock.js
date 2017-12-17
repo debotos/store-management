@@ -1,29 +1,20 @@
 import React, { Component } from "react";
-import { Card, CardActions, CardTitle } from "material-ui/Card";
-import RaisedButton from "material-ui/RaisedButton";
-import TextField from "material-ui/TextField";
-import { connect } from "react-redux";
 import SnackBar from "../ui-element/SnackBar";
-import Chip from "material-ui/Chip";
-import { blue300 } from "material-ui/styles/colors";
+import { Tabs, Tab } from "material-ui/Tabs";
+import SwipeableViews from "react-swipeable-views";
 
-import {
-  startAddItemToStock,
-  startRemoveItemToStock
-} from "../../actions/stock/stock-action";
 import AppBarMain from "../ui-element/AppBarMain";
-// import Navigation from "../Navigation";
+import View from "./subPages/stock/View";
+import In from "./subPages/stock/In";
+import Out from "./subPages/stock/Out";
+
+const tabStyles = {
+  slide: {
+    padding: 10
+  }
+};
 
 class Stock extends Component {
-  // Chip Functions
-  handleChipRequestDelete = id => {
-    this.props.startRemoveItemToStock(id);
-  };
-
-  handleChipTouchTap = id => {
-    console.log("I got a click on a chip, ID = ", id);
-  };
-  // End Chip Functions
   // SnackBar Functions
   handleActionTouchTap = () => {
     this.setState({
@@ -42,55 +33,17 @@ class Stock extends Component {
     });
   };
   // End
-  addStockItemName = () => {
-    if (this.state.stockItemName) {
-      let alreadyHaveThatItem = false;
-      this.props.stock.forEach(singleItem => {
-        if (singleItem.item === this.state.stockItemName) {
-          alreadyHaveThatItem = true;
-        }
-      });
-      if (!alreadyHaveThatItem) {
-        const data = {
-          item: this.state.stockItemName
-        };
-        this.props.startAddItemToStock(data);
-        this.setState({stockItemName: ""})
-      } else {
-        this.showSnackBar("Error ! Item Already Exists!");
-      }
-    } else {
-      this.showSnackBar("Error !! Valid Input Please !");
-    }
-  };
-
-  handleStockItemNameChange = event => {
-    const stockItemName = event.target.value;
-    this.setState({ stockItemName });
-  };
-
-  renderChips = () => {
-    return this.props.stock.map(singleItem => {
-      return (
-        <Chip
-          key={singleItem.id}
-          backgroundColor={blue300}
-          onRequestDelete={() => this.handleChipRequestDelete(singleItem.id)}
-          onClick={() => this.handleChipTouchTap(singleItem.id)}
-          style={{ margin: 5 }}
-        >
-          <strong>{singleItem.item}</strong>
-        </Chip>
-      );
+  handleTabChange = value => {
+    this.setState({
+      slideIndex: value
     });
   };
-
   constructor(props) {
     super(props);
     this.state = {
-      stockItemName: "",
       snackBar: false,
-      snackBarMessage: ""
+      snackBarMessage: "",
+      slideIndex: 0
     };
   }
 
@@ -98,47 +51,27 @@ class Stock extends Component {
     return (
       <div>
         <AppBarMain />
-        {/* Stock Item Input Section */}
-        <div className="container" style={{ marginTop: 10 }}>
-          <Card>
-            <CardTitle
-              title="Add Item to Stock"
-              subtitle="Stock Item will appear below"
-            />
-            <div style={{ textAlign: "center" }}>
-              <TextField
-                hintText="Item Name"
-                floatingLabelText="Place Stock Item to add"
-                value={this.state.stockItemName}
-                onChange={this.handleStockItemNameChange}
-              />
+        {/* TabBar Section */}
+        <div>
+          <Tabs onChange={this.handleTabChange} value={this.state.slideIndex}>
+            <Tab label="View" value={0} />
+            <Tab label="In" value={1} />
+            <Tab label="Out" value={2} />
+          </Tabs>
+          <SwipeableViews
+            index={this.state.slideIndex}
+            onChangeIndex={this.handleTabChange}
+          >
+            <div>
+              <View showSnackBar={this.showSnackBar} />
             </div>
-            <CardActions style={{ textAlign: "center" }}>
-              <RaisedButton label="Add" onClick={this.addStockItemName} />
-              <RaisedButton
-                onClick={() => this.setState({ stockItemName: "" })}
-                label="Reset"
-              />
-            </CardActions>
-          </Card>
-        </div>
-        {/* Stock Items that currently have */}
-        <div className="container" style={{ marginTop: 10 }}>
-          <Card>
-            <CardTitle
-              title="All Stock Items"
-              subtitle="Stock Items that currently have listed here"
-            />
-            <div
-              style={{
-                padding: 10,
-                display: "flex",
-                flexWrap: "wrap"
-              }}
-            >
-              {this.renderChips()}
+            <div style={tabStyles.slide}>
+              <In showSnackBar={this.showSnackBar} />
             </div>
-          </Card>
+            <div style={tabStyles.slide}>
+              <Out showSnackBar={this.showSnackBar} />
+            </div>
+          </SwipeableViews>
         </div>
         <SnackBar
           snackBar={this.state.snackBar}
@@ -151,13 +84,4 @@ class Stock extends Component {
   }
 }
 
-const mapStatetoProps = state => ({
-  stock: state.stock
-});
-
-const mapDispatchToProps = dispatch => ({
-  startAddItemToStock: itemData => dispatch(startAddItemToStock(itemData)),
-  startRemoveItemToStock: id => dispatch(startRemoveItemToStock(id))
-});
-
-export default connect(mapStatetoProps, mapDispatchToProps)(Stock);
+export default Stock;
