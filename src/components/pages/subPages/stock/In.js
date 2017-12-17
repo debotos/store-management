@@ -6,11 +6,17 @@ import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 
-import { items } from "../../Sells";
 import Aluminium from "./InForms/Aluminium";
 import Glass from "./InForms/Glass";
 import SS from "./InForms/SS";
 import Others from "./InForms/Others";
+
+const items = [
+  <MenuItem key={1} value="Aluminium" primaryText="Thai Aluminium" />,
+  <MenuItem key={2} value="Glass" primaryText="Glass" />,
+  <MenuItem key={3} value="SS" primaryText="SS" />,
+  <MenuItem key={4} value="Others" primaryText="Others" />
+];
 
 class In extends Component {
   handleSelectedCategoryChange = (event, index, value) =>
@@ -43,6 +49,71 @@ class In extends Component {
     } else {
       return null;
     }
+  };
+  getValuesOfTheItemCurrentlySelected = () => {
+    const selectedCategory = this.state.selectedCategory;
+    const selectedItem = this.state.selectedItem;
+    const stock = this.props.stock;
+    let values = {};
+    for (let stockCategory in stock) {
+      if (
+        stockCategory.toString() === selectedCategory.toString().toLowerCase()
+      ) {
+        stock[stockCategory].forEach(singleItem => {
+          if (singleItem.productCode.toString() === selectedItem.toString()) {
+            if (singleItem.productCategoryToSell.toString() === "aluminium") {
+              values = {
+                id: singleItem.id,
+                productCode: singleItem.productCode,
+                productCategoryToSell: singleItem.productCategoryToSell,
+                companyName: singleItem.companyName,
+                color: singleItem.color,
+                length: singleItem.length,
+                dia: singleItem.dia,
+                productName: singleItem.productName,
+                quantity: singleItem.quantity,
+                rate: singleItem.rate
+              };
+            }
+            if (singleItem.productCategoryToSell.toString() === "glass") {
+              values = {
+                id: singleItem.id,
+                productCategoryToSell: singleItem.productCategoryToSell,
+                sft: singleItem.sft,
+                productName: singleItem.productName,
+                rate: singleItem.rate,
+                productCode: singleItem.productCode
+              };
+            }
+            if (singleItem.productCategoryToSell.toString() === "ss") {
+              values = {
+                id: singleItem.id,
+                productCategoryToSell: singleItem.productCategoryToSell,
+                companyName: singleItem.companyName,
+                length: singleItem.length,
+                thickness: singleItem.thickness,
+                productName: singleItem.productName,
+                quantity: singleItem.quantity,
+                rate: singleItem.rate,
+                productCode: singleItem.productCode
+              };
+            }
+            if (singleItem.productCategoryToSell.toString() === "others") {
+              values = {
+                id: singleItem.id,
+                productCategoryToSell: singleItem.productCategoryToSell,
+                productName: singleItem.productName,
+                quantity: singleItem.quantity,
+                rate: singleItem.rate,
+                productCode: singleItem.productCode
+              };
+            }
+          }
+        });
+      }
+    }
+    console.log("sending values from in.js", values);
+    return values;
   };
   constructor(props) {
     super(props);
@@ -85,23 +156,38 @@ class In extends Component {
             )}
           </Card>
           {/* Form to In */}
-          {this.renderItemsBasedOnSelectedCategory() &&
-            this.state.selectedItem && (
-              <div style={{ marginBottom: 10 }}>
-                {this.state.selectedCategory === "Thai Aluminium" && (
-                  <Aluminium showSnackBar={this.props.showSnackBar} />
-                )}
-                {this.state.selectedCategory === "Glass" && (
-                  <Glass showSnackBar={this.props.showSnackBar} />
-                )}
-                {this.state.selectedCategory === "SS" && (
-                  <SS showSnackBar={this.props.showSnackBar} />
-                )}
-                {this.state.selectedCategory === "Others" && (
-                  <Others showSnackBar={this.props.showSnackBar} />
-                )}
-              </div>
-            )}
+          {this.state.selectedItem && (
+            <div style={{ marginBottom: 10 }}>
+              {this.state.selectedCategory === "Aluminium" && (
+                <Aluminium
+                  showSnackBar={this.props.showSnackBar}
+                  productCode={this.state.selectedItem}
+                  values={this.getValuesOfTheItemCurrentlySelected()}
+                />
+              )}
+              {this.state.selectedCategory === "Glass" && (
+                <Glass
+                  showSnackBar={this.props.showSnackBar}
+                  productCode={this.state.selectedItem}
+                  values={this.getValuesOfTheItemCurrentlySelected()}
+                />
+              )}
+              {this.state.selectedCategory === "SS" && (
+                <SS
+                  showSnackBar={this.props.showSnackBar}
+                  productCode={this.state.selectedItem}
+                  values={this.getValuesOfTheItemCurrentlySelected()}
+                />
+              )}
+              {this.state.selectedCategory === "Others" && (
+                <Others
+                  showSnackBar={this.props.showSnackBar}
+                  productCode={this.state.selectedItem}
+                  values={this.getValuesOfTheItemCurrentlySelected()}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
     );

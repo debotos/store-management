@@ -8,9 +8,12 @@ import FlatButton from "material-ui/FlatButton";
 
 import AppBarMain from "../ui-element/AppBarMain";
 import "../../style/due/due.css";
-import { setDueTextFilter } from '../../actions/due/due-filter-actions';
-import dueFilter from './subPages/due/utility-func/due-filter';
-import { startRemovePrevDue, startUpdatePrevDue } from '../../actions/sells/prevDue-actions';
+import { setDueTextFilter } from "../../actions/due/due-filter-actions";
+import dueFilter from "./subPages/due/utility-func/due-filter";
+import {
+  startRemovePrevDue,
+  startUpdatePrevDue
+} from "../../actions/sells/prevDue-actions";
 // import Navigation from "../Navigation";
 
 const customDialogContentStyle = {
@@ -48,11 +51,11 @@ class MoneyReceipt extends Component {
   };
   // End
 
-  handleDueSearch = (event) => {
+  handleDueSearch = event => {
     const dueSearchText = event.target.value;
-    this.props.setDueTextFilter(dueSearchText)
-  }
-  handleDueDepositAmountChange = (event) => {
+    this.props.setDueTextFilter(dueSearchText);
+  };
+  handleDueDepositAmountChange = event => {
     const amount = event.target.value;
     if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
       this.setState(() => ({ dueDepositAmount: amount }));
@@ -60,12 +63,12 @@ class MoneyReceipt extends Component {
       let depositAmount = parseFloat(amount).toFixed(2);
       let newDewFromNow = parseFloat(currentDue - depositAmount).toFixed(2);
       if (parseFloat(currentDue) < parseFloat(depositAmount)) {
-        this.setState({ newDewFromNow: `Wrong Amount [MAX: ${currentDue}]` })
-      }else{
-        this.setState({ newDewFromNow })
+        this.setState({ newDewFromNow: `Wrong Amount [MAX: ${currentDue}]` });
+      } else {
+        this.setState({ newDewFromNow });
       }
     }
-  }
+  };
 
   handleDelete = () => {
     this.closeEditDueModel();
@@ -80,10 +83,13 @@ class MoneyReceipt extends Component {
       this.showSnackBar("Error! Deposit can't be Bigger than Due.");
     } else {
       this.closeEditDueModel();
-      this.props.startUpdatePrevDue(this.state.dueIdToRemove, this.state.dueNumberToUpdate, this.state.newDewFromNow);
+      this.props.startUpdatePrevDue(
+        this.state.dueIdToRemove,
+        this.state.dueNumberToUpdate,
+        this.state.newDewFromNow
+      );
       this.showSnackBar("Due Updated Successfully !");
     }
-
   };
   constructor(props) {
     super(props);
@@ -97,7 +103,7 @@ class MoneyReceipt extends Component {
       dueIdToRemove: "",
       dueNumberToUpdate: "",
       newDewFromNow: ""
-    }
+    };
   }
 
   render() {
@@ -111,20 +117,14 @@ class MoneyReceipt extends Component {
       <FlatButton
         label="Update"
         primary={true}
-        disabled={
-          !this.state.dueDepositAmount
-            ? true
-            : false
-        }
+        disabled={!this.state.dueDepositAmount ? true : false}
         onClick={this.handleUpdate}
       />
     ];
     return (
       <div>
         <AppBarMain />
-        <Card
-          style={{ padding: 7, margin: 5, textAlign: "center" }}
-        >
+        <Card style={{ padding: 7, margin: 5, textAlign: "center" }}>
           <TextField
             type="number"
             floatingLabelText="Search Specific Due by Number"
@@ -132,7 +132,7 @@ class MoneyReceipt extends Component {
             onChange={this.handleDueSearch}
           />
         </Card>
-        <Card className="container" style={{ marginTop: 10, padding: 5 }} >
+        <Card className="container" style={{ marginTop: 10, padding: 5 }}>
           <div className="list-header">
             <div>
               <strong>Number</strong>
@@ -150,32 +150,38 @@ class MoneyReceipt extends Component {
                 </span>
               </div>
             ) : (
-                this.props.allDue.map((singleDue, index) => {
-                  return (
-                    parseFloat(singleDue.amount) > 0 && (
-                      <Card key={index} className="due-list-item"
-                        onClick={() => {
-                          this.setState({ showEditDueModel: true })
-                          this.setState({ currentlySelectedDue: parseFloat(singleDue.amount).toFixed(2) })
-                          this.setState({ dueIdToRemove: singleDue.id })
-                          this.setState({ dueNumberToUpdate: singleDue.number })
-                        }
-                        } >
-                        <div className="list-item">
-                          <div>
-                            <h3 className="list-item-number">
-                              {singleDue.number}
-                            </h3>
-                          </div>
-                          <h3 className="list-item-amount">
-                            {parseFloat(singleDue.amount).toFixed(2)} &#x9f3;
-                        </h3>
+              this.props.allDue.map((singleDue, index) => {
+                return (
+                  parseFloat(singleDue.amount) > 0 && (
+                    <Card
+                      key={index}
+                      className="due-list-item"
+                      onClick={() => {
+                        this.setState({ showEditDueModel: true });
+                        this.setState({
+                          currentlySelectedDue: parseFloat(
+                            singleDue.amount
+                          ).toFixed(2)
+                        });
+                        this.setState({ dueIdToRemove: singleDue.id });
+                        this.setState({ dueNumberToUpdate: singleDue.number });
+                      }}
+                    >
+                      <div className="list-item">
+                        <div>
+                          <h3 className="list-item-number">
+                            {singleDue.number}
+                          </h3>
                         </div>
-                      </Card>
-                    )
-                  );
-                })
-              )}
+                        <h3 className="list-item-amount">
+                          {parseFloat(singleDue.amount).toFixed(2)} &#x9f3;
+                        </h3>
+                      </div>
+                    </Card>
+                  )
+                );
+              })
+            )}
           </div>
         </Card>
         <Dialog
@@ -189,12 +195,16 @@ class MoneyReceipt extends Component {
           contentStyle={customDialogContentStyle}
         >
           <div>
-            <h5 style={{ color: 'orange' }}>Previous Due: <strong>{this.state.currentlySelectedDue}</strong></h5>
-            {
-              this.state.newDewFromNow && this.state.newDewFromNow !== 'NaN' ? (
-                <h5 style={{ color: 'red' }}>From Now: <strong>{this.state.newDewFromNow}</strong></h5>
-              ) : <div></div>
-            }
+            <h5 style={{ color: "orange" }}>
+              Previous Due: <strong>{this.state.currentlySelectedDue}</strong>
+            </h5>
+            {this.state.newDewFromNow && this.state.newDewFromNow !== "NaN" ? (
+              <h5 style={{ color: "red" }}>
+                From Now: <strong>{this.state.newDewFromNow}</strong>
+              </h5>
+            ) : (
+              <div />
+            )}
             <TextField
               onChange={this.handleDueDepositAmountChange}
               value={this.state.dueDepositAmount}
@@ -221,18 +231,18 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    setDueTextFilter: (text) => {
-      dispatch(setDueTextFilter(text))
+    setDueTextFilter: text => {
+      dispatch(setDueTextFilter(text));
     },
-    startRemovePrevDue: (id) => {
-      dispatch(startRemovePrevDue(id))
+    startRemovePrevDue: id => {
+      dispatch(startRemovePrevDue(id));
     },
     startUpdatePrevDue: (id, number, amount) => {
-      dispatch(startUpdatePrevDue(id, number, amount))
+      dispatch(startUpdatePrevDue(id, number, amount));
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoneyReceipt);

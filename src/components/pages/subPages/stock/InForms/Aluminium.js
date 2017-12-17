@@ -5,7 +5,7 @@ import TextField from "material-ui/TextField";
 import uuid from "uuid/v4";
 import { connect } from "react-redux";
 
-import { addItemToStock } from "../../../../../actions/stock/stock-action";
+// import { addItemToStock } from "../../../../../actions/stock/stock-action";
 
 class Aluminium extends Component {
   handleReset = () => {
@@ -16,11 +16,9 @@ class Aluminium extends Component {
     this.setState({ rate: "" });
     this.setState({ productName: "" });
     this.setState({ companyName: "" });
-    this.setState({ productCode: "" });
   };
 
   friendlyHandleReset = () => {
-    this.setState({ productCode: "" });
     this.setState({ quantity: "" });
     this.setState({ rate: "" });
   };
@@ -62,29 +60,24 @@ class Aluminium extends Component {
     const color = event.target.value;
     this.setState({ color });
   };
-  handleProductCodeChange = event => {
-    const productCode = event.target.value;
-    this.setState({ productCode });
-  };
 
   constructor(props) {
     super(props);
     this.state = {
-      companyName: "",
-      color: "",
-      length: "",
-      dia: "",
-      productName: "",
-      quantity: "",
-      rate: "",
-      productCategoryToSell: "aluminium",
-      productCode: ""
+      companyName: this.props.values.companyName,
+      color: this.props.values.color,
+      length: this.props.values.length,
+      dia: this.props.values.dia,
+      productName: this.props.values.productName,
+      quantity: this.props.values.quantity,
+      rate: this.props.values.rate,
+      productCategoryToSell: this.props.values.productCategoryToSell
     };
   }
-  handleSubmit = () => {
+  handleStockIn = () => {
     let sellsItemData = {
       id: uuid(),
-      productCode: this.state.productCode,
+      productCode: this.props.productCode,
       productCategoryToSell: this.state.productCategoryToSell,
       companyName: this.state.companyName,
       color: this.state.color,
@@ -95,9 +88,8 @@ class Aluminium extends Component {
       rate: this.state.rate
     };
     //Dispatch the function to add the details to the store
-    this.props.addItemToStock(sellsItemData);
     this.friendlyHandleReset();
-    this.props.showSnackBar("Item added Successfully !");
+    this.props.showSnackBar("In Action Successfully !");
   };
   render() {
     return (
@@ -111,78 +103,54 @@ class Aluminium extends Component {
         {/* All Fields */}
         <div>
           <TextField
-            value={this.state.productCode}
-            onChange={this.handleProductCodeChange}
-            hint="Product Code"
-            floatingLabelText="Unique Code to Identify"
-          />
-          <TextField
             value={this.state.productName}
             onChange={this.handleProductNameChange}
             hint="Product Name"
-            floatingLabelText="Place Product Name"
+            floatingLabelText="Update Product Name"
           />
           <TextField
             value={this.state.companyName}
             onChange={this.handleCompanyNameChange}
             hint="Company Name"
-            floatingLabelText="Place Company Name"
+            floatingLabelText="Update Company Name"
           />
           <TextField
             value={this.state.color}
             onChange={this.handleColorChange}
             hint="Color Name"
-            floatingLabelText="Place Color Name"
+            floatingLabelText="Update Color Name"
           />
           <TextField
             type="number"
             value={this.state.length}
             onChange={this.handleLengthChange}
             hintText="Length"
-            floatingLabelText="Place the Length "
+            floatingLabelText="Add Length "
           />
           <TextField
             type="number"
             value={this.state.dia}
             onChange={this.handleDiaChange}
             hintText="DIA"
-            floatingLabelText="Place the DIA "
+            floatingLabelText="Add DIA "
           />
           <TextField
             type="number"
             value={this.state.quantity}
             onChange={this.handleQuantyChange}
             hintText="Quantity"
-            floatingLabelText="Place the Quantity "
+            floatingLabelText="Add Quantity "
           />
           <TextField
             type="number"
             value={this.state.rate}
             onChange={this.handleRateChange}
             hintText="Price/Rate"
-            floatingLabelText="Place the Price/Rate "
+            floatingLabelText="Update the Price/Rate "
           />
           <div style={{ textAlign: "center", marginTop: 5 }}>
             <FlatButton
               disabled={
-                this.state.productCode ||
-                this.state.companyName ||
-                this.state.productName ||
-                this.state.color ||
-                this.state.quantity ||
-                this.state.length ||
-                this.state.dia ||
-                this.state.rate
-                  ? false
-                  : true
-              }
-              secondary={true}
-              label="Reset"
-              onClick={this.handleReset}
-            />
-            <FlatButton
-              disabled={
-                this.state.productCode &&
                 this.state.companyName &&
                 this.state.productName &&
                 this.state.quantity &&
@@ -193,8 +161,8 @@ class Aluminium extends Component {
                   : true
               }
               primary={true}
-              label="Add"
-              onClick={this.handleSubmit}
+              label="In"
+              onClick={this.handleStockIn}
             />
           </div>
         </div>
@@ -207,8 +175,6 @@ const mapStateToProps = state => ({
   stock: state.stock.aluminium
 });
 
-const mapDispatchToProps = dispatch => ({
-  addItemToStock: itemData => dispatch(addItemToStock(itemData))
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Aluminium);
