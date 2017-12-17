@@ -5,15 +5,17 @@ import TextField from "material-ui/TextField";
 import uuid from "uuid/v4";
 import { connect } from "react-redux";
 
-class Others extends Component {
-  friendlyHandleReset = () => {
-    this.setState({ quantity: "" });
+import { addItemToStock } from "../../../../../actions/stock/stock-action";
+
+class Glass extends Component {
+  handleReset = () => {
+    this.setState({ productName: "" });
+    this.setState({ sft: "" });
     this.setState({ rate: "" });
     this.setState({ productCode: "" });
   };
-  handleReset = () => {
-    this.setState({ productName: "" });
-    this.setState({ quantity: "" });
+  friendlyHandleReset = () => {
+    this.setState({ sft: "" });
     this.setState({ rate: "" });
     this.setState({ productCode: "" });
   };
@@ -21,9 +23,9 @@ class Others extends Component {
     const productName = event.target.value;
     this.setState({ productName });
   };
-  handleQuantityChange = event => {
-    const quantity = event.target.value;
-    this.setState({ quantity });
+  handleSFTChange = event => {
+    const sft = event.target.value;
+    this.setState({ sft });
   };
   handleRateChange = event => {
     const rate = event.target.value;
@@ -37,12 +39,13 @@ class Others extends Component {
     let sellsItemData = {
       id: uuid(),
       productCategoryToSell: this.state.productCategoryToSell,
+      sft: this.state.sft,
       productName: this.state.productName,
-      quantity: this.state.quantity,
       rate: this.state.rate,
       productCode: this.state.productCode
     };
     //Dispatch the function to add the details to the store
+    this.props.addItemToStock(sellsItemData);
     this.friendlyHandleReset();
     this.props.showSnackBar("Item added Successfully !");
   };
@@ -50,9 +53,9 @@ class Others extends Component {
     super(props);
     this.state = {
       productName: "",
-      quantity: "",
+      sft: "",
       rate: "",
-      productCategoryToSell: "others",
+      productCategoryToSell: "glass",
       productCode: ""
     };
   }
@@ -80,13 +83,12 @@ class Others extends Component {
             hint="Product Name"
             floatingLabelText="Place Product Name"
           />
-
           <TextField
             type="number"
-            value={this.state.quantity}
-            onChange={this.handleQuantityChange}
-            hintText="Quantity"
-            floatingLabelText="Place the Quantity "
+            value={this.state.sft}
+            onChange={this.handleSFTChange}
+            hintText="SFT"
+            floatingLabelText="Place the SFT "
           />
 
           <TextField
@@ -101,7 +103,7 @@ class Others extends Component {
               disabled={
                 this.state.productCode ||
                 this.state.productName ||
-                this.state.quantity ||
+                this.state.sft ||
                 this.state.rate
                   ? false
                   : true
@@ -114,7 +116,7 @@ class Others extends Component {
               disabled={
                 this.state.productCode &&
                 this.state.productName &&
-                this.state.quantity &&
+                this.state.sft &&
                 this.state.rate
                   ? false
                   : true
@@ -130,12 +132,12 @@ class Others extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {};
-};
+const mapStateToProps = state => ({
+  stock: state.stock.glass
+});
 
-const mapStateToProps = state => {
-  return {};
-};
+const mapDispatchToProps = dispatch => ({
+  addItemToStock: itemData => dispatch(addItemToStock(itemData))
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Others);
+export default connect(mapStateToProps, mapDispatchToProps)(Glass);

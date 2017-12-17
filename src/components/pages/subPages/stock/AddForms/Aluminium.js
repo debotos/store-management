@@ -5,6 +5,8 @@ import TextField from "material-ui/TextField";
 import uuid from "uuid/v4";
 import { connect } from "react-redux";
 
+import { addItemToStock } from "../../../../../actions/stock/stock-action";
+
 class Aluminium extends Component {
   handleReset = () => {
     this.setState({ quantity: "" });
@@ -48,24 +50,6 @@ class Aluminium extends Component {
       this.setState({ rate });
     }
   };
-
-  handleSubmit = () => {
-    let sellsItemData = {
-      id: uuid(),
-      productCode: this.state.productCode,
-      productCategoryToSell: this.state.productCategoryToSell,
-      companyName: this.state.companyName,
-      color: this.state.color,
-      length: this.state.length,
-      dia: this.state.dia,
-      productName: this.state.productName,
-      quantity: this.state.quantity,
-      rate: this.state.rate
-    };
-    //Dispatch the function to add the details to the store
-    this.friendlyHandleReset();
-    this.props.showSnackBar("Item added Successfully !");
-  };
   handleProductNameChange = event => {
     const productName = event.target.value;
     this.setState({ productName });
@@ -97,6 +81,24 @@ class Aluminium extends Component {
       productCode: ""
     };
   }
+  handleSubmit = () => {
+    let sellsItemData = {
+      id: uuid(),
+      productCode: this.state.productCode,
+      productCategoryToSell: this.state.productCategoryToSell,
+      companyName: this.state.companyName,
+      color: this.state.color,
+      length: this.state.length,
+      dia: this.state.dia,
+      productName: this.state.productName,
+      quantity: this.state.quantity,
+      rate: this.state.rate
+    };
+    //Dispatch the function to add the details to the store
+    this.props.addItemToStock(sellsItemData);
+    this.friendlyHandleReset();
+    this.props.showSnackBar("Item added Successfully !");
+  };
   render() {
     return (
       <Card
@@ -201,12 +203,12 @@ class Aluminium extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {};
-};
+const mapStateToProps = state => ({
+  stock: state.stock.aluminium
+});
 
-const mapStateToProps = state => {
-  return {};
-};
+const mapDispatchToProps = dispatch => ({
+  addItemToStock: itemData => dispatch(addItemToStock(itemData))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Aluminium);

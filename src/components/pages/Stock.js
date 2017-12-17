@@ -5,6 +5,7 @@ import SwipeableViews from "react-swipeable-views";
 
 import AppBarMain from "../ui-element/AppBarMain";
 import View from "./subPages/stock/View";
+import Add from "./subPages/stock/Add";
 import In from "./subPages/stock/In";
 import Out from "./subPages/stock/Out";
 
@@ -55,8 +56,9 @@ class Stock extends Component {
         <div>
           <Tabs onChange={this.handleTabChange} value={this.state.slideIndex}>
             <Tab label="View" value={0} />
-            <Tab label="In" value={1} />
-            <Tab label="Out" value={2} />
+            <Tab label="Add" value={1} />
+            <Tab label="In" value={2} />
+            <Tab label="Out" value={3} />
           </Tabs>
           <SwipeableViews
             index={this.state.slideIndex}
@@ -64,6 +66,9 @@ class Stock extends Component {
           >
             <div>
               <View showSnackBar={this.showSnackBar} />
+            </div>
+            <div>
+              <Add showSnackBar={this.showSnackBar} />
             </div>
             <div style={tabStyles.slide}>
               <In showSnackBar={this.showSnackBar} />

@@ -5,6 +5,8 @@ import TextField from "material-ui/TextField";
 import uuid from "uuid/v4";
 import { connect } from "react-redux";
 
+import { addItemToStock } from "../../../../../actions/stock/stock-action";
+
 class SS extends Component {
   friendlyHandleReset = () => {
     this.setState({ quantity: "" });
@@ -61,6 +63,7 @@ class SS extends Component {
       productCode: this.state.productCode
     };
     //Dispatch the function to add the details to the store
+    this.props.addItemToStock(sellsItemData);
     this.friendlyHandleReset();
     this.props.showSnackBar("Item added Successfully !");
   };
@@ -173,12 +176,11 @@ class SS extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {};
-};
+const mapStateToProps = state => ({
+  stock: state.stock.ss
+});
 
-const mapStateToProps = state => {
-  return {};
-};
-
+const mapDispatchToProps = dispatch => ({
+  addItemToStock: itemData => dispatch(addItemToStock(itemData))
+});
 export default connect(mapStateToProps, mapDispatchToProps)(SS);
