@@ -279,6 +279,12 @@ class TableGenerator extends Component {
       }
     }
   };
+
+  handleoveridefinallyAllTotal = event => {
+    const finallyAllTotalField = event.target.value;
+    this.setState({ finallyAllTotalField });
+  };
+
   handleoverideTotalSumOfAluminium = event => {
     const overideTotalSumOfAluminium = event.target.value;
     this.setState({ overideTotalSumOfAluminium });
@@ -376,8 +382,16 @@ class TableGenerator extends Component {
       : parseFloat(this.calculateOthersSUM()[1]);
 
     let total = (aluminiumSum + glassSum + ssSum + othersSum).toFixed(2);
-    this.props.setAllTotal(total);
-    return total;
+    if (this.state.finallyAllTotalField) {
+      let sendTotalValue = parseFloat(this.state.finallyAllTotalField).toFixed(
+        2
+      );
+      this.props.setAllTotal(sendTotalValue);
+      return sendTotalValue;
+    } else {
+      this.props.setAllTotal(total);
+      return total;
+    }
   };
   constructor(props) {
     super(props);
@@ -395,7 +409,8 @@ class TableGenerator extends Component {
       overideTotalSumOfAluminium: "",
       overideTotalSumOfGlass: "",
       overideTotalSumOfSS: "",
-      overideTotalSumOfOthers: ""
+      overideTotalSumOfOthers: "",
+      finallyAllTotalField: ""
     };
   }
   render() {
@@ -873,14 +888,30 @@ class TableGenerator extends Component {
           this.props.allSells.glass.length > 0 ||
           this.props.allSells.ss.length > 0 ||
           this.props.allSells.others.length > 0) && (
-          <Card
+          <div
             className="container"
-            style={{ padding: 5, textAlign: "center", marginTop: 7 }}
+            style={{
+              textAlign: "center",
+              marginTop: 10
+            }}
           >
-            <h2>
+            <span
+              style={{
+                marginRight: 15,
+                fontSize: "30px",
+                color: "#00CD00"
+              }}
+            >
               <strong>Totally = {this.finallyAllTotal()}</strong>
-            </h2>
-          </Card>
+            </span>
+            <TextField
+              style={{}}
+              type="number"
+              value={this.state.finallyAllTotalField}
+              onChange={this.handleoveridefinallyAllTotal}
+              hintText="Overide Finally All Total"
+            />
+          </div>
         )}
 
         {/* Model to Delete and Details */}

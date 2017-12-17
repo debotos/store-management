@@ -134,12 +134,10 @@ class Sells extends Component {
                 this.props.allSells.glass.length > 0 ||
                 this.props.allSells.ss.length > 0 ||
                 this.props.allSells.others.length > 0) && (
-                <div>
-                  <CustomerDetailsForm
-                    showSnackBar={this.showSnackBar}
-                    allTotal={this.state.allTotal}
-                  />
-                </div>
+                <CustomerDetailsForm
+                  showSnackBar={this.showSnackBar}
+                  allTotal={this.state.allTotal}
+                />
               )}
             </div>
             {/* End of the First Tab */}

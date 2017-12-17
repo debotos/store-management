@@ -228,55 +228,52 @@ class CustomerDetailsForm extends Component {
       />
     ];
     return (
-      <div className="container" style={{ marginTop: 15, marginBotton: 15 }}>
-        <Card className="container" style={{ margin: 5, padding: 30 }}>
-          <h4>
-            <b>Input Customer Details</b>
-          </h4>
-          {/* All Fields */}
-          <div>
-            <div className="col-sm-6">
-              <TextField
-                value={this.state.name}
-                onChange={this.handleName}
-                hintText="Name here"
-                floatingLabelText="Place the Customer Name "
-              />
-              <br />
-              <TextField
-                type="number"
-                value={this.state.number}
-                onChange={this.handleNumber}
-                hintText="Phone Number"
-                floatingLabelText="Phone (Unique) "
-              />
-              <br />
-              <TextField
-                type="number"
-                value={this.state.deposit}
-                onChange={this.handleDeposit}
-                hintText="Deposit"
-                floatingLabelText="Deposit Amount"
-              />
-            </div>
-            <div className="col-sm-6">
-              <TextField
-                type="mail"
-                value={this.state.mail}
-                onChange={this.handleMail}
-                hintText="E-mail Address"
-                floatingLabelText="Email Address Here"
-              />
-              <br />
-              <TextField
-                value={this.state.address}
-                onChange={this.handleAddress}
-                hintText="Address here"
-                floatingLabelText="Place the Address "
-              />
-            </div>
-          </div>
-          <CardActions style={{ float: "right" }}>
+      <div>
+        <div className="container" style={{ marginTop: 10, marginBottom: 10 }}>
+          <Card style={{ padding: 40 }}>
+            <h4>
+              <b>Input Customer Details</b>
+            </h4>
+            {/* All Fields */}
+
+            <TextField
+              value={this.state.name}
+              onChange={this.handleName}
+              hintText="Name here"
+              floatingLabelText="Place the Customer Name "
+            />
+
+            <TextField
+              type="number"
+              value={this.state.number}
+              onChange={this.handleNumber}
+              hintText="Phone Number"
+              floatingLabelText="Phone (Unique) "
+            />
+
+            <TextField
+              type="number"
+              value={this.state.deposit}
+              onChange={this.handleDeposit}
+              hintText="Deposit"
+              floatingLabelText="Deposit Amount"
+            />
+
+            <TextField
+              type="mail"
+              value={this.state.mail}
+              onChange={this.handleMail}
+              hintText="E-mail Address"
+              floatingLabelText="Email Address Here"
+            />
+            <br />
+            <TextField
+              value={this.state.address}
+              onChange={this.handleAddress}
+              hintText="Address here"
+              floatingLabelText="Place the Address "
+            />
+
             <FlatButton
               disabled={
                 this.state.name ||
@@ -300,8 +297,8 @@ class CustomerDetailsForm extends Component {
               label="Save & Get PDF"
               onClick={this.handleSaveAndGeneratePDF}
             />
-          </CardActions>
-        </Card>
+          </Card>
+        </div>
         <Dialog
           title="Addetional Information:"
           actions={dialogActions}

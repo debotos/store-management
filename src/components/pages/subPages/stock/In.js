@@ -7,6 +7,10 @@ import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 
 import { items } from "../../Sells";
+import Aluminium from "./InForms/Aluminium";
+import Glass from "./InForms/Glass";
+import SS from "./InForms/SS";
+import Others from "./InForms/Others";
 
 class In extends Component {
   handleSelectedCategoryChange = (event, index, value) =>
@@ -80,6 +84,24 @@ class In extends Component {
               </div>
             )}
           </Card>
+          {/* Form to In */}
+          {this.renderItemsBasedOnSelectedCategory() &&
+            this.state.selectedItem && (
+              <div style={{ marginBottom: 10 }}>
+                {this.state.selectedCategory === "Thai Aluminium" && (
+                  <Aluminium showSnackBar={this.props.showSnackBar} />
+                )}
+                {this.state.selectedCategory === "Glass" && (
+                  <Glass showSnackBar={this.props.showSnackBar} />
+                )}
+                {this.state.selectedCategory === "SS" && (
+                  <SS showSnackBar={this.props.showSnackBar} />
+                )}
+                {this.state.selectedCategory === "Others" && (
+                  <Others showSnackBar={this.props.showSnackBar} />
+                )}
+              </div>
+            )}
         </div>
       </div>
     );
