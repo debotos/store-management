@@ -1,7 +1,8 @@
 import {
   REMOVE_ITEM_FROM_STOCK,
   ADD_ITEM_TO_STOCK,
-  SET_STOCK
+  SET_STOCK,
+  UPDATE_STOCK_ITEM
 } from "../../actions/constants";
 
 const stockReducerDefaultState = {
@@ -63,6 +64,55 @@ export const stockReducer = (state = stockReducerDefaultState, action) => {
         return {
           ...state,
           others: state.others.filter(singleSell => singleSell.id !== action.id)
+        };
+      }
+    case UPDATE_STOCK_ITEM:
+      if (action.data.productCategoryToSell === "aluminium") {
+        return {
+          ...state,
+          aluminium: state.aluminium.map(singleItem => {
+            if (singleItem.id === action.data.id) {
+              return action.data;
+            } else {
+              return singleItem;
+            }
+          })
+        };
+      }
+      if (action.data.productCategoryToSell === "glass") {
+        return {
+          ...state,
+          glass: state.glass.map(singleItem => {
+            if (singleItem.id === action.data.id) {
+              return action.data;
+            } else {
+              return singleItem;
+            }
+          })
+        };
+      }
+      if (action.data.productCategoryToSell === "ss") {
+        return {
+          ...state,
+          ss: state.ss.map(singleItem => {
+            if (singleItem.id === action.data.id) {
+              return action.data;
+            } else {
+              return singleItem;
+            }
+          })
+        };
+      }
+      if (action.data.productCategoryToSell === "others") {
+        return {
+          ...state,
+          others: state.others.map(singleItem => {
+            if (singleItem.id === action.data.id) {
+              return action.data;
+            } else {
+              return singleItem;
+            }
+          })
         };
       }
     case SET_STOCK:

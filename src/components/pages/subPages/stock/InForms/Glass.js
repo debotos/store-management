@@ -2,23 +2,11 @@ import React, { Component } from "react";
 import { Card } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
-import uuid from "uuid/v4";
 import { connect } from "react-redux";
 
-import { addItemToStock } from "../../../../../actions/stock/stock-action";
+import { updateStockItem } from "../../../../../actions/stock/stock-action";
 
 class Glass extends Component {
-  handleReset = () => {
-    this.setState({ productName: "" });
-    this.setState({ sft: "" });
-    this.setState({ rate: "" });
-    this.setState({ productCode: "" });
-  };
-  friendlyHandleReset = () => {
-    this.setState({ sft: "" });
-    this.setState({ rate: "" });
-    this.setState({ productCode: "" });
-  };
   handleProductNameChange = event => {
     const productName = event.target.value;
     this.setState({ productName });
@@ -31,34 +19,33 @@ class Glass extends Component {
     const rate = event.target.value;
     this.setState({ rate });
   };
-  handleProductCodeChange = event => {
-    const productCode = event.target.value;
-    this.setState({ productCode });
-  };
-  handleSubmit = () => {
-    let sellsItemData = {
-      id: uuid(),
-      productCategoryToSell: this.state.productCategoryToSell,
-      sft: this.state.sft,
-      productName: this.state.productName,
-      rate: this.state.rate,
-      productCode: this.state.productCode
-    };
-    //Dispatch the function to add the details to the store
-    this.props.addItemToStock(sellsItemData);
-    this.friendlyHandleReset();
-    this.props.showSnackBar("Item added Successfully !");
+  friendlyHandleReset = () => {
+    this.setState({ sft: "" });
   };
   constructor(props) {
     super(props);
     this.state = {
-      productName: "",
+      productName: this.props.values.productName,
       sft: "",
-      rate: "",
-      productCategoryToSell: "glass",
-      productCode: ""
+      rate: this.props.values.rate
     };
   }
+  handleStockIn = () => {
+    let Data = {
+      id: this.props.values.id,
+      productCategoryToSell: this.props.values.productCategoryToSell,
+      sft: (
+        parseFloat(this.state.sft) + parseFloat(this.props.values.sft)
+      ).toFixed(2),
+      productName: this.state.productName,
+      rate: this.state.rate,
+      productCode: this.props.values.productCode
+    };
+    //Dispatch the function to add the details to the store
+    this.props.updateStockItem(Data);
+    this.friendlyHandleReset();
+    this.props.showSnackBar("In Action Successfully !");
+  };
 
   render() {
     return (
@@ -72,23 +59,17 @@ class Glass extends Component {
         {/* All Fields */}
         <div>
           <TextField
-            value={this.state.productCode}
-            onChange={this.handleProductCodeChange}
-            hint="Product Code"
-            floatingLabelText="Unique Code to Identify"
-          />
-          <TextField
             value={this.state.productName}
             onChange={this.handleProductNameChange}
             hint="Product Name"
-            floatingLabelText="Place Product Name"
+            floatingLabelText="update Product Name"
           />
           <TextField
             type="number"
             value={this.state.sft}
             onChange={this.handleSFTChange}
-            hintText="SFT"
-            floatingLabelText="Place the SFT "
+            hintText="Add SFT"
+            floatingLabelText={`Add SFT (Now: ${this.props.values.sft})`}
           />
 
           <TextField
@@ -96,34 +77,18 @@ class Glass extends Component {
             value={this.state.rate}
             onChange={this.handleRateChange}
             hintText="Price/Rate"
-            floatingLabelText="Place the Price/Rate "
+            floatingLabelText="update the Price/Rate "
           />
           <div style={{ textAlign: "center", marginTop: 5 }}>
             <FlatButton
               disabled={
-                this.state.productCode ||
-                this.state.productName ||
-                this.state.sft ||
-                this.state.rate
-                  ? false
-                  : true
-              }
-              secondary={true}
-              label="Reset"
-              onClick={this.handleReset}
-            />
-            <FlatButton
-              disabled={
-                this.state.productCode &&
-                this.state.productName &&
-                this.state.sft &&
-                this.state.rate
+                this.state.productName && this.state.sft && this.state.rate
                   ? false
                   : true
               }
               primary={true}
-              label="Add"
-              onClick={this.handleSubmit}
+              label="In"
+              onClick={this.handleStockIn}
             />
           </div>
         </div>
@@ -132,12 +97,8 @@ class Glass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  stock: state.stock.glass
-});
-
 const mapDispatchToProps = dispatch => ({
-  addItemToStock: itemData => dispatch(addItemToStock(itemData))
+  updateStockItem: data => dispatch(updateStockItem(data))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Glass);
+export default connect(null, mapDispatchToProps)(Glass);

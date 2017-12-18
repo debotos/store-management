@@ -1,7 +1,8 @@
 import {
   SET_STOCK,
   REMOVE_ITEM_FROM_STOCK,
-  ADD_ITEM_TO_STOCK
+  ADD_ITEM_TO_STOCK,
+  UPDATE_STOCK_ITEM
 } from "../constants";
 import database from "../../secrets/firebase";
 
@@ -22,8 +23,9 @@ export const addItemToStock = data => ({
 //   };
 // };
 // Expection just an id number
-export const removeItemToStock = id => ({
+export const removeItemToStock = (productCategoryToSell, id) => ({
   type: REMOVE_ITEM_FROM_STOCK,
+  productCategoryToSell,
   id
 });
 
@@ -38,6 +40,10 @@ export const removeItemToStock = id => ({
 //   };
 // };
 
+export const updateStockItem = data => ({
+  type: UPDATE_STOCK_ITEM,
+  data
+});
 // Function to get data from firebase and fill the local store
 // export const setStock = data => ({
 //   type: SET_STOCK,

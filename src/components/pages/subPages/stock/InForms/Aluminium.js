@@ -2,27 +2,11 @@ import React, { Component } from "react";
 import { Card } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
-import uuid from "uuid/v4";
 import { connect } from "react-redux";
 
-// import { addItemToStock } from "../../../../../actions/stock/stock-action";
+import { updateStockItem } from "../../../../../actions/stock/stock-action";
 
 class Aluminium extends Component {
-  handleReset = () => {
-    this.setState({ quantity: "" });
-    this.setState({ length: "" });
-    this.setState({ dia: "" });
-    this.setState({ color: "" });
-    this.setState({ rate: "" });
-    this.setState({ productName: "" });
-    this.setState({ companyName: "" });
-  };
-
-  friendlyHandleReset = () => {
-    this.setState({ quantity: "" });
-    this.setState({ rate: "" });
-  };
-
   handleQuantyChange = event => {
     const quantity = event.target.value;
     if (!quantity || quantity.match(/^\d{1,}(\.\d{0,2})?$/)) {
@@ -60,34 +44,44 @@ class Aluminium extends Component {
     const color = event.target.value;
     this.setState({ color });
   };
-
+  friendlyHandleReset = () => {
+    this.setState({ length: "" });
+    this.setState({ quantity: "" });
+    this.setState({ dia: "" });
+  };
   constructor(props) {
     super(props);
     this.state = {
       companyName: this.props.values.companyName,
       color: this.props.values.color,
-      length: this.props.values.length,
-      dia: this.props.values.dia,
+      length: "",
+      dia: "",
       productName: this.props.values.productName,
-      quantity: this.props.values.quantity,
-      rate: this.props.values.rate,
-      productCategoryToSell: this.props.values.productCategoryToSell
+      quantity: "",
+      rate: this.props.values.rate
     };
   }
   handleStockIn = () => {
-    let sellsItemData = {
-      id: uuid(),
-      productCode: this.props.productCode,
-      productCategoryToSell: this.state.productCategoryToSell,
+    let Data = {
+      id: this.props.values.id,
+      productCode: this.props.values.productCode,
+      productCategoryToSell: this.props.values.productCategoryToSell,
       companyName: this.state.companyName,
       color: this.state.color,
-      length: this.state.length,
-      dia: this.state.dia,
+      length: (
+        parseFloat(this.state.length) + parseFloat(this.props.values.length)
+      ).toFixed(2),
+      dia: (
+        parseFloat(this.state.dia) + parseFloat(this.props.values.dia)
+      ).toFixed(2),
       productName: this.state.productName,
-      quantity: this.state.quantity,
+      quantity: (
+        parseFloat(this.state.quantity) + parseFloat(this.props.values.quantity)
+      ).toFixed(2),
       rate: this.state.rate
     };
     //Dispatch the function to add the details to the store
+    this.props.updateStockItem(Data);
     this.friendlyHandleReset();
     this.props.showSnackBar("In Action Successfully !");
   };
@@ -125,21 +119,23 @@ class Aluminium extends Component {
             value={this.state.length}
             onChange={this.handleLengthChange}
             hintText="Length"
-            floatingLabelText="Add Length "
+            floatingLabelText={`Add Length (Now: ${this.props.values.length})`}
           />
           <TextField
             type="number"
             value={this.state.dia}
             onChange={this.handleDiaChange}
             hintText="DIA"
-            floatingLabelText="Add DIA "
+            floatingLabelText={`Add DIA (Now: ${this.props.values.dia})`}
           />
           <TextField
             type="number"
             value={this.state.quantity}
             onChange={this.handleQuantyChange}
             hintText="Quantity"
-            floatingLabelText="Add Quantity "
+            floatingLabelText={`Add Quantity (Now: ${
+              this.props.values.quantity
+            })`}
           />
           <TextField
             type="number"
@@ -171,10 +167,8 @@ class Aluminium extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  stock: state.stock.aluminium
+const mapDispatchToProps = dispatch => ({
+  updateStockItem: data => dispatch(updateStockItem(data))
 });
 
-const mapDispatchToProps = dispatch => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Aluminium);
+export default connect(null, mapDispatchToProps)(Aluminium);

@@ -113,7 +113,12 @@ class In extends Component {
       }
     }
     console.log("sending values from in.js", values);
-    return values;
+    //This will check if the object is empty
+    if (JSON.stringify(values) === "{}") {
+      return null;
+    } else {
+      return values;
+    }
   };
   constructor(props) {
     super(props);
@@ -156,7 +161,9 @@ class In extends Component {
             )}
           </Card>
           {/* Form to In */}
-          {this.state.selectedItem && (
+          {this.state.selectedItem &&
+          this.getValuesOfTheItemCurrentlySelected() &&
+          this.renderItemsBasedOnSelectedCategory() ? (
             <div style={{ marginBottom: 10 }}>
               {this.state.selectedCategory === "Aluminium" && (
                 <Aluminium
@@ -187,6 +194,8 @@ class In extends Component {
                 />
               )}
             </div>
+          ) : (
+            <div />
           )}
         </div>
       </div>
