@@ -112,7 +112,7 @@ class View extends Component {
         });
       }
     }
-    console.log("sending values from in.js", values);
+    // console.log("sending values from [function] in.js", values);
     //This will check if the object is empty
     if (JSON.stringify(values) === "{}") {
       return null;

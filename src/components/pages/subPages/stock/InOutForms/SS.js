@@ -35,9 +35,19 @@ class SS extends Component {
     this.setState({ length: "" });
     this.setState({ quantity: "" });
   };
+  componentDidUpdate = () => {
+    if (this.props.values.productCode !== this.state.productCode) {
+      this.setState({ productCode: this.props.values.productCode });
+      this.setState({ companyName: this.props.values.companyName });
+      this.setState({ thickness: this.props.values.thickness });
+      this.setState({ productName: this.props.values.productName });
+      this.setState({ rate: this.props.values.rate });
+    }
+  };
   constructor(props) {
     super(props);
     this.state = {
+      productCode: this.props.values.productCode,
       companyName: this.props.values.companyName,
       length: "",
       thickness: this.props.values.thickness,

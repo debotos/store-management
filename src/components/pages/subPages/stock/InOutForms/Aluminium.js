@@ -49,9 +49,19 @@ class Aluminium extends Component {
     this.setState({ quantity: "" });
     this.setState({ dia: "" });
   };
+  componentDidUpdate = () => {
+    if (this.props.values.productCode !== this.state.productCode) {
+      this.setState({ productCode: this.props.values.productCode });
+      this.setState({ companyName: this.props.values.companyName });
+      this.setState({ color: this.props.values.color });
+      this.setState({ productName: this.props.values.productName });
+      this.setState({ rate: this.props.values.rate });
+    }
+  };
   constructor(props) {
     super(props);
     this.state = {
+      productCode: this.props.values.productCode,
       companyName: this.props.values.companyName,
       color: this.props.values.color,
       length: "",

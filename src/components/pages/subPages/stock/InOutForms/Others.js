@@ -22,9 +22,17 @@ class Others extends Component {
   friendlyHandleReset = () => {
     this.setState({ quantity: "" });
   };
+  componentDidUpdate = () => {
+    if (this.props.values.productCode !== this.state.productCode) {
+      this.setState({ productCode: this.props.values.productCode });
+      this.setState({ productName: this.props.values.productName });
+      this.setState({ rate: this.props.values.rate });
+    }
+  };
   constructor(props) {
     super(props);
     this.state = {
+      productCode: this.props.values.productCode,
       productName: this.props.values.productName,
       quantity: "",
       rate: this.props.values.rate
