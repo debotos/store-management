@@ -85,6 +85,30 @@ class Aluminium extends Component {
     this.friendlyHandleReset();
     this.props.showSnackBar("In Action Successfully !");
   };
+  handleStockOut = () => {
+    let Data = {
+      id: this.props.values.id,
+      productCode: this.props.values.productCode,
+      productCategoryToSell: this.props.values.productCategoryToSell,
+      companyName: this.state.companyName,
+      color: this.state.color,
+      length: (
+        parseFloat(this.props.values.length) - parseFloat(this.state.length)
+      ).toFixed(2),
+      dia: (
+        parseFloat(this.props.values.dia) - parseFloat(this.state.dia)
+      ).toFixed(2),
+      productName: this.state.productName,
+      quantity: (
+        parseFloat(this.props.values.quantity) - parseFloat(this.state.quantity)
+      ).toFixed(2),
+      rate: this.state.rate
+    };
+    //Dispatch the function to add the details to the store
+    this.props.updateStockItem(Data);
+    this.friendlyHandleReset();
+    this.props.showSnackBar("Out Action Successfully !");
+  };
   render() {
     return (
       <Card
@@ -145,6 +169,21 @@ class Aluminium extends Component {
             floatingLabelText="Update the Price/Rate "
           />
           <div style={{ textAlign: "center", marginTop: 5 }}>
+            <FlatButton
+              disabled={
+                this.state.companyName &&
+                this.state.productName &&
+                this.state.quantity &&
+                this.state.length &&
+                this.state.dia &&
+                this.state.rate
+                  ? false
+                  : true
+              }
+              secondary={true}
+              label="Out"
+              onClick={this.handleStockOut}
+            />
             <FlatButton
               disabled={
                 this.state.companyName &&

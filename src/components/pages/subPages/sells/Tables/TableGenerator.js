@@ -888,7 +888,7 @@ class TableGenerator extends Component {
           this.props.allSells.glass.length > 0 ||
           this.props.allSells.ss.length > 0 ||
           this.props.allSells.others.length > 0) && (
-          <div
+          <Card
             className="container"
             style={{
               textAlign: "center",
@@ -905,13 +905,15 @@ class TableGenerator extends Component {
               <strong>Totally = {this.finallyAllTotal()}</strong>
             </span>
             <TextField
-              style={{}}
+              style={{
+                color: "#00CD00"
+              }}
               type="number"
               value={this.state.finallyAllTotalField}
               onChange={this.handleoveridefinallyAllTotal}
-              hintText="Overide Finally All Total"
+              hintText="Overide Final Result"
             />
-          </div>
+          </Card>
         )}
 
         {/* Model to Delete and Details */}

@@ -4,14 +4,25 @@
   width: 100%;
   margin-top: 10px;
   font-family: 1.8rem;
-  font-weight: 300;
+  font-weight: 400;
   padding: 1.2rem;
+  color: black;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+}
+
+.background {
+  background-image: url("../../assets/images/background.jpg");
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .content {

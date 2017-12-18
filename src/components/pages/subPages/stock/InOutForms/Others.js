@@ -6,27 +6,27 @@ import { connect } from "react-redux";
 
 import { updateStockItem } from "../../../../../actions/stock/stock-action";
 
-class Glass extends Component {
+class Others extends Component {
   handleProductNameChange = event => {
     const productName = event.target.value;
     this.setState({ productName });
   };
-  handleSFTChange = event => {
-    const sft = event.target.value;
-    this.setState({ sft });
+  handleQuantityChange = event => {
+    const quantity = event.target.value;
+    this.setState({ quantity });
   };
   handleRateChange = event => {
     const rate = event.target.value;
     this.setState({ rate });
   };
   friendlyHandleReset = () => {
-    this.setState({ sft: "" });
+    this.setState({ quantity: "" });
   };
   constructor(props) {
     super(props);
     this.state = {
       productName: this.props.values.productName,
-      sft: "",
+      quantity: "",
       rate: this.props.values.rate
     };
   }
@@ -34,10 +34,10 @@ class Glass extends Component {
     let Data = {
       id: this.props.values.id,
       productCategoryToSell: this.props.values.productCategoryToSell,
-      sft: (
-        parseFloat(this.state.sft) + parseFloat(this.props.values.sft)
-      ).toFixed(2),
       productName: this.state.productName,
+      quantity: (
+        parseFloat(this.state.quantity) + parseFloat(this.props.values.quantity)
+      ).toFixed(2),
       rate: this.state.rate,
       productCode: this.props.values.productCode
     };
@@ -46,7 +46,22 @@ class Glass extends Component {
     this.friendlyHandleReset();
     this.props.showSnackBar("In Action Successfully !");
   };
-
+  handleStockOut = () => {
+    let Data = {
+      id: this.props.values.id,
+      productCategoryToSell: this.props.values.productCategoryToSell,
+      productName: this.state.productName,
+      quantity: (
+        parseFloat(this.props.values.quantity) - parseFloat(this.state.quantity)
+      ).toFixed(2),
+      rate: this.state.rate,
+      productCode: this.props.values.productCode
+    };
+    //Dispatch the function to add the details to the store
+    this.props.updateStockItem(Data);
+    this.friendlyHandleReset();
+    this.props.showSnackBar("Out Action Successfully !");
+  };
   render() {
     return (
       <Card
@@ -62,14 +77,17 @@ class Glass extends Component {
             value={this.state.productName}
             onChange={this.handleProductNameChange}
             hint="Product Name"
-            floatingLabelText="update Product Name"
+            floatingLabelText="Update Product Name"
           />
+
           <TextField
             type="number"
-            value={this.state.sft}
-            onChange={this.handleSFTChange}
-            hintText="Add SFT"
-            floatingLabelText={`Add SFT (Now: ${this.props.values.sft})`}
+            value={this.state.quantity}
+            onChange={this.handleQuantityChange}
+            hintText="Quantity"
+            floatingLabelText={`Add Quantity (Now: ${
+              this.props.values.quantity
+            })`}
           />
 
           <TextField
@@ -77,12 +95,22 @@ class Glass extends Component {
             value={this.state.rate}
             onChange={this.handleRateChange}
             hintText="Price/Rate"
-            floatingLabelText="update the Price/Rate "
+            floatingLabelText="Update the Price/Rate "
           />
           <div style={{ textAlign: "center", marginTop: 5 }}>
             <FlatButton
               disabled={
-                this.state.productName && this.state.sft && this.state.rate
+                this.state.productName && this.state.quantity && this.state.rate
+                  ? false
+                  : true
+              }
+              secondary={true}
+              label="Out"
+              onClick={this.handleStockOut}
+            />
+            <FlatButton
+              disabled={
+                this.state.productName && this.state.quantity && this.state.rate
                   ? false
                   : true
               }
@@ -101,4 +129,4 @@ const mapDispatchToProps = dispatch => ({
   updateStockItem: data => dispatch(updateStockItem(data))
 });
 
-export default connect(null, mapDispatchToProps)(Glass);
+export default connect(null, mapDispatchToProps)(Others);

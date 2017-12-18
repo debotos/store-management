@@ -6,10 +6,10 @@ import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 
-import Aluminium from "./InForms/Aluminium";
-import Glass from "./InForms/Glass";
-import SS from "./InForms/SS";
-import Others from "./InForms/Others";
+import Aluminium from "./InOutForms/Aluminium";
+import Glass from "./InOutForms/Glass";
+import SS from "./InOutForms/SS";
+import Others from "./InOutForms/Others";
 
 const items = [
   <MenuItem key={1} value="Aluminium" primaryText="Thai Aluminium" />,
@@ -18,7 +18,7 @@ const items = [
   <MenuItem key={4} value="Others" primaryText="Others" />
 ];
 
-class In extends Component {
+class InOut extends Component {
   handleSelectedCategoryChange = (event, index, value) =>
     this.setState({ selectedCategory: value });
   handleSelectedItemChange = (event, index, value) =>
@@ -209,4 +209,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, null)(In);
+export default connect(mapStateToProps, null)(InOut);

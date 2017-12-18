@@ -1,0 +1,129 @@
+import React, { Component } from "react";
+import { Card } from "material-ui/Card";
+import FlatButton from "material-ui/FlatButton";
+import TextField from "material-ui/TextField";
+import { connect } from "react-redux";
+
+import { updateStockItem } from "../../../../../actions/stock/stock-action";
+
+class Glass extends Component {
+  handleProductNameChange = event => {
+    const productName = event.target.value;
+    this.setState({ productName });
+  };
+  handleSFTChange = event => {
+    const sft = event.target.value;
+    this.setState({ sft });
+  };
+  handleRateChange = event => {
+    const rate = event.target.value;
+    this.setState({ rate });
+  };
+  friendlyHandleReset = () => {
+    this.setState({ sft: "" });
+  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      productName: this.props.values.productName,
+      sft: "",
+      rate: this.props.values.rate
+    };
+  }
+  handleStockIn = () => {
+    let Data = {
+      id: this.props.values.id,
+      productCategoryToSell: this.props.values.productCategoryToSell,
+      sft: (
+        parseFloat(this.state.sft) + parseFloat(this.props.values.sft)
+      ).toFixed(2),
+      productName: this.state.productName,
+      rate: this.state.rate,
+      productCode: this.props.values.productCode
+    };
+    //Dispatch the function to add the details to the store
+    this.props.updateStockItem(Data);
+    this.friendlyHandleReset();
+    this.props.showSnackBar("In Action Successfully !");
+  };
+  handleStockOut = () => {
+    let Data = {
+      id: this.props.values.id,
+      productCategoryToSell: this.props.values.productCategoryToSell,
+      sft: (
+        parseFloat(this.props.values.sft) - parseFloat(this.state.sft)
+      ).toFixed(2),
+      productName: this.state.productName,
+      rate: this.state.rate,
+      productCode: this.props.values.productCode
+    };
+    //Dispatch the function to add the details to the store
+    this.props.updateStockItem(Data);
+    this.friendlyHandleReset();
+    this.props.showSnackBar("Out Action Successfully !");
+  };
+  render() {
+    return (
+      <Card
+        style={{
+          marginTop: 10,
+          padding: 13,
+          paddingBottom: 20
+        }}
+      >
+        {/* All Fields */}
+        <div>
+          <TextField
+            value={this.state.productName}
+            onChange={this.handleProductNameChange}
+            hint="Product Name"
+            floatingLabelText="update Product Name"
+          />
+          <TextField
+            type="number"
+            value={this.state.sft}
+            onChange={this.handleSFTChange}
+            hintText="Add SFT"
+            floatingLabelText={`Add SFT (Now: ${this.props.values.sft})`}
+          />
+
+          <TextField
+            type="number"
+            value={this.state.rate}
+            onChange={this.handleRateChange}
+            hintText="Price/Rate"
+            floatingLabelText="update the Price/Rate "
+          />
+          <div style={{ textAlign: "center", marginTop: 5 }}>
+            <FlatButton
+              disabled={
+                this.state.productName && this.state.sft && this.state.rate
+                  ? false
+                  : true
+              }
+              secondary={true}
+              label="Out"
+              onClick={this.handleStockOut}
+            />
+            <FlatButton
+              disabled={
+                this.state.productName && this.state.sft && this.state.rate
+                  ? false
+                  : true
+              }
+              primary={true}
+              label="In"
+              onClick={this.handleStockIn}
+            />
+          </div>
+        </div>
+      </Card>
+    );
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  updateStockItem: data => dispatch(updateStockItem(data))
+});
+
+export default connect(null, mapDispatchToProps)(Glass);
