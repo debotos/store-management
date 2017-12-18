@@ -16,7 +16,9 @@ class Glass extends Component {
     this.setState({ open: false });
   };
   componentDidUpdate = () => {
-    if (this.props.values.productCode !== this.state.glass.productCode) {
+    if (
+      JSON.stringify(this.props.values) !== JSON.stringify(this.state.glass)
+    ) {
       this.setState({ glass: this.props.values });
     }
   };

@@ -16,7 +16,9 @@ class Others extends Component {
     this.setState({ open: false });
   };
   componentDidUpdate = () => {
-    if (this.props.values.productCode !== this.state.others.productCode) {
+    if (
+      JSON.stringify(this.props.values) !== JSON.stringify(this.state.others)
+    ) {
       this.setState({ others: this.props.values });
     }
   };

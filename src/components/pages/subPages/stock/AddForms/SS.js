@@ -50,6 +50,19 @@ class SS extends Component {
     const productCode = event.target.value;
     this.setState({ productCode });
   };
+  productCodeAlreadyExists = () => {
+    let category = this.state.productCategoryToSell;
+    let productCode = this.state.productCode;
+    let flag = false;
+    if (Object.keys(this.props.stock).length > 0) {
+      this.props.stock.forEach(singleItem => {
+        if (singleItem.productCode === productCode) {
+          flag = true;
+        }
+      });
+    }
+    return flag;
+  };
   handleSubmit = () => {
     let sellsItemData = {
       id: uuid(),
@@ -63,9 +76,13 @@ class SS extends Component {
       productCode: this.state.productCode
     };
     //Dispatch the function to add the details to the store
-    this.props.addItemToStock(sellsItemData);
-    this.friendlyHandleReset();
-    this.props.showSnackBar("Item added Successfully !");
+    if (this.productCodeAlreadyExists()) {
+      this.props.showSnackBar("Product Code Already Exists !");
+    } else {
+      this.props.addItemToStock(sellsItemData);
+      this.friendlyHandleReset();
+      this.props.showSnackBar("Item added Successfully !");
+    }
   };
   constructor(props) {
     super(props);

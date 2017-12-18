@@ -16,7 +16,7 @@ class SS extends Component {
     this.setState({ open: false });
   };
   componentDidUpdate = () => {
-    if (this.props.values.productCode !== this.state.ss.productCode) {
+    if (JSON.stringify(this.props.values) === JSON.stringify(this.state.ss)) {
       this.setState({ ss: this.props.values });
     }
   };

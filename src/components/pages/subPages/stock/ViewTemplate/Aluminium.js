@@ -16,36 +16,24 @@ class Aluminium extends Component {
     this.setState({ open: false });
   };
   componentDidUpdate = () => {
-    if (this.props.values.productCode !== this.state.productCode) {
-      this.setState({ productCode: this.props.values.productCode }),
-        this.setState({ companyName: this.props.values.companyName }),
-        this.setState({ color: this.props.values.color }),
-        this.setState({ length: this.props.values.length }),
-        this.setState({ dia: this.props.values.dia }),
-        this.setState({ productName: this.props.values.productName }),
-        this.setState({ quantity: this.props.values.quantity }),
-        this.setState({ rate: this.props.values.rate });
+    if (
+      JSON.stringify(this.props.values) !== JSON.stringify(this.state.aluminium)
+    ) {
+      this.setState({ aluminium: this.props.values });
     }
   };
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      productCode: this.props.values.productCode,
-      companyName: this.props.values.companyName,
-      color: this.props.values.color,
-      length: this.props.values.length,
-      dia: this.props.values.dia,
-      productName: this.props.values.productName,
-      quantity: this.props.values.quantity,
-      rate: this.props.values.rate
+      aluminium: this.props.values
     };
   }
   handleDelete = () => {
     this.handleClose();
     this.props.removeItemToStock(
-      this.state.aluminium.productCategoryToSell,
-      this.state.aluminium.id
+      this.props.values.productCategoryToSell,
+      this.props.values.id
     );
     this.props.showSnackBar("Successfully Deleted !");
   };
@@ -59,33 +47,33 @@ class Aluminium extends Component {
       <div>
         <Card>
           <CardHeader
-            title={this.state.productCode}
+            title={this.state.aluminium.productCode}
             subtitle="Aluminium Category"
             actAsExpander={true}
             showExpandableButton={true}
           />
 
           <CardText expandable={true}>
-            Code: <strong>{this.state.productCode}</strong> <br />
-            Name: <strong>{this.state.productName}</strong> <br />
-            Company: <strong>{this.state.companyName}</strong> <br />
-            Color: <strong>{this.state.color}</strong> <br />
+            Code: <strong>{this.state.aluminium.productCode}</strong> <br />
+            Name: <strong>{this.state.aluminium.productName}</strong> <br />
+            Company: <strong>{this.state.aluminium.companyName}</strong> <br />
+            Color: <strong>{this.state.aluminium.color}</strong> <br />
             Length:{" "}
             <span style={{ color: "green" }}>
-              <strong>{this.state.length}</strong>
+              <strong>{this.state.aluminium.length}</strong>
             </span>{" "}
             <br />
             Dia:{" "}
             <span style={{ color: "green" }}>
-              <strong>{this.state.dia}</strong>
+              <strong>{this.state.aluminium.dia}</strong>
             </span>{" "}
             <br />
             Quantity:{" "}
             <span style={{ color: "green" }}>
-              <strong>{this.state.quantity}</strong>
+              <strong>{this.state.aluminium.quantity}</strong>
             </span>{" "}
             <br />
-            Rate: <strong>{this.state.rate}</strong>
+            Rate: <strong>{this.state.aluminium.rate}</strong>
           </CardText>
 
           <CardActions>
