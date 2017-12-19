@@ -7,7 +7,7 @@ class ReadyCash extends Component {
   render() {
     return (
       <div>
-        <AppBarMain />
+        <AppBarMain title={"Ready Cash"} />
         <h1>ReadyCash.js</h1>
       </div>
     );

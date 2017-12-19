@@ -52,7 +52,7 @@ class Expenses extends Component {
   render() {
     return (
       <div>
-        <AppBarMain />
+        <AppBarMain title={"Expenses"} />
         <h1 style={{ textAlign: "center" }}>Record Expenses</h1>
         <div>
           <div style={{ marginTop: 10 }}>

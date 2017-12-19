@@ -5,8 +5,8 @@ import TextField from "material-ui/TextField";
 
 import AppBarMain from "../ui-element/AppBarMain";
 import "../../style/due/due.css";
-import { setDueTextFilter } from '../../actions/due/due-filter-actions';
-import dueFilter from './subPages/due/utility-func/due-filter'
+import { setDueTextFilter } from "../../actions/due/due-filter-actions";
+import dueFilter from "./subPages/due/utility-func/due-filter";
 // import Navigation from "../Navigation";
 
 class Due extends Component {
@@ -14,16 +14,16 @@ class Due extends Component {
     super(props);
     this.state = {
       dueSearchText: ""
-    }
+    };
   }
-  handleDueSearch = (event) => {
+  handleDueSearch = event => {
     const dueSearchText = event.target.value;
-    this.props.setDueTextFilter(dueSearchText)
-  }
+    this.props.setDueTextFilter(dueSearchText);
+  };
   render() {
     return (
       <div>
-        <AppBarMain />
+        <AppBarMain title={"Due"} />
         <Card style={{ padding: 7, margin: 5, textAlign: "center" }}>
           <TextField
             type="number"
@@ -82,12 +82,12 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    setDueTextFilter: (text) => {
-      dispatch(setDueTextFilter(text))
+    setDueTextFilter: text => {
+      dispatch(setDueTextFilter(text));
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Due);

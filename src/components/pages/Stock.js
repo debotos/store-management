@@ -50,7 +50,7 @@ class Stock extends Component {
   render() {
     return (
       <div>
-        <AppBarMain />
+        <AppBarMain title={"Stock"} />
         {/* TabBar Section */}
         <div>
           <Tabs onChange={this.handleTabChange} value={this.state.slideIndex}>

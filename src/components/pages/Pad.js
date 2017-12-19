@@ -6,8 +6,7 @@ import { Card } from "material-ui/Card";
 import {
   COMPANY_NAME,
   COMPANY_ADDRESS,
-  COMPANY_PHONE_NUMBER,
-  COMPANY_OWENER
+  COMPANY_PHONE_NUMBER
 } from "../global/global";
 // import Navigation from "../Navigation";
 var PrintTemplate = require("react-print");
@@ -30,7 +29,7 @@ class Pad extends Component {
     return (
       <div className="background">
         <div id="react-no-print">
-          <AppBarMain />
+          <AppBarMain title={"Your Pad"} />
           <div className="container">
             <Card style={{ borderRadius: "20px", marginTop: 10, padding: 5 }}>
               <h3 style={{ textAlign: "center" }}>Pad</h3>

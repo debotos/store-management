@@ -74,7 +74,7 @@ class Sells extends Component {
     return (
       <div>
         {/* Main App Bar */}
-        <AppBarMain title={"Sells"} />
+        <AppBarMain />
         {/* Tab Section */}
 
         <div>

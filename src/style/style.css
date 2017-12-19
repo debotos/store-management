@@ -1,2 +1,8 @@
-.body {
+.analog-clock {
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.analog-clock:hover {
+  cursor: default;
 }

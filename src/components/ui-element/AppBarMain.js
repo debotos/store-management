@@ -5,7 +5,7 @@ import IconButton from "material-ui/IconButton";
 import NavigationClose from "material-ui/svg-icons/navigation/close";
 
 import { APP_NAME } from "../global/global";
-import MenuItems from './MenuItems';
+import MenuItems from "./MenuItems";
 
 class AppBarMain extends React.Component {
   constructor(props) {
@@ -19,7 +19,10 @@ class AppBarMain extends React.Component {
   render() {
     return (
       <div>
-        <AppBar title={APP_NAME} onLeftIconButtonTouchTap={this.handleToggle} />
+        <AppBar
+          title={this.props.title ? `${this.props.title} Page` : APP_NAME}
+          onLeftIconButtonTouchTap={this.handleToggle}
+        />
         <Drawer
           docked={false}
           width={200}
@@ -37,9 +40,8 @@ class AppBarMain extends React.Component {
             }}
             title={<span>Menu</span>}
           />
-          
-          <MenuItems handleClose={this.handleClose}/>
 
+          <MenuItems handleClose={this.handleClose} />
         </Drawer>
       </div>
     );

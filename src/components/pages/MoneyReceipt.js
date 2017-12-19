@@ -123,7 +123,7 @@ class MoneyReceipt extends Component {
     ];
     return (
       <div>
-        <AppBarMain />
+        <AppBarMain title={"Money Receipt"} />
         <Card style={{ padding: 7, margin: 5, textAlign: "center" }}>
           <TextField
             type="number"

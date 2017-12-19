@@ -7,7 +7,7 @@ class Salary extends Component {
   render() {
     return (
       <div>
-        <AppBarMain />
+        <AppBarMain title={"Salary"} />
         <h1>Salary.js</h1>
       </div>
     );

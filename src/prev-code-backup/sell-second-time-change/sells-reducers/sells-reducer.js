@@ -2,21 +2,15 @@ import {
   ADD_A_SELL_ITEM,
   REMOVE_A_SELL_ITEM,
   REMOVE_ALL_SELL_ITEMS,
-  MAKE_EMPTY_A_SELL_ITEMS
+  ADD_TOTAL_TO_STORE
 } from "../../actions/constants";
 
 const getDate = () => {
   var time = new Date();
-  time = time.toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true
-  });
-  let finalDate = `${Date()
-    .substr(0, 15)
-    .toString()} ${time}`;
+  time = time.toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true });
+  let finalDate = `${(Date().substr(0, 15)).toString()} ${time}`
   return finalDate;
-};
+}
 
 const sellsReducerDefaultState = {
   aluminium: [],
@@ -87,35 +81,6 @@ export const sellsReducer = (state = sellsReducerDefaultState, action) => {
           others: state.others.filter(
             singleSell => singleSell.id !== action.id
           ),
-          date: getDate()
-        };
-      }
-    case MAKE_EMPTY_A_SELL_ITEMS:
-      if (action.category === "aluminium") {
-        return {
-          ...state,
-          aluminium: [],
-          date: getDate()
-        };
-      }
-      if (action.category === "glass") {
-        return {
-          ...state,
-          glass: [],
-          date: getDate()
-        };
-      }
-      if (action.category === "ss") {
-        return {
-          ...state,
-          ss: [],
-          date: getDate()
-        };
-      }
-      if (action.category === "others") {
-        return {
-          ...state,
-          others: [],
           date: getDate()
         };
       }

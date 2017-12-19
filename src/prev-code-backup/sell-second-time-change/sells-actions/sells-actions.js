@@ -2,17 +2,13 @@ import {
   ADD_A_SELL_ITEM,
   REMOVE_A_SELL_ITEM,
   REMOVE_ALL_SELL_ITEMS,
-  MAKE_EMPTY_A_SELL_ITEMS
+  ADD_A_CUSTOMER,
+  REMOVE_CUSTOMERS
 } from "../constants";
 
 export const addSellItem = data => ({
   type: ADD_A_SELL_ITEM,
   data
-});
-
-export const makeEmptySellItem = category => ({
-  type: MAKE_EMPTY_A_SELL_ITEMS,
-  category
 });
 
 export const removeSellItem = (id, productCategoryToSell) => ({

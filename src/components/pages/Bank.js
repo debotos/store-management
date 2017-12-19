@@ -57,7 +57,7 @@ class Bank extends Component {
   render() {
     return (
       <div>
-        <AppBarMain />
+        <AppBarMain title={"Bank"} />
         <div className="container">
           <h1 style={{ textAlign: "center" }}>Manage your Bank </h1>
           <div>

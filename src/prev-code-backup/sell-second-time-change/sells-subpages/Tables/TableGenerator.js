@@ -14,12 +14,9 @@ import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import Toggle from "material-ui/Toggle";
 import { Card } from "material-ui/Card";
-import RaisedButton from "material-ui/RaisedButton";
 
 import "../../../../../style/sells/table.css";
 import { removeSellItem } from "../../../../../actions/sells/sells-actions";
-import { addTable } from "../../../../../actions/sells/table-actions";
-import { makeEmptySellItem } from "../../../../../actions/sells/sells-actions";
 
 class TableGenerator extends Component {
   handleAluminiumDiscountToggle = (event, isInputChecked) => {
@@ -290,78 +287,19 @@ class TableGenerator extends Component {
 
   handleoverideTotalSumOfAluminium = event => {
     const overideTotalSumOfAluminium = event.target.value;
-    if (overideTotalSumOfAluminium) {
-      if (
-        parseFloat(overideTotalSumOfAluminium) <=
-        parseFloat(this.calculateAluminiumSUM()[1])
-      ) {
-        this.setState({ overideTotalSumOfAluminium });
-      } else {
-        this.props.showSnackBar(
-          `Failed! Input MAX: ${parseFloat(
-            this.calculateAluminiumSUM()[1]
-          ).toFixed(2)}`
-        );
-      }
-    } else {
-      this.setState({ overideTotalSumOfAluminium });
-    }
+    this.setState({ overideTotalSumOfAluminium });
   };
   handleoverideTotalSumOfGlass = event => {
     const overideTotalSumOfGlass = event.target.value;
-    if (overideTotalSumOfGlass) {
-      if (
-        parseFloat(overideTotalSumOfGlass) <=
-        parseFloat(this.calculateGlassSUM()[1])
-      ) {
-        this.setState({ overideTotalSumOfGlass });
-      } else {
-        this.props.showSnackBar(
-          `Failed! Input MAX: ${parseFloat(this.calculateGlassSUM()[1]).toFixed(
-            2
-          )}`
-        );
-      }
-    } else {
-      this.setState({ overideTotalSumOfGlass });
-    }
+    this.setState({ overideTotalSumOfGlass });
   };
   handleoverideTotalSumOfSS = event => {
     const overideTotalSumOfSS = event.target.value;
-    if (overideTotalSumOfSS) {
-      if (
-        parseFloat(overideTotalSumOfSS) <= parseFloat(this.calculateSSSUM()[1])
-      ) {
-        this.setState({ overideTotalSumOfSS });
-      } else {
-        this.props.showSnackBar(
-          `Failed! Input MAX: ${parseFloat(this.calculateSSSUM()[1]).toFixed(
-            2
-          )}`
-        );
-      }
-    } else {
-      this.setState({ overideTotalSumOfSS });
-    }
+    this.setState({ overideTotalSumOfSS });
   };
   handleoverideTotalSumOfOthers = event => {
     const overideTotalSumOfOthers = event.target.value;
-    if (overideTotalSumOfOthers) {
-      if (
-        parseFloat(overideTotalSumOfOthers) <=
-        parseFloat(this.calculateOthersSUM()[1])
-      ) {
-        this.setState({ overideTotalSumOfOthers });
-      } else {
-        this.props.showSnackBar(
-          `Failed! Input MAX: ${parseFloat(
-            this.calculateOthersSUM()[1]
-          ).toFixed(2)}`
-        );
-      }
-    } else {
-      this.setState({ overideTotalSumOfOthers });
-    }
+    this.setState({ overideTotalSumOfOthers });
   };
   calculateAluminiumSUM = () => {
     let SUM = 0;
@@ -431,20 +369,16 @@ class TableGenerator extends Component {
   };
   finallyAllTotal = () => {
     const aluminiumSum = this.state.overideTotalSumOfAluminium
-      ? parseFloat(this.calculateAluminiumSUM()[1]) -
-        parseFloat(this.state.overideTotalSumOfAluminium)
+      ? parseFloat(this.state.overideTotalSumOfAluminium)
       : parseFloat(this.calculateAluminiumSUM()[1]);
     const glassSum = this.state.overideTotalSumOfGlass
-      ? parseFloat(this.calculateGlassSUM()[1]) -
-        parseFloat(this.state.overideTotalSumOfGlass)
+      ? parseFloat(this.state.overideTotalSumOfGlass)
       : parseFloat(this.calculateGlassSUM()[1]);
     const ssSum = this.state.overideTotalSumOfSS
-      ? parseFloat(this.calculateSSSUM()[1]) -
-        parseFloat(this.state.overideTotalSumOfSS)
+      ? parseFloat(this.state.overideTotalSumOfSS)
       : parseFloat(this.calculateSSSUM()[1]);
     const othersSum = this.state.overideTotalSumOfOthers
-      ? parseFloat(this.calculateOthersSUM()[1]) -
-        parseFloat(this.state.overideTotalSumOfOthers)
+      ? parseFloat(this.state.overideTotalSumOfOthers)
       : parseFloat(this.calculateOthersSUM()[1]);
 
     let total = (aluminiumSum + glassSum + ssSum + othersSum).toFixed(2);
@@ -453,10 +387,7 @@ class TableGenerator extends Component {
         2
       );
       this.props.setAllTotal(sendTotalValue);
-      return (
-        parseFloat(total) -
-        parseFloat(this.state.finallyAllTotalField).toFixed(2)
-      ).toFixed(2);
+      return sendTotalValue;
     } else {
       this.props.setAllTotal(total);
       return total;
@@ -482,51 +413,6 @@ class TableGenerator extends Component {
       finallyAllTotalField: ""
     };
   }
-
-  handleAluminiumTableSubmit = () => {
-    let discount = this.state.aluminiumDiscount;
-    if (!discount) {
-      discount = 0;
-    }
-    let TableData = this.props.allSells.aluminium;
-    let dataToSend = {
-      category: "aluminium",
-      data: TableData,
-      discount: parseInt(discount, 10),
-      discountAmount: this.calculateAluminiumSUM()[0],
-      finallyTotal: this.calculateAluminiumSUM()[1]
-    };
-    console.log("dataToSend -> ", dataToSend);
-    this.props.addTable(dataToSend);
-    this.props.makeEmptySellItem("aluminium");
-  };
-  handleGlassTableSubmit = () => {
-    let TableData = this.props.allSells.glass;
-    let dataToSend = {
-      category: "glass",
-      data: TableData
-    };
-    this.props.addTable(dataToSend);
-    this.props.makeEmptySellItem("glass");
-  };
-  handleSSTableSubmit = () => {
-    let TableData = this.props.allSells.ss;
-    let dataToSend = {
-      category: "ss",
-      data: TableData
-    };
-    this.props.addTable(dataToSend);
-    this.props.makeEmptySellItem("ss");
-  };
-  handleOthersTableSubmit = () => {
-    let TableData = this.props.allSells.others;
-    let dataToSend = {
-      category: "others",
-      data: TableData
-    };
-    this.props.addTable(dataToSend);
-    this.props.makeEmptySellItem("others");
-  };
   render() {
     const detailsModalActions = [
       <FlatButton
@@ -654,25 +540,12 @@ class TableGenerator extends Component {
                       type="number"
                       value={this.state.overideTotalSumOfAluminium}
                       onChange={this.handleoverideTotalSumOfAluminium}
-                      hintText="Friendly Discount"
+                      hintText="Finally"
                     />
                   </TableRowColumn>
                 </TableRow>
               </TableFooter>
             </Table>
-            <div
-              style={{
-                textAlign: "center",
-                borderTop: "2px solid  #00BCD4"
-              }}
-            >
-              <RaisedButton
-                style={{ margin: "5px" }}
-                label="Submit"
-                primary={true}
-                onClick={this.handleAluminiumTableSubmit}
-              />
-            </div>
           </div>
         )}
         {/* Aluminium Table div stop */}
@@ -776,25 +649,12 @@ class TableGenerator extends Component {
                       type="number"
                       value={this.state.overideTotalSumOfGlass}
                       onChange={this.handleoverideTotalSumOfGlass}
-                      hintText="Friendly Discount"
+                      hintText="Finally"
                     />
                   </TableRowColumn>
                 </TableRow>
               </TableFooter>
             </Table>
-            <div
-              style={{
-                textAlign: "center",
-                borderTop: "2px solid  #00BCD4"
-              }}
-            >
-              <RaisedButton
-                style={{ margin: "5px" }}
-                label="Submit"
-                primary={true}
-                onClick={this.handleGlassTableSubmit}
-              />
-            </div>
           </div>
         )}
         {/* Glass Table Row Stop */}
@@ -906,25 +766,12 @@ class TableGenerator extends Component {
                       type="number"
                       value={this.state.overideTotalSumOfSS}
                       onChange={this.handleoverideTotalSumOfSS}
-                      hintText="Friendly Discount"
+                      hintText="Finally"
                     />
                   </TableRowColumn>
                 </TableRow>
               </TableFooter>
             </Table>
-            <div
-              style={{
-                textAlign: "center",
-                borderTop: "2px solid  #00BCD4"
-              }}
-            >
-              <RaisedButton
-                style={{ margin: "5px" }}
-                label="Submit"
-                primary={true}
-                onClick={this.handleSSTableSubmit}
-              />
-            </div>
           </div>
         )}
         {/* SS Table Row Stop */}
@@ -1027,25 +874,12 @@ class TableGenerator extends Component {
                       type="number"
                       value={this.state.overideTotalSumOfOthers}
                       onChange={this.handleoverideTotalSumOfOthers}
-                      hintText="Friendly Discount"
+                      hintText="Finally"
                     />
                   </TableRowColumn>
                 </TableRow>
               </TableFooter>
             </Table>
-            <div
-              style={{
-                textAlign: "center",
-                borderTop: "2px solid  #00BCD4"
-              }}
-            >
-              <RaisedButton
-                style={{ margin: "5px" }}
-                label="Submit"
-                primary={true}
-                onClick={this.handleOthersTableSubmit}
-              />
-            </div>
           </div>
         )}
         {/* Others Table Row Stop */}
@@ -1077,7 +911,7 @@ class TableGenerator extends Component {
               type="number"
               value={this.state.finallyAllTotalField}
               onChange={this.handleoveridefinallyAllTotal}
-              hintText="Final Friendly Discount"
+              hintText="Overide Final Result"
             />
           </Card>
         )}
@@ -1106,20 +940,13 @@ const mapDispatchToProps = dispatch => {
   return {
     removeSellItem: (id, productCategoryToSell) => {
       dispatch(removeSellItem(id, productCategoryToSell));
-    },
-    addTable: data => {
-      dispatch(addTable(data));
-    },
-    makeEmptySellItem: category => {
-      dispatch(makeEmptySellItem(category));
     }
   };
 };
 
 const mapStateToProps = state => {
   return {
-    allSells: state.sells,
-    sellsTable: state.sellsTable
+    allSells: state.sells
   };
 };
 
