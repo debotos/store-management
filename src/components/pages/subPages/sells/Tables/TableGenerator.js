@@ -285,7 +285,18 @@ class TableGenerator extends Component {
 
   handleoveridefinallyAllTotal = event => {
     const finallyAllTotalField = event.target.value;
-    this.setState({ finallyAllTotalField });
+    let total = this.calculatorOfAllTotal();
+    if (finallyAllTotalField) {
+      if (parseFloat(finallyAllTotalField) <= parseFloat(total)) {
+        this.setState({ finallyAllTotalField });
+      } else {
+        this.props.showSnackBar(
+          `Failed! Input MAX: ${parseFloat(total).toFixed(2)}`
+        );
+      }
+    } else {
+      this.setState({ finallyAllTotalField });
+    }
   };
 
   handleoverideTotalSumOfAluminium = event => {
@@ -296,6 +307,7 @@ class TableGenerator extends Component {
         parseFloat(this.calculateAluminiumSUM()[1])
       ) {
         this.setState({ overideTotalSumOfAluminium });
+        this.calculateAluminiumSUM();
       } else {
         this.props.showSnackBar(
           `Failed! Input MAX: ${parseFloat(
@@ -379,7 +391,7 @@ class TableGenerator extends Component {
     // }
     finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return [finalDiscountAmount, finalResult];
+    return [finalDiscountAmount, finalResult, SUM];
   };
   calculateGlassSUM = () => {
     let SUM = 0;
@@ -395,7 +407,7 @@ class TableGenerator extends Component {
     // }
     finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return [finalDiscountAmount, finalResult];
+    return [finalDiscountAmount, finalResult, SUM];
   };
   calculateSSSUM = () => {
     let SUM = 0;
@@ -411,7 +423,7 @@ class TableGenerator extends Component {
     // }
     finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return [finalDiscountAmount, finalResult];
+    return [finalDiscountAmount, finalResult, SUM];
   };
   calculateOthersSUM = () => {
     let SUM = 0;
@@ -427,9 +439,9 @@ class TableGenerator extends Component {
     // }
     finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return [finalDiscountAmount, finalResult];
+    return [finalDiscountAmount, finalResult, SUM];
   };
-  finallyAllTotal = () => {
+  calculatorOfAllTotal = () => {
     const aluminiumSum = this.state.overideTotalSumOfAluminium
       ? parseFloat(this.calculateAluminiumSUM()[1]) -
         parseFloat(this.state.overideTotalSumOfAluminium)
@@ -448,6 +460,10 @@ class TableGenerator extends Component {
       : parseFloat(this.calculateOthersSUM()[1]);
 
     let total = (aluminiumSum + glassSum + ssSum + othersSum).toFixed(2);
+    return total;
+  };
+  finallyAllTotal = () => {
+    let total = this.calculatorOfAllTotal();
     if (this.state.finallyAllTotalField) {
       let sendTotalValue = parseFloat(this.state.finallyAllTotalField).toFixed(
         2
@@ -461,6 +477,23 @@ class TableGenerator extends Component {
       this.props.setAllTotal(total);
       return total;
     }
+  };
+
+  aluminiumStateReset = () => {
+    this.setState({ aluminiumDiscount: null });
+    this.setState({ overideTotalSumOfAluminium: "" });
+  };
+  glassStateReset = () => {
+    this.setState({ glassDiscount: null });
+    this.setState({ overideTotalSumOfGlass: "" });
+  };
+  ssStateReset = () => {
+    this.setState({ ssDiscount: null });
+    this.setState({ overideTotalSumOfSS: "" });
+  };
+  othersStateReset = () => {
+    this.setState({ othersDiscount: null });
+    this.setState({ overideTotalSumOfOthers: "" });
   };
   constructor(props) {
     super(props);
@@ -491,41 +524,123 @@ class TableGenerator extends Component {
     let TableData = this.props.allSells.aluminium;
     let dataToSend = {
       category: "aluminium",
-      data: TableData,
-      discount: parseInt(discount, 10),
-      discountAmount: this.calculateAluminiumSUM()[0],
-      finallyTotal: this.calculateAluminiumSUM()[1]
+      data: {
+        table: TableData,
+        attribute: {
+          allCellTotal: parseFloat(this.calculateAluminiumSUM()[2]).toFixed(2),
+          discount: parseInt(discount, 10),
+          discountAmount: this.calculateAluminiumSUM()[0],
+          afterDiscountTotal: this.calculateAluminiumSUM()[1],
+          friendlyDiscount: this.state.overideTotalSumOfAluminium
+            ? parseFloat(this.state.overideTotalSumOfAluminium).toFixed(2)
+            : 0,
+          afterFriendlyDiscountTotal: this.state.overideTotalSumOfAluminium
+            ? (
+                parseFloat(this.calculateAluminiumSUM()[1]) -
+                parseFloat(this.state.overideTotalSumOfAluminium)
+              ).toFixed(2)
+            : 0
+        }
+      }
     };
     console.log("dataToSend -> ", dataToSend);
     this.props.addTable(dataToSend);
     this.props.makeEmptySellItem("aluminium");
+    this.aluminiumStateReset();
   };
   handleGlassTableSubmit = () => {
+    let discount = this.state.glassDiscount;
+    if (!discount) {
+      discount = 0;
+    }
     let TableData = this.props.allSells.glass;
+
     let dataToSend = {
       category: "glass",
-      data: TableData
+      data: {
+        table: TableData,
+        attribute: {
+          allCellTotal: parseFloat(this.calculateGlassSUM()[2]).toFixed(2),
+          discount: parseInt(discount, 10),
+          discountAmount: this.calculateGlassSUM()[0],
+          afterDiscountTotal: this.calculateGlassSUM()[1],
+          friendlyDiscount: this.state.overideTotalSumOfGlass
+            ? parseFloat(this.state.overideTotalSumOfGlass).toFixed(2)
+            : 0,
+          afterFriendlyDiscountTotal: this.state.overideTotalSumOfGlass
+            ? (
+                parseFloat(this.calculateGlassSUM()[1]) -
+                parseFloat(this.state.overideTotalSumOfGlass)
+              ).toFixed(2)
+            : 0
+        }
+      }
     };
     this.props.addTable(dataToSend);
     this.props.makeEmptySellItem("glass");
+    this.glassStateReset();
   };
   handleSSTableSubmit = () => {
+    let discount = this.state.ssDiscount;
+    if (!discount) {
+      discount = 0;
+    }
     let TableData = this.props.allSells.ss;
     let dataToSend = {
       category: "ss",
-      data: TableData
+      data: {
+        table: TableData,
+        attribute: {
+          allCellTotal: parseFloat(this.calculateSSSUM()[2]).toFixed(2),
+          discount: parseInt(discount, 10),
+          discountAmount: this.calculateSSSUM()[0],
+          afterDiscountTotal: this.calculateSSSUM()[1],
+          friendlyDiscount: this.state.overideTotalSumOfSS
+            ? parseFloat(this.state.overideTotalSumOfSS).toFixed(2)
+            : 0,
+          afterFriendlyDiscountTotal: this.state.overideTotalSumOfSS
+            ? (
+                parseFloat(this.calculateSSSUM()[1]) -
+                parseFloat(this.state.overideTotalSumOfSS)
+              ).toFixed(2)
+            : 0
+        }
+      }
     };
     this.props.addTable(dataToSend);
     this.props.makeEmptySellItem("ss");
+    this.ssStateReset();
   };
   handleOthersTableSubmit = () => {
+    let discount = this.state.othersDiscount;
+    if (!discount) {
+      discount = 0;
+    }
     let TableData = this.props.allSells.others;
     let dataToSend = {
       category: "others",
-      data: TableData
+      data: {
+        table: TableData,
+        attribute: {
+          allCellTotal: parseFloat(this.calculateOthersSUM()[2]).toFixed(2),
+          discount: parseInt(discount, 10),
+          discountAmount: this.calculateOthersSUM()[0],
+          afterDiscountTotal: this.calculateOthersSUM()[1],
+          friendlyDiscount: this.state.overideTotalSumOfOthers
+            ? parseFloat(this.state.overideTotalSumOfOthers).toFixed(2)
+            : 0,
+          afterFriendlyDiscountTotal: this.state.overideTotalSumOfOthers
+            ? (
+                parseFloat(this.calculateOthersSUM()[1]) -
+                parseFloat(this.state.overideTotalSumOfOthers)
+              ).toFixed(2)
+            : 0
+        }
+      }
     };
     this.props.addTable(dataToSend);
     this.props.makeEmptySellItem("others");
+    this.othersStateReset();
   };
   render() {
     const detailsModalActions = [
