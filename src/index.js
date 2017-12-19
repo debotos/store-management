@@ -54,14 +54,10 @@ store.subscribe(() => {
 //     ReactDOM.render(jsx, document.getElementById("root"));
 //   });
 
-// store.dispatch(startSetAddSellUnderCustomerHistory()).then(() => {
-//   ReactDOM.render(jsx, document.getElementById("root"));
-// });
+store.dispatch(startSetStock()).then(() => {
+  ReactDOM.render(jsx, document.getElementById("root"));
+});
 
-// store.dispatch(startSetExistingDueFromServer()).then(() => {
-//   ReactDOM.render(jsx, document.getElementById("root"));
-// });
-
-ReactDOM.render(jsx, document.getElementById("root"));
+// ReactDOM.render(jsx, document.getElementById("root"));
 
 registerServiceWorker();

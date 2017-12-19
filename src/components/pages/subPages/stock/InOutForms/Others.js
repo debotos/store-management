@@ -4,7 +4,7 @@ import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 
-import { updateStockItem } from "../../../../../actions/stock/stock-action";
+import { startUpdateStockItem } from "../../../../../actions/stock/stock-action";
 
 class Others extends Component {
   handleProductNameChange = event => {
@@ -40,7 +40,6 @@ class Others extends Component {
   }
   handleStockIn = () => {
     let Data = {
-      id: this.props.values.id,
       productCategoryToSell: this.props.values.productCategoryToSell,
       productName: this.state.productName,
       quantity: (
@@ -50,13 +49,12 @@ class Others extends Component {
       productCode: this.props.values.productCode
     };
     //Dispatch the function to add the details to the store
-    this.props.updateStockItem(Data);
+    this.props.startUpdateStockItem(this.props.values.id, Data);
     this.friendlyHandleReset();
     this.props.showSnackBar("In Action Successfully !");
   };
   handleStockOut = () => {
     let Data = {
-      id: this.props.values.id,
       productCategoryToSell: this.props.values.productCategoryToSell,
       productName: this.state.productName,
       quantity: (
@@ -66,7 +64,7 @@ class Others extends Component {
       productCode: this.props.values.productCode
     };
     //Dispatch the function to add the details to the store
-    this.props.updateStockItem(Data);
+    this.props.startUpdateStockItem(this.props.values.id, Data);
     this.friendlyHandleReset();
     this.props.showSnackBar("Out Action Successfully !");
   };
@@ -134,7 +132,7 @@ class Others extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  updateStockItem: data => dispatch(updateStockItem(data))
+  startUpdateStockItem: (id, data) => dispatch(startUpdateStockItem(id, data))
 });
 
 export default connect(null, mapDispatchToProps)(Others);

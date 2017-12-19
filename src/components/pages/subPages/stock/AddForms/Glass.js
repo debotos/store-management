@@ -5,7 +5,7 @@ import TextField from "material-ui/TextField";
 import uuid from "uuid/v4";
 import { connect } from "react-redux";
 
-import { addItemToStock } from "../../../../../actions/stock/stock-action";
+import { startAddItemToStock } from "../../../../../actions/stock/stock-action";
 
 class Glass extends Component {
   handleReset = () => {
@@ -50,7 +50,6 @@ class Glass extends Component {
   };
   handleSubmit = () => {
     let sellsItemData = {
-      id: uuid(),
       productCategoryToSell: this.state.productCategoryToSell,
       sft: this.state.sft,
       productName: this.state.productName,
@@ -61,7 +60,7 @@ class Glass extends Component {
     if (this.productCodeAlreadyExists()) {
       this.props.showSnackBar("Product Code Already Exists !");
     } else {
-      this.props.addItemToStock(sellsItemData);
+      this.props.startAddItemToStock(sellsItemData);
       this.friendlyHandleReset();
       this.props.showSnackBar("Item added Successfully !");
     }
@@ -154,7 +153,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addItemToStock: itemData => dispatch(addItemToStock(itemData))
+  startAddItemToStock: itemData => dispatch(startAddItemToStock(itemData))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Glass);

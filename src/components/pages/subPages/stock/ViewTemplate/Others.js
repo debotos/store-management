@@ -5,7 +5,7 @@ import FlatButton from "material-ui/FlatButton";
 import RaisedButton from "material-ui/RaisedButton";
 import { connect } from "react-redux";
 
-import { removeItemToStock } from "../../../../../actions/stock/stock-action";
+import { startRemoveItemToStock } from "../../../../../actions/stock/stock-action";
 
 class Others extends Component {
   handleOpen = () => {
@@ -31,7 +31,7 @@ class Others extends Component {
   }
   handleDelete = () => {
     this.handleClose();
-    this.props.removeItemToStock(
+    this.props.startRemoveItemToStock(
       this.state.others.productCategoryToSell,
       this.state.others.id
     );
@@ -87,8 +87,8 @@ class Others extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    removeItemToStock: (category, id) => {
-      dispatch(removeItemToStock(category, id));
+    startRemoveItemToStock: (category, id) => {
+      dispatch(startRemoveItemToStock(category, id));
     }
   };
 };

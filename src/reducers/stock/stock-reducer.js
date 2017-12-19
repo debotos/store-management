@@ -71,7 +71,7 @@ export const stockReducer = (state = stockReducerDefaultState, action) => {
         return {
           ...state,
           aluminium: state.aluminium.map(singleItem => {
-            if (singleItem.id === action.data.id) {
+            if (singleItem.id === action.id) {
               return action.data;
             } else {
               return singleItem;
@@ -83,7 +83,7 @@ export const stockReducer = (state = stockReducerDefaultState, action) => {
         return {
           ...state,
           glass: state.glass.map(singleItem => {
-            if (singleItem.id === action.data.id) {
+            if (singleItem.id === action.id) {
               return action.data;
             } else {
               return singleItem;
@@ -95,7 +95,7 @@ export const stockReducer = (state = stockReducerDefaultState, action) => {
         return {
           ...state,
           ss: state.ss.map(singleItem => {
-            if (singleItem.id === action.data.id) {
+            if (singleItem.id === action.id) {
               return action.data;
             } else {
               return singleItem;
@@ -107,7 +107,7 @@ export const stockReducer = (state = stockReducerDefaultState, action) => {
         return {
           ...state,
           others: state.others.map(singleItem => {
-            if (singleItem.id === action.data.id) {
+            if (singleItem.id === action.id) {
               return action.data;
             } else {
               return singleItem;
