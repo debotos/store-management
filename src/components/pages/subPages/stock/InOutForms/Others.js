@@ -64,9 +64,14 @@ class Others extends Component {
       productCode: this.props.values.productCode
     };
     //Dispatch the function to add the details to the store
-    this.props.startUpdateStockItem(this.props.values.id, Data);
-    this.friendlyHandleReset();
-    this.props.showSnackBar("Out Action Successfully !");
+    let quantity = this.state.quantity;
+    if (parseFloat(quantity) <= parseFloat(this.props.values.quantity)) {
+      this.props.startUpdateStockItem(this.props.values.id, Data);
+      this.friendlyHandleReset();
+      this.props.showSnackBar("Out Action Successfully !");
+    } else {
+      this.props.showSnackBar("Error! You can't out more than you have!");
+    }
   };
   render() {
     return (

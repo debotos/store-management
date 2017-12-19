@@ -113,9 +113,20 @@ class Aluminium extends Component {
       rate: this.state.rate
     };
     //Dispatch the function to add the details to the store
-    this.props.startUpdateStockItem(this.props.values.id, Data);
-    this.friendlyHandleReset();
-    this.props.showSnackBar("Out Action Successfully !");
+    let length = this.state.length;
+    let dia = this.state.dia;
+    let quantity = this.state.quantity;
+    if (
+      parseFloat(length) <= parseFloat(this.props.values.length) &&
+      parseFloat(dia) <= parseFloat(this.props.values.dia) &&
+      parseFloat(quantity) <= parseFloat(this.props.values.quantity)
+    ) {
+      this.props.startUpdateStockItem(this.props.values.id, Data);
+      this.friendlyHandleReset();
+      this.props.showSnackBar("Out Action Successfully !");
+    } else {
+      this.props.showSnackBar("Error! You can't out more than you have!");
+    }
   };
   render() {
     return (

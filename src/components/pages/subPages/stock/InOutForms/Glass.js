@@ -64,9 +64,14 @@ class Glass extends Component {
       productCode: this.props.values.productCode
     };
     //Dispatch the function to add the details to the store
-    this.props.startUpdateStockItem(this.props.values.id, Data);
-    this.friendlyHandleReset();
-    this.props.showSnackBar("Out Action Successfully !");
+    let sft = this.state.sft;
+    if (parseFloat(sft) <= parseFloat(this.props.values.sft)) {
+      this.props.startUpdateStockItem(this.props.values.id, Data);
+      this.friendlyHandleReset();
+      this.props.showSnackBar("Out Action Successfully !");
+    } else {
+      this.props.showSnackBar("Error! You can't out more than you have!");
+    }
   };
   render() {
     return (
