@@ -442,24 +442,38 @@ class TableGenerator extends Component {
     return [finalDiscountAmount, finalResult, SUM];
   };
   calculatorOfAllTotal = () => {
-    const aluminiumSum = this.state.overideTotalSumOfAluminium
-      ? parseFloat(this.calculateAluminiumSUM()[1]) -
-        parseFloat(this.state.overideTotalSumOfAluminium)
-      : parseFloat(this.calculateAluminiumSUM()[1]);
-    const glassSum = this.state.overideTotalSumOfGlass
-      ? parseFloat(this.calculateGlassSUM()[1]) -
-        parseFloat(this.state.overideTotalSumOfGlass)
-      : parseFloat(this.calculateGlassSUM()[1]);
-    const ssSum = this.state.overideTotalSumOfSS
-      ? parseFloat(this.calculateSSSUM()[1]) -
-        parseFloat(this.state.overideTotalSumOfSS)
-      : parseFloat(this.calculateSSSUM()[1]);
-    const othersSum = this.state.overideTotalSumOfOthers
-      ? parseFloat(this.calculateOthersSUM()[1]) -
-        parseFloat(this.state.overideTotalSumOfOthers)
-      : parseFloat(this.calculateOthersSUM()[1]);
+    let aluminiumSum = 0;
+    let glassSum = 0;
+    let ssSum = 0;
+    let othersSum = 0;
+
+    this.props.sellsTable.aluminium.forEach(singleItem => {
+      console.log("adding...", singleItem.attribute.afterFriendlyDiscountTotal);
+      aluminiumSum =
+        parseFloat(aluminiumSum) +
+        parseFloat(singleItem.attribute.afterFriendlyDiscountTotal);
+    });
+
+    this.props.sellsTable.glass.forEach(singleItem => {
+      glassSum =
+        parseFloat(glassSum) +
+        parseFloat(singleItem.attribute.afterFriendlyDiscountTotal);
+    });
+
+    this.props.sellsTable.ss.forEach(singleItem => {
+      ssSum =
+        parseFloat(ssSum) +
+        parseFloat(singleItem.attribute.afterFriendlyDiscountTotal);
+    });
+
+    this.props.sellsTable.others.forEach(singleItem => {
+      othersSum =
+        parseFloat(othersSum) +
+        parseFloat(singleItem.attribute.afterFriendlyDiscountTotal);
+    });
 
     let total = (aluminiumSum + glassSum + ssSum + othersSum).toFixed(2);
+    console.log("sending Total: ", total);
     return total;
   };
   finallyAllTotal = () => {
@@ -468,7 +482,12 @@ class TableGenerator extends Component {
       let sendTotalValue = parseFloat(this.state.finallyAllTotalField).toFixed(
         2
       );
-      this.props.setAllTotal(sendTotalValue);
+      this.props.setAllTotal(
+        (
+          parseFloat(total) -
+          parseFloat(this.state.finallyAllTotalField).toFixed(2)
+        ).toFixed(2)
+      );
       return (
         parseFloat(total) -
         parseFloat(this.state.finallyAllTotalField).toFixed(2)
@@ -539,7 +558,7 @@ class TableGenerator extends Component {
                 parseFloat(this.calculateAluminiumSUM()[1]) -
                 parseFloat(this.state.overideTotalSumOfAluminium)
               ).toFixed(2)
-            : 0
+            : parseFloat(this.calculateAluminiumSUM()[1]).toFixed(2)
         }
       }
     };
@@ -572,7 +591,7 @@ class TableGenerator extends Component {
                 parseFloat(this.calculateGlassSUM()[1]) -
                 parseFloat(this.state.overideTotalSumOfGlass)
               ).toFixed(2)
-            : 0
+            : parseFloat(this.calculateGlassSUM()[1]).toFixed(2)
         }
       }
     };
@@ -603,7 +622,7 @@ class TableGenerator extends Component {
                 parseFloat(this.calculateSSSUM()[1]) -
                 parseFloat(this.state.overideTotalSumOfSS)
               ).toFixed(2)
-            : 0
+            : parseFloat(this.calculateSSSUM()[1]).toFixed(2)
         }
       }
     };
@@ -634,7 +653,7 @@ class TableGenerator extends Component {
                 parseFloat(this.calculateOthersSUM()[1]) -
                 parseFloat(this.state.overideTotalSumOfOthers)
               ).toFixed(2)
-            : 0
+            : parseFloat(this.calculateOthersSUM()[1]).toFixed(2)
         }
       }
     };
@@ -1165,15 +1184,16 @@ class TableGenerator extends Component {
         )}
         {/* Others Table Row Stop */}
         {/* Finally All Table Total */}
-        {(this.props.allSells.aluminium.length > 0 ||
-          this.props.allSells.glass.length > 0 ||
-          this.props.allSells.ss.length > 0 ||
-          this.props.allSells.others.length > 0) && (
+        {(this.props.sellsTable.aluminium.length > 0 ||
+          this.props.sellsTable.glass.length > 0 ||
+          this.props.sellsTable.ss.length > 0 ||
+          this.props.sellsTable.others.length > 0) && (
           <Card
             className="container"
             style={{
               textAlign: "center",
-              marginTop: 10
+              marginTop: 10,
+              justifyContent: "center"
             }}
           >
             <span
