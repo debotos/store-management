@@ -307,7 +307,7 @@ class TableGenerator extends Component {
         parseFloat(this.calculateAluminiumSUM()[1])
       ) {
         this.setState({ overideTotalSumOfAluminium });
-        this.calculateAluminiumSUM();
+        // this.calculateAluminiumSUM(overideTotalSumOfAluminium);
       } else {
         this.props.showSnackBar(
           `Failed! Input MAX: ${parseFloat(
@@ -327,6 +327,7 @@ class TableGenerator extends Component {
         parseFloat(this.calculateGlassSUM()[1])
       ) {
         this.setState({ overideTotalSumOfGlass });
+        // this.calculateGlassSUM(overideTotalSumOfGlass);
       } else {
         this.props.showSnackBar(
           `Failed! Input MAX: ${parseFloat(this.calculateGlassSUM()[1]).toFixed(
@@ -345,6 +346,7 @@ class TableGenerator extends Component {
         parseFloat(overideTotalSumOfSS) <= parseFloat(this.calculateSSSUM()[1])
       ) {
         this.setState({ overideTotalSumOfSS });
+        // this.calculateSSSUM(overideTotalSumOfSS);
       } else {
         this.props.showSnackBar(
           `Failed! Input MAX: ${parseFloat(this.calculateSSSUM()[1]).toFixed(
@@ -364,6 +366,7 @@ class TableGenerator extends Component {
         parseFloat(this.calculateOthersSUM()[1])
       ) {
         this.setState({ overideTotalSumOfOthers });
+        // this.calculateOthersSUM(overideTotalSumOfOthers);
       } else {
         this.props.showSnackBar(
           `Failed! Input MAX: ${parseFloat(
@@ -376,6 +379,10 @@ class TableGenerator extends Component {
     }
   };
   calculateAluminiumSUM = () => {
+    let friendlyDiscount = this.state.overideTotalSumOfAluminium
+      ? this.state.overideTotalSumOfAluminium
+      : 0;
+    console.log("Friendly Discount ", friendlyDiscount);
     let SUM = 0;
     this.props.allSells.aluminium.forEach(singleItem => {
       SUM = parseFloat(SUM) + parseFloat(singleItem.total);
@@ -386,14 +393,19 @@ class TableGenerator extends Component {
         ? parseFloat(this.state.aluminiumDiscount)
         : 0) /
       100;
-    // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
-    //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
-    // }
+
     finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return [finalDiscountAmount, finalResult, SUM];
+    let atLastFinal = (
+      parseFloat(finalResult) - parseFloat(friendlyDiscount)
+    ).toFixed(2);
+    console.log("Calculating after..", atLastFinal);
+    return [finalDiscountAmount, finalResult, SUM, atLastFinal];
   };
   calculateGlassSUM = () => {
+    let friendlyDiscount = this.state.overideTotalSumOfGlass
+      ? this.state.overideTotalSumOfGlass
+      : 0;
     let SUM = 0;
     this.props.allSells.glass.forEach(singleItem => {
       SUM = parseFloat(SUM) + parseFloat(singleItem.total);
@@ -402,14 +414,18 @@ class TableGenerator extends Component {
       SUM.toFixed(2) *
       (this.state.glassDiscount ? parseFloat(this.state.glassDiscount) : 0) /
       100;
-    // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
-    //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
-    // }
+
     finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return [finalDiscountAmount, finalResult, SUM];
+    let atLastFinal = (
+      parseFloat(finalResult) - parseFloat(friendlyDiscount)
+    ).toFixed(2);
+    return [finalDiscountAmount, finalResult, SUM, atLastFinal];
   };
   calculateSSSUM = () => {
+    let friendlyDiscount = this.state.overideTotalSumOfSS
+      ? this.state.overideTotalSumOfSS
+      : 0;
     let SUM = 0;
     this.props.allSells.ss.forEach(singleItem => {
       SUM = parseFloat(SUM) + parseFloat(singleItem.total);
@@ -418,14 +434,18 @@ class TableGenerator extends Component {
       SUM.toFixed(2) *
       (this.state.ssDiscount ? parseFloat(this.state.ssDiscount) : 0) /
       100;
-    // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
-    //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
-    // }
+
     finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return [finalDiscountAmount, finalResult, SUM];
+    let atLastFinal = (
+      parseFloat(finalResult) - parseFloat(friendlyDiscount)
+    ).toFixed(2);
+    return [finalDiscountAmount, finalResult, SUM, atLastFinal];
   };
   calculateOthersSUM = () => {
+    let friendlyDiscount = this.state.overideTotalSumOfOthers
+      ? this.state.overideTotalSumOfOthers
+      : 0;
     let SUM = 0;
     this.props.allSells.others.forEach(singleItem => {
       SUM = parseFloat(SUM) + parseFloat(singleItem.total);
@@ -434,12 +454,12 @@ class TableGenerator extends Component {
       SUM.toFixed(2) *
       (this.state.othersDiscount ? parseFloat(this.state.othersDiscount) : 0) /
       100;
-    // if (finalDiscountAmount !== 0 && finalDiscountAmount) {
-    //   this.props.showSnackBar(`Discount amount = ${finalDiscountAmount}`);
-    // }
     finalDiscountAmount = finalDiscountAmount.toFixed(2);
     let finalResult = (SUM.toFixed(2) - finalDiscountAmount).toFixed(2);
-    return [finalDiscountAmount, finalResult, SUM];
+    let atLastFinal = (
+      parseFloat(finalResult) - parseFloat(friendlyDiscount)
+    ).toFixed(2);
+    return [finalDiscountAmount, finalResult, SUM, atLastFinal];
   };
   calculatorOfAllTotal = () => {
     let aluminiumSum = 0;
@@ -774,9 +794,9 @@ class TableGenerator extends Component {
                   <TableRowColumn>
                     <h3 style={{ marginTop: 8 }}>
                       Result ={" "}
-                      {this.calculateAluminiumSUM()[1] !== 0 &&
-                      this.calculateAluminiumSUM()[1] ? (
-                        <b>{this.calculateAluminiumSUM()[1]}</b>
+                      {this.calculateAluminiumSUM()[3] !== 0 &&
+                      this.calculateAluminiumSUM()[3] ? (
+                        <b>{this.calculateAluminiumSUM()[3]}</b>
                       ) : (
                         <b style={{ color: "red" }}>?</b>
                       )}
@@ -896,9 +916,9 @@ class TableGenerator extends Component {
                   <TableRowColumn>
                     <h3 style={{ marginTop: 8 }}>
                       Result ={" "}
-                      {this.calculateGlassSUM()[1] !== 0 &&
-                      this.calculateGlassSUM()[1] ? (
-                        <b>{this.calculateGlassSUM()[1]}</b>
+                      {this.calculateGlassSUM()[3] !== 0 &&
+                      this.calculateGlassSUM()[3] ? (
+                        <b>{this.calculateGlassSUM()[3]}</b>
                       ) : (
                         <b style={{ color: "red" }}>?</b>
                       )}
@@ -1026,9 +1046,9 @@ class TableGenerator extends Component {
                   <TableRowColumn>
                     <h3 style={{ marginTop: 8 }}>
                       Result ={" "}
-                      {this.calculateSSSUM()[1] !== 0 &&
-                      this.calculateSSSUM()[1] ? (
-                        <b>{this.calculateSSSUM()[1]}</b>
+                      {this.calculateSSSUM()[3] !== 0 &&
+                      this.calculateSSSUM()[3] ? (
+                        <b>{this.calculateSSSUM()[3]}</b>
                       ) : (
                         <b style={{ color: "red" }}>?</b>
                       )}
@@ -1147,9 +1167,9 @@ class TableGenerator extends Component {
                   <TableRowColumn>
                     <h3 style={{ marginTop: 8 }}>
                       Result ={" "}
-                      {this.calculateOthersSUM()[1] !== 0 &&
-                      this.calculateOthersSUM()[1] ? (
-                        <b>{this.calculateOthersSUM()[1]}</b>
+                      {this.calculateOthersSUM()[3] !== 0 &&
+                      this.calculateOthersSUM()[3] ? (
+                        <b>{this.calculateOthersSUM()[3]}</b>
                       ) : (
                         <b style={{ color: "red" }}>?</b>
                       )}
