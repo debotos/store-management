@@ -566,6 +566,9 @@ class TableGenerator extends Component {
       data: {
         table: TableData,
         attribute: {
+          atLastTotalAll: parseFloat(this.calculateAluminiumSUM()[3]).toFixed(
+            2
+          ),
           allCellTotal: parseFloat(this.calculateAluminiumSUM()[2]).toFixed(2),
           discount: parseInt(discount, 10),
           discountAmount: this.calculateAluminiumSUM()[0],
@@ -611,7 +614,8 @@ class TableGenerator extends Component {
                 parseFloat(this.calculateGlassSUM()[1]) -
                 parseFloat(this.state.overideTotalSumOfGlass)
               ).toFixed(2)
-            : parseFloat(this.calculateGlassSUM()[1]).toFixed(2)
+            : parseFloat(this.calculateGlassSUM()[1]).toFixed(2),
+          atLastTotalAll: parseFloat(this.calculateGlassSUM()[3]).toFixed(2)
         }
       }
     };
@@ -630,6 +634,7 @@ class TableGenerator extends Component {
       data: {
         table: TableData,
         attribute: {
+          atLastTotalAll: parseFloat(this.calculateSSSUM()[3]).toFixed(2),
           allCellTotal: parseFloat(this.calculateSSSUM()[2]).toFixed(2),
           discount: parseInt(discount, 10),
           discountAmount: this.calculateSSSUM()[0],
@@ -661,6 +666,7 @@ class TableGenerator extends Component {
       data: {
         table: TableData,
         attribute: {
+          atLastTotalAll: parseFloat(this.calculateOthersSUM()[3]).toFixed(2),
           allCellTotal: parseFloat(this.calculateOthersSUM()[2]).toFixed(2),
           discount: parseInt(discount, 10),
           discountAmount: this.calculateOthersSUM()[0],
@@ -1208,33 +1214,54 @@ class TableGenerator extends Component {
           this.props.sellsTable.glass.length > 0 ||
           this.props.sellsTable.ss.length > 0 ||
           this.props.sellsTable.others.length > 0) && (
-          <Card
-            className="container"
-            style={{
-              textAlign: "center",
-              marginTop: 10,
-              justifyContent: "center"
-            }}
-          >
-            <span
+          <div style={{ margin: 10 }}>
+            <Card style={{ textAlign: "center", padding: 3, marginBottom: 3 }}>
+              <span style={{ fontSize: "20px" }}>Table Hidden: </span>
+              <div style={{ fontSize: "25px" }}>
+                Aluminium:{" "}
+                <span style={{ color: "red" }}>
+                  <strong>{this.props.sellsTable.aluminium.length}</strong>
+                </span>{" "}
+                Glass:{" "}
+                <span style={{ color: "red" }}>
+                  <strong>{this.props.sellsTable.glass.length}</strong>
+                </span>{" "}
+                Others:{" "}
+                <span style={{ color: "red" }}>
+                  <strong>{this.props.sellsTable.others.length}</strong>
+                </span>{" "}
+                SS:{" "}
+                <span style={{ color: "red" }}>
+                  <strong>{this.props.sellsTable.ss.length}</strong>
+                </span>
+              </div>
+            </Card>
+            <Card
               style={{
-                marginRight: 15,
-                fontSize: "30px",
-                color: "#00CD00"
+                textAlign: "center",
+                justifyContent: "center"
               }}
             >
-              <strong>Totally = {this.finallyAllTotal()}</strong>
-            </span>
-            <TextField
-              style={{
-                color: "#00CD00"
-              }}
-              type="number"
-              value={this.state.finallyAllTotalField}
-              onChange={this.handleoveridefinallyAllTotal}
-              hintText="Final Friendly Discount"
-            />
-          </Card>
+              <span
+                style={{
+                  marginRight: 15,
+                  fontSize: "30px",
+                  color: "#00CD00"
+                }}
+              >
+                <strong>Totally = {this.finallyAllTotal()}</strong>
+              </span>
+              <TextField
+                style={{
+                  color: "#00CD00"
+                }}
+                type="number"
+                value={this.state.finallyAllTotalField}
+                onChange={this.handleoveridefinallyAllTotal}
+                hintText="Final Friendly Discount"
+              />
+            </Card>
+          </div>
         )}
 
         {/* Model to Delete and Details */}
