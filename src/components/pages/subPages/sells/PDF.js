@@ -25,6 +25,8 @@ const renderTables = tables => {
         table: {
           widths: [17, "*", "*", 40, 40, 45, 45, 40, "*"],
           headerRows: 2,
+          dontBreakRows: true,
+          keepWithHeaderRows: 1,
           body: renderAluminiumContent(singleAluminiumItem)
         }
       });
@@ -37,6 +39,8 @@ const renderTables = tables => {
         table: {
           widths: [17, "*", "*", "*", "*"],
           headerRows: 2,
+          dontBreakRows: true,
+          keepWithHeaderRows: 1,
           body: renderGlassContent(singleGlassItem)
         }
       });
@@ -49,6 +53,8 @@ const renderTables = tables => {
         table: {
           widths: [17, "*", "*", 55, 40, 45, 40, "*"],
           headerRows: 2,
+          dontBreakRows: true,
+          keepWithHeaderRows: 1,
           body: renderSSContent(singleSSItem)
         }
       });
@@ -61,6 +67,8 @@ const renderTables = tables => {
         table: {
           widths: [17, "*", "*", "*", "*"],
           headerRows: 2,
+          dontBreakRows: true,
+          keepWithHeaderRows: 1,
           body: renderOthersContent(singleOthersItem)
         }
       });
@@ -138,17 +146,29 @@ function GENERATE_PDF(data) {
         alignment: "right",
         type: "none",
         ul: [
-          "All Tables Total = " + customer.allTotal,
+          "All Tables Total = " +
+            parseFloat(customer.allTotal.total).toFixed(2),
+          "- " + parseFloat(customer.allTotal.finalFriendlyDiscount).toFixed(2),
+          "---------------------------------",
+          "= " + parseFloat(customer.allTotal.finalTotal).toFixed(2),
           {
             text: "Previous Due = " + customer.prevDue,
             italics: true,
+            bold: true,
             color: "red"
           },
-          "All Tables Total With Previous Due = " + customer.totalWithDue,
-          "Deposit Now = " + customer.depositNow,
+          "All Tables Total With Previous Due = " +
+            parseFloat(customer.totalWithDue).toFixed(2),
+          {
+            text: "Deposit Now = " + customer.depositNow,
+            italics: true,
+            bold: true,
+            color: "green"
+          },
           {
             text: "New Due From Now = " + customer.newDue,
             italics: true,
+            bold: true,
             color: "red"
           }
         ]
@@ -259,6 +279,97 @@ const renderAluminiumContent = sellingItems => {
     ];
     Content.push(item);
   });
+  Content.push([
+    {
+      text: sellingItems.attribute.allCellTotal,
+      bold: true,
+      colSpan: 9,
+      alignment: "right"
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ]);
+  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+    Content.push([
+      {
+        text: "No Discount in (%)",
+        bold: true,
+        colSpan: 9,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]);
+  } else {
+    Content.push([
+      {
+        text: `${sellingItems.attribute.discount}% = ${
+          sellingItems.attribute.discountAmount
+        } Now Total = ${sellingItems.attribute.allCellTotal} - ${
+          sellingItems.attribute.discountAmount
+        } = ${sellingItems.attribute.afterDiscountTotal}`,
+        bold: true,
+        colSpan: 9,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]);
+  }
+  if (parseInt(sellingItems.attribute.friendlyDiscount, 10) !== 0) {
+    Content.push([
+      {
+        text: `- ${sellingItems.attribute.friendlyDiscount}`,
+        bold: true,
+        colSpan: 9,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]);
+  }
+
+  Content.push([
+    {
+      text: `Final Amount = ${sellingItems.attribute.atLastTotalAll}`,
+      bold: true,
+      color: "#006A4E",
+      colSpan: 9,
+      alignment: "right"
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ]);
 
   return Content;
 };
@@ -290,6 +401,76 @@ const renderGlassContent = sellingItems => {
     ];
     Content.push(item);
   });
+  Content.push([
+    {
+      text: sellingItems.attribute.allCellTotal,
+      bold: true,
+      colSpan: 5,
+      alignment: "right"
+    },
+    {},
+    {},
+    {},
+    {}
+  ]);
+  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+    Content.push([
+      {
+        text: "No Discount in (%)",
+        bold: true,
+        colSpan: 5,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {}
+    ]);
+  } else {
+    Content.push([
+      {
+        text: `${sellingItems.attribute.discount}% = ${
+          sellingItems.attribute.discountAmount
+        } Now Total = ${sellingItems.attribute.allCellTotal} - ${
+          sellingItems.attribute.discountAmount
+        } = ${sellingItems.attribute.afterDiscountTotal}`,
+        bold: true,
+        colSpan: 5,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {}
+    ]);
+  }
+  if (parseInt(sellingItems.attribute.friendlyDiscount, 10) !== 0) {
+    Content.push([
+      {
+        text: `- ${sellingItems.attribute.friendlyDiscount}`,
+        bold: true,
+        colSpan: 5,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {}
+    ]);
+  }
+  Content.push([
+    {
+      text: `Final Amount = ${sellingItems.attribute.atLastTotalAll}`,
+      bold: true,
+      color: "#006A4E",
+      colSpan: 5,
+      alignment: "right"
+    },
+    {},
+    {},
+    {},
+    {}
+  ]);
   return Content;
 };
 
@@ -335,6 +516,91 @@ const renderSSContent = sellingItems => {
     ];
     Content.push(item);
   });
+  Content.push([
+    {
+      text: sellingItems.attribute.allCellTotal,
+      bold: true,
+      colSpan: 8,
+      alignment: "right"
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ]);
+  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+    Content.push([
+      {
+        text: "No Discount in (%)",
+        bold: true,
+        colSpan: 8,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]);
+  } else {
+    Content.push([
+      {
+        text: `${sellingItems.attribute.discount}% = ${
+          sellingItems.attribute.discountAmount
+        } Now Total = ${sellingItems.attribute.allCellTotal} - ${
+          sellingItems.attribute.discountAmount
+        } = ${sellingItems.attribute.afterDiscountTotal}`,
+        bold: true,
+        colSpan: 8,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]);
+  }
+  if (parseInt(sellingItems.attribute.friendlyDiscount, 10) !== 0) {
+    Content.push([
+      {
+        text: `- ${sellingItems.attribute.friendlyDiscount}`,
+        bold: true,
+        colSpan: 8,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]);
+  }
+  Content.push([
+    {
+      text: `Final Amount = ${sellingItems.attribute.atLastTotalAll}`,
+      bold: true,
+      color: "#006A4E",
+      colSpan: 8,
+      alignment: "right"
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ]);
   return Content;
 };
 
@@ -365,6 +631,76 @@ const renderOthersContent = sellingItems => {
     ];
     Content.push(item);
   });
+  Content.push([
+    {
+      text: sellingItems.attribute.allCellTotal,
+      bold: true,
+      colSpan: 5,
+      alignment: "right"
+    },
+    {},
+    {},
+    {},
+    {}
+  ]);
+  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+    Content.push([
+      {
+        text: "No Discount in (%)",
+        bold: true,
+        colSpan: 5,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {}
+    ]);
+  } else {
+    Content.push([
+      {
+        text: `${sellingItems.attribute.discount}% = ${
+          sellingItems.attribute.discountAmount
+        } Now Total = ${sellingItems.attribute.allCellTotal} - ${
+          sellingItems.attribute.discountAmount
+        } = ${sellingItems.attribute.afterDiscountTotal}`,
+        bold: true,
+        colSpan: 5,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {}
+    ]);
+  }
+  if (parseInt(sellingItems.attribute.friendlyDiscount, 10) !== 0) {
+    Content.push([
+      {
+        text: `- ${sellingItems.attribute.friendlyDiscount}`,
+        bold: true,
+        colSpan: 5,
+        alignment: "right"
+      },
+      {},
+      {},
+      {},
+      {}
+    ]);
+  }
+  Content.push([
+    {
+      text: `Final Amount = ${sellingItems.attribute.atLastTotalAll}`,
+      bold: true,
+      color: "#006A4E",
+      colSpan: 5,
+      alignment: "right"
+    },
+    {},
+    {},
+    {},
+    {}
+  ]);
   return Content;
 };
 

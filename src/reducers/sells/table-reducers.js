@@ -1,4 +1,4 @@
-import { ADD_A_TABLE } from "../../actions/constants";
+import { ADD_A_TABLE, REMOVE_ALL_TABLE } from "../../actions/constants";
 
 const getDate = () => {
   var time = new Date();
@@ -51,6 +51,8 @@ export const tableReducer = (state = tableReducerDefaultState, action) => {
           date: getDate()
         };
       }
+    case REMOVE_ALL_TABLE:
+      return tableReducerDefaultState;
     default:
       return state;
   }

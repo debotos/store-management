@@ -11,6 +11,7 @@ import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-acti
 import { removeAllSellsItem } from "../../../../actions/sells/sells-actions";
 import { startAddSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
 import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
+import { removeAllTable } from "../../../../actions/sells/table-actions";
 
 class CustomerDetailsForm extends Component {
   handleDialogOpen = () => {
@@ -19,6 +20,7 @@ class CustomerDetailsForm extends Component {
   handleDialogClose = () => {
     this.setState({ dialogOpen: false });
     this.props.removeAllSellsItem();
+    this.props.removeAllTable();
   };
   handleReset = () => {
     this.setState({ name: "" });
@@ -101,7 +103,8 @@ class CustomerDetailsForm extends Component {
 
   handleSaveAndGeneratePDF = () => {
     let allTotalWithPrevDue =
-      parseFloat(this.props.allTotal) + parseFloat(this.userAlreadyExists()[1]);
+      parseFloat(this.props.allTotal.finalTotal) +
+      parseFloat(this.userAlreadyExists()[1]);
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
         if (parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)) {
@@ -110,7 +113,7 @@ class CustomerDetailsForm extends Component {
           this.props.startAddPrevDue(this.state.number, newDue);
           this.props.startAddSellUnderCustomerHistory(this.collectSellsData());
           const modelData = {
-            allTotal: this.props.allTotal,
+            allTotal: this.props.allTotal.finalTotal,
             prevDue: this.userAlreadyExists()[1],
             totalWithDue: allTotalWithPrevDue,
             depositNow: deposit,
@@ -151,7 +154,7 @@ class CustomerDetailsForm extends Component {
         this.props.startAddPrevDue(this.state.number, newDue);
         this.props.startAddSellUnderCustomerHistory(this.collectSellsData());
         const modelData = {
-          allTotal: this.props.allTotal,
+          allTotal: this.props.allTotal.finalTotal,
           prevDue: this.userAlreadyExists()[1],
           totalWithDue: allTotalWithPrevDue,
           depositNow: deposit,
@@ -324,6 +327,9 @@ const mapDispatchToProps = dispatch => {
     },
     removeAllSellsItem: () => {
       dispatch(removeAllSellsItem());
+    },
+    removeAllTable: () => {
+      dispatch(removeAllTable());
     }
   };
 };

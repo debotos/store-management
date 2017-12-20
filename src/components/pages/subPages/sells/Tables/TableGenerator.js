@@ -496,18 +496,26 @@ class TableGenerator extends Component {
   finallyAllTotal = () => {
     let total = this.calculatorOfAllTotal();
     if (this.state.finallyAllTotalField) {
-      this.props.setAllTotal(
-        (
+      this.props.setAllTotal({
+        total: parseFloat(total).toFixed(2),
+        finalFriendlyDiscount: parseFloat(
+          this.state.finallyAllTotalField
+        ).toFixed(2),
+        finalTotal: (
           parseFloat(total) -
           parseFloat(this.state.finallyAllTotalField).toFixed(2)
         ).toFixed(2)
-      );
+      });
       return (
         parseFloat(total) -
         parseFloat(this.state.finallyAllTotalField).toFixed(2)
       ).toFixed(2);
     } else {
-      this.props.setAllTotal(total);
+      this.props.setAllTotal({
+        total: parseFloat(total).toFixed(2),
+        finalFriendlyDiscount: 0,
+        finalTotal: (parseFloat(total) - 0).toFixed(2)
+      });
       return total;
     }
   };

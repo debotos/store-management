@@ -1,4 +1,4 @@
-import { ADD_A_TABLE } from "../constants";
+import { ADD_A_TABLE, REMOVE_ALL_TABLE } from "../constants";
 
 export const addTable = tableData => {
   return {
@@ -6,3 +6,7 @@ export const addTable = tableData => {
     tableData
   };
 };
+
+export const removeAllTable = () => ({
+  type: REMOVE_ALL_TABLE
+});

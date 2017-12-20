@@ -64,10 +64,11 @@ class Sells extends Component {
       selectedItem: null,
       snackBar: false,
       snackBarMessage: "",
-      allTotal: 0
+      allTotal: {}
     };
   }
   setAllTotal = total => {
+    console.log("Found value to set allTotal ", total);
     this.setState({ allTotal: total });
   };
   render() {
