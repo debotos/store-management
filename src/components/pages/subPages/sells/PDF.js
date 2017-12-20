@@ -13,53 +13,61 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 const renderTables = tables => {
   let { aluminium, glass, ss, others } = tables;
 
-  let aluminiumTable = {};
-  let glassTable = {};
-  let ssTable = {};
-  let othersTable = {};
+  let aluminiumTables = [];
+  let glassTables = [];
+  let ssTables = [];
+  let othersTables = [];
 
   if (aluminium.length > 0) {
-    aluminiumTable = {
-      style: "tableDesign",
-      table: {
-        widths: [17, "*", "*", 40, 40, 45, 45, 40, "*"],
-        headerRows: 2,
-        body: renderAluminiumContent(aluminium)
-      }
-    };
+    aluminium.forEach(singleAluminiumItem => {
+      aluminiumTables.push({
+        style: "tableDesign",
+        table: {
+          widths: [17, "*", "*", 40, 40, 45, 45, 40, "*"],
+          headerRows: 2,
+          body: renderAluminiumContent(singleAluminiumItem)
+        }
+      });
+    });
   }
   if (glass.length > 0) {
-    glassTable = {
-      style: "tableDesign",
-      table: {
-        widths: [17, "*", "*", "*", "*"],
-        headerRows: 2,
-        body: renderGlassContent(glass)
-      }
-    };
+    glass.forEach(singleGlassItem => {
+      glassTables.push({
+        style: "tableDesign",
+        table: {
+          widths: [17, "*", "*", "*", "*"],
+          headerRows: 2,
+          body: renderGlassContent(singleGlassItem)
+        }
+      });
+    });
   }
   if (ss.length > 0) {
-    ssTable = {
-      style: "tableDesign",
-      table: {
-        widths: [17, "*", "*", 55, 40, 45, 40, "*"],
-        headerRows: 2,
-        body: renderSSContent(ss)
-      }
-    };
+    ss.forEach(singleSSItem => {
+      ssTables.push({
+        style: "tableDesign",
+        table: {
+          widths: [17, "*", "*", 55, 40, 45, 40, "*"],
+          headerRows: 2,
+          body: renderSSContent(singleSSItem)
+        }
+      });
+    });
   }
   if (others.length > 0) {
-    othersTable = {
-      style: "tableDesign",
-      table: {
-        widths: [17, "*", "*", "*", "*"],
-        headerRows: 2,
-        body: renderOthersContent(others)
-      }
-    };
+    others.forEach(singleOthersItem => {
+      othersTables.push({
+        style: "tableDesign",
+        table: {
+          widths: [17, "*", "*", "*", "*"],
+          headerRows: 2,
+          body: renderOthersContent(singleOthersItem)
+        }
+      });
+    });
   }
 
-  return [aluminiumTable, glassTable, ssTable, othersTable];
+  return [aluminiumTables, glassTables, ssTables, othersTables];
 };
 
 function GENERATE_PDF(data) {
@@ -121,8 +129,10 @@ function GENERATE_PDF(data) {
 
       { text: "\n\n" },
       // I have to create a function that will render tables
-      renderTables(tables),
-
+      renderTables(tables)[0], // Aluminium
+      renderTables(tables)[1], // Glass
+      renderTables(tables)[2], //SS
+      renderTables(tables)[3], //Other
       { text: "\n" },
       {
         alignment: "right",
@@ -198,7 +208,9 @@ function GENERATE_PDF(data) {
 
   pdfMake
     .createPdf(docDefinition)
-    .download(customer.number+"-"+customer.name + "-" + Date().substr(0, 15));
+    .download(
+      customer.number + "-" + customer.name + "-" + Date().substr(0, 15)
+    );
 }
 
 const renderAluminiumContent = sellingItems => {
@@ -232,7 +244,8 @@ const renderAluminiumContent = sellingItems => {
     ],
     TableHeader
   ];
-  sellingItems.forEach((singleItem, index) => {
+
+  sellingItems.table.forEach((singleItem, index) => {
     let item = [
       (index + 1).toString(),
       singleItem.productName,
@@ -246,6 +259,7 @@ const renderAluminiumContent = sellingItems => {
     ];
     Content.push(item);
   });
+
   return Content;
 };
 
@@ -266,7 +280,7 @@ const renderGlassContent = sellingItems => {
     ],
     TableHeader
   ];
-  sellingItems.forEach((singleItem, index) => {
+  sellingItems.table.forEach((singleItem, index) => {
     let item = [
       (index + 1).toString(),
       singleItem.productName,
@@ -308,7 +322,7 @@ const renderSSContent = sellingItems => {
     ],
     TableHeader
   ];
-  sellingItems.forEach((singleItem, index) => {
+  sellingItems.table.forEach((singleItem, index) => {
     let item = [
       (index + 1).toString(),
       singleItem.productName,
@@ -341,7 +355,7 @@ const renderOthersContent = sellingItems => {
     ],
     TableHeader
   ];
-  sellingItems.forEach((singleItem, index) => {
+  sellingItems.table.forEach((singleItem, index) => {
     let item = [
       (index + 1).toString(),
       singleItem.productName,

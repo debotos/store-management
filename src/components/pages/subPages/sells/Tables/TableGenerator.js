@@ -382,7 +382,7 @@ class TableGenerator extends Component {
     let friendlyDiscount = this.state.overideTotalSumOfAluminium
       ? this.state.overideTotalSumOfAluminium
       : 0;
-    console.log("Friendly Discount ", friendlyDiscount);
+
     let SUM = 0;
     this.props.allSells.aluminium.forEach(singleItem => {
       SUM = parseFloat(SUM) + parseFloat(singleItem.total);
@@ -399,7 +399,6 @@ class TableGenerator extends Component {
     let atLastFinal = (
       parseFloat(finalResult) - parseFloat(friendlyDiscount)
     ).toFixed(2);
-    console.log("Calculating after..", atLastFinal);
     return [finalDiscountAmount, finalResult, SUM, atLastFinal];
   };
   calculateGlassSUM = () => {
@@ -468,7 +467,6 @@ class TableGenerator extends Component {
     let othersSum = 0;
 
     this.props.sellsTable.aluminium.forEach(singleItem => {
-      console.log("adding...", singleItem.attribute.afterFriendlyDiscountTotal);
       aluminiumSum =
         parseFloat(aluminiumSum) +
         parseFloat(singleItem.attribute.afterFriendlyDiscountTotal);
@@ -493,15 +491,11 @@ class TableGenerator extends Component {
     });
 
     let total = (aluminiumSum + glassSum + ssSum + othersSum).toFixed(2);
-    console.log("sending Total: ", total);
     return total;
   };
   finallyAllTotal = () => {
     let total = this.calculatorOfAllTotal();
     if (this.state.finallyAllTotalField) {
-      let sendTotalValue = parseFloat(this.state.finallyAllTotalField).toFixed(
-        2
-      );
       this.props.setAllTotal(
         (
           parseFloat(total) -
@@ -585,7 +579,6 @@ class TableGenerator extends Component {
         }
       }
     };
-    console.log("dataToSend -> ", dataToSend);
     this.props.addTable(dataToSend);
     this.props.makeEmptySellItem("aluminium");
     this.aluminiumStateReset();

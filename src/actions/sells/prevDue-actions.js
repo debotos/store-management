@@ -1,5 +1,10 @@
 import database from "../../secrets/firebase";
-import { ADD_A_PREV_DUE, SET_DUE, UPDATE_A_PREV_DUE, REMOVE_A_PREV_DUE } from "../constants";
+import {
+  ADD_A_PREV_DUE,
+  SET_DUE,
+  UPDATE_A_PREV_DUE,
+  REMOVE_A_PREV_DUE
+} from "../constants";
 
 export const addPrevDue = (id, number, amount) => {
   return {
@@ -28,11 +33,6 @@ export const startAddPrevDue = (number, amount, id = "") => {
       })
       .then(() => {
         // checking if any due exists
-        console.log(
-          "Number of Already Have Due in the database is  ",
-          dueInDatabase.length
-        );
-        console.log("Due In Firebase ", dueInDatabase);
         if (dueInDatabase.length > 0) {
           // checking due that i want... already exists that account
           let dueItemAlreadyExists = false;
@@ -41,10 +41,6 @@ export const startAddPrevDue = (number, amount, id = "") => {
             if (singleDue.number === number) {
               dueItemAlreadyExists = true;
               dueItemIdThatAlreadyExists = singleDue.id;
-              console.log(
-                "Hey Hey i caught you[First]",
-                dueItemIdThatAlreadyExists
-              );
             }
           });
           // Now i know that already have or not, so...go for it
@@ -54,7 +50,9 @@ export const startAddPrevDue = (number, amount, id = "") => {
               .ref(`due/${dueItemIdThatAlreadyExists}`)
               .update(due)
               .then(() => {
-                dispatch(addPrevDue((id = dueItemIdThatAlreadyExists), number, amount));
+                dispatch(
+                  addPrevDue((id = dueItemIdThatAlreadyExists), number, amount)
+                );
               });
           } else {
             return database
@@ -96,33 +94,34 @@ export const startUpdatePrevDue = (id, number, amount) => {
     const dueUpdates = {
       number,
       amount
-    }
+    };
     return database
       .ref(`due/${id}`)
       .update(dueUpdates)
       .then(() => {
         dispatch(updatePrevDue(id, number, amount));
       });
-  }
-}
+  };
+};
 
 // Delete a Due completly
-const removePrevDue = (id) => {
+const removePrevDue = id => {
   return {
     type: REMOVE_A_PREV_DUE,
     id
   };
 };
 
-export const startRemovePrevDue = (id) => {
+export const startRemovePrevDue = id => {
   return dispatch => {
-    return database.ref(`due/${id}`).remove().then(() => {
-      dispatch(removePrevDue(id));
-    });
-  }
+    return database
+      .ref(`due/${id}`)
+      .remove()
+      .then(() => {
+        dispatch(removePrevDue(id));
+      });
+  };
 };
-
-
 
 export const setDue = data => ({
   type: SET_DUE,

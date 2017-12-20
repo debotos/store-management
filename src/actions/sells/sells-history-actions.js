@@ -13,8 +13,6 @@ export const addSellUnderCustomerHistory = data => {
 };
 
 export const startAddSellUnderCustomerHistory = data => {
-  console.log("Getting Data As History ", data.history);
-  console.log("Type of the History : ", typeof data.history);
   return dispatch => {
     let pushData = {
       number: data.number,
@@ -34,11 +32,6 @@ export const startAddSellUnderCustomerHistory = data => {
         });
       })
       .then(() => {
-        console.log(
-          "Numbe of History found in database ",
-          historyInDatabase.length
-        );
-        console.log("History Found in database ", historyInDatabase);
         if (historyInDatabase.length > 0) {
           // Now check if already exists
           let historyItemAlreadyExists = false;
@@ -68,7 +61,6 @@ export const startAddSellUnderCustomerHistory = data => {
                   number: data.number,
                   history: data.history
                 };
-                console.log("[Firebase] History Updated !");
                 dispatch(addSellUnderCustomerHistory(saveDataLocal));
               });
           } else {
@@ -117,7 +109,7 @@ export const startSetAddSellUnderCustomerHistory = () => {
         snapshot.forEach(childSnapshot => {
           history[childSnapshot.val().number] = {
             history: childSnapshot.val().history
-          }
+          };
         });
 
         dispatch(setAddSellUnderCustomerHistory(history));

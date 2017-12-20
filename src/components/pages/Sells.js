@@ -130,10 +130,10 @@ class Sells extends Component {
                 setAllTotal={this.setAllTotal}
               />
               {/* Below div is Customer Details Getting Form */}
-              {(this.props.allSells.aluminium.length > 0 ||
-                this.props.allSells.glass.length > 0 ||
-                this.props.allSells.ss.length > 0 ||
-                this.props.allSells.others.length > 0) && (
+              {(this.props.sellsTable.aluminium.length > 0 ||
+                this.props.sellsTable.glass.length > 0 ||
+                this.props.sellsTable.ss.length > 0 ||
+                this.props.sellsTable.others.length > 0) && (
                 <CustomerDetailsForm
                   showSnackBar={this.showSnackBar}
                   allTotal={this.state.allTotal}
@@ -161,7 +161,8 @@ class Sells extends Component {
 
 const mapStateToProps = state => {
   return {
-    allSells: state.sells
+    allSells: state.sells,
+    sellsTable: state.sellsTable
   };
 };
 

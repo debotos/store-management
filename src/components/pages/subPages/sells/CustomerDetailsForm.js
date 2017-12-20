@@ -108,7 +108,6 @@ class CustomerDetailsForm extends Component {
           let deposit = parseFloat(this.state.deposit).toFixed(2);
           let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
           this.props.startAddPrevDue(this.state.number, newDue);
-          console.log("History Saving in store");
           this.props.startAddSellUnderCustomerHistory(this.collectSellsData());
           const modelData = {
             allTotal: this.props.allTotal,
@@ -150,7 +149,6 @@ class CustomerDetailsForm extends Component {
         let deposit = parseFloat(this.state.deposit).toFixed(2);
         let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
         this.props.startAddPrevDue(this.state.number, newDue);
-        console.log("History Saving in store");
         this.props.startAddSellUnderCustomerHistory(this.collectSellsData());
         const modelData = {
           allTotal: this.props.allTotal,
@@ -161,6 +159,7 @@ class CustomerDetailsForm extends Component {
         };
         this.setState({ modelData });
         this.handleDialogOpen();
+        console.log("sending for pdf ", this.props.sellsTables);
         const dataForPDF = {
           tables: this.props.sellsTables,
           customer: {
@@ -331,7 +330,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    sellsTables: state.sells,
+    sellsTables: state.sellsTable,
     sellsHistory: state.sellsHistory,
     due: state.due,
     memoNumber: state.memoNumber.memoNumber
