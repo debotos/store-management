@@ -65,7 +65,7 @@ class HistoryTableGenerator extends Component {
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false} showRowHover={true}>
-            {this.renderOthersTableRow(others)}
+            {this.renderOthersTableRow(others.table)}
           </TableBody>
         </Table>
       </div>
@@ -132,7 +132,7 @@ class HistoryTableGenerator extends Component {
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false} showRowHover={true}>
-            {this.renderSSTableRow(ss)}
+            {this.renderSSTableRow(ss.table)}
           </TableBody>
         </Table>
       </div>
@@ -202,7 +202,7 @@ class HistoryTableGenerator extends Component {
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false} showRowHover={true}>
-            {this.renderAluminiumTableRow(aluminium)}
+            {this.renderAluminiumTableRow(aluminium.table)}
           </TableBody>
         </Table>
       </div>
@@ -212,6 +212,9 @@ class HistoryTableGenerator extends Component {
   renderGlassTableRow = glass => {
     let id = 0;
     return glass.map((singleItem, index) => {
+      console.log("====================================");
+      console.log("renderGlassTableRow() singleItem => ", singleItem);
+      console.log("====================================");
       id += 1;
       return (
         <TableRow key={index}>
@@ -225,6 +228,23 @@ class HistoryTableGenerator extends Component {
     });
   };
   renderGlassTable = glass => {
+    /*
+      [incomming an Array][so, glass is an Array of Objects]
+      Like,
+      glass: [
+        {
+          table: [{}, {}, {}],
+          attribute: {}
+        },
+        {....},
+      ]
+    */
+    console.log("====================================");
+    console.log("renderGlassTable() Incommint =>", glass);
+    console.log("====================================");
+    console.log("====================================");
+    console.log("renderGlassTable() sending =>", glass.table);
+    console.log("====================================");
     return (
       <div>
         <Table height="150px" fixedHeader={true} fixedFooter={true}>
@@ -253,7 +273,7 @@ class HistoryTableGenerator extends Component {
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false} showRowHover={true}>
-            {this.renderGlassTableRow(glass)}
+            {this.renderGlassTableRow(glass.table)}
           </TableBody>
         </Table>
       </div>
@@ -264,14 +284,37 @@ class HistoryTableGenerator extends Component {
     return this.props.allTables.map((singleSell, index) => {
       // {singleSell} is an [Object]
       // Destructuring the singleItem Object
-      console.log("History i want to see ", singleSell)
-      console.log("So i want an object but getting ==>> ", typeof singleSell)
       let { aluminium, glass, ss, others, date } = singleSell;
       // {aluminium, glass, ss, others} each one containing an [array of objects]
-      console.log(glass);
-      console.log(aluminium);
-      console.log(ss);
-      console.log(others);
+      let AluminiumTable = [];
+      let GlassTable = [];
+      let SSTable = [];
+      let OthersTable = [];
+
+      if (aluminium && aluminium.length > 0) {
+        aluminium.forEach(singleItem => {
+          AluminiumTable.push(this.renderAluminiumTable(singleItem));
+        });
+      }
+
+      if (glass && glass.length > 0) {
+        glass.forEach(singleItem => {
+          GlassTable.push(this.renderGlassTable(singleItem));
+        });
+      }
+
+      if (ss && ss.length > 0) {
+        ss.forEach(singleItem => {
+          SSTable.push(this.renderSSTable(singleItem));
+        });
+      }
+
+      if (others && others.length > 0) {
+        others.forEach(singleItem => {
+          OthersTable.push(this.renderOthersTable(singleItem));
+        });
+      }
+
       return (
         <div
           key={index}
@@ -281,10 +324,10 @@ class HistoryTableGenerator extends Component {
             <strong>Date: {date}</strong>
           </h2>
 
-          {(aluminium && (aluminium.length > 0)) && this.renderAluminiumTable(aluminium)}
-          {(glass && (glass.length > 0)) && this.renderGlassTable(glass)}
-          {(ss && (ss.length > 0)) && this.renderSSTable(ss)}
-          {(others && (others.length > 0)) && this.renderOthersTable(others)}
+          {AluminiumTable}
+          {GlassTable}
+          {SSTable}
+          {OthersTable}
         </div>
       );
     });

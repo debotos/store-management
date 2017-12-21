@@ -78,6 +78,17 @@ const renderTables = tables => {
   return [aluminiumTables, glassTables, ssTables, othersTables];
 };
 
+const friendlyDiscountRender = customer => {
+  if (parseInt(customer.allTotal.finalFriendlyDiscount, 10) > 0) {
+    return [
+      "- " + parseFloat(customer.allTotal.finalFriendlyDiscount).toFixed(2),
+      "---------------------------------",
+      "= " + parseFloat(customer.allTotal.finalTotal).toFixed(2)
+    ];
+  } else {
+    return {};
+  }
+};
 function GENERATE_PDF(data) {
   let { tables, customer, memoNumber } = data;
   //Start
@@ -148,9 +159,7 @@ function GENERATE_PDF(data) {
         ul: [
           "All Tables Total = " +
             parseFloat(customer.allTotal.total).toFixed(2),
-          "- " + parseFloat(customer.allTotal.finalFriendlyDiscount).toFixed(2),
-          "---------------------------------",
-          "= " + parseFloat(customer.allTotal.finalTotal).toFixed(2),
+          friendlyDiscountRender(customer),
           {
             text: "Previous Due = " + customer.prevDue,
             italics: true,

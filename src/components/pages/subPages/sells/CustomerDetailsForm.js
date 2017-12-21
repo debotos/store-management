@@ -98,7 +98,8 @@ class CustomerDetailsForm extends Component {
       mail: this.state.mail,
       address: this.state.address
     },
-    history: this.props.sellsTables
+    history: this.props.sellsTables,
+    memoNumber: this.props.memoNumber
   });
 
   handleSaveAndGeneratePDF = () => {
@@ -152,6 +153,7 @@ class CustomerDetailsForm extends Component {
         let deposit = parseFloat(this.state.deposit).toFixed(2);
         let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
         this.props.startAddPrevDue(this.state.number, newDue);
+        // Saving for history
         this.props.startAddSellUnderCustomerHistory(this.collectSellsData());
         const modelData = {
           allTotal: this.props.allTotal.finalTotal,

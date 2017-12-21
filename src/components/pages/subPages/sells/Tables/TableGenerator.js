@@ -536,6 +536,17 @@ class TableGenerator extends Component {
     this.setState({ othersDiscount: null });
     this.setState({ overideTotalSumOfOthers: "" });
   };
+  componentDidUpdate = () => {
+    if (
+      this.props.sellsTable.aluminium.length === 0 &&
+      this.props.sellsTable.glass.length === 0 &&
+      this.props.sellsTable.ss.length === 0 &&
+      this.props.sellsTable.others.length === 0 &&
+      this.state.finallyAllTotalField
+    ) {
+      this.setState({ finallyAllTotalField: "" });
+    }
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -1210,6 +1221,7 @@ class TableGenerator extends Component {
           </div>
         )}
         {/* Others Table Row Stop */}
+
         {/* Finally All Table Total */}
         {(this.props.sellsTable.aluminium.length > 0 ||
           this.props.sellsTable.glass.length > 0 ||

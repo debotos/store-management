@@ -4,7 +4,7 @@ import MenuItem from "material-ui/MenuItem";
 import { Card } from "material-ui/Card";
 import { connect } from "react-redux";
 
-import HistoryTableGenerator from './HistoryTable/HistoryTableGenerator'
+import HistoryTableGenerator from "./HistoryTable/HistoryTableGenerator";
 
 class SellsHistory extends Component {
   handleSelectChange = (event, index, value) =>
@@ -30,7 +30,7 @@ class SellsHistory extends Component {
       selectValue: null
     };
   }
-  renderTableUsingHistory = (phone) => {
+  renderTableUsingHistory = phone => {
     const searchingFor = phone;
     const history = this.props.sellsHistory;
     let objectSize = Object.keys(history).length;
@@ -39,16 +39,16 @@ class SellsHistory extends Component {
     let historyINeed;
     if (objectSize > 0 && phone) {
       for (let numberKey in history) {
-        if(numberKey.toString() === searchingFor.toString()) {
+        if (numberKey.toString() === searchingFor.toString()) {
           flag = true;
           historyINeed = history[numberKey];
         }
       }
     }
-    if(flag) {
+    if (flag) {
       return <HistoryTableGenerator allTables={historyINeed.history} />;
     }
-  }
+  };
   render() {
     return (
       <div>
@@ -56,21 +56,25 @@ class SellsHistory extends Component {
           className="container"
           style={{ textAlign: "center", marginTop: 5, marginBottom: 5 }}
         >
-          <Card>
-            <SelectField
-              style={{ marginTop: 5 }}
-              hintText="Select Customer"
-              value={this.state.selectValue}
-              onChange={this.handleSelectChange}
-            >
-              {this.makeMenuItemsByHistoyObject()}
-            </SelectField>
-          </Card>
+          {Object.keys(this.props.sellsHistory).length > 0 ? (
+            <Card>
+              <SelectField
+                style={{ marginTop: 5 }}
+                hintText="Select Customer"
+                value={this.state.selectValue}
+                onChange={this.handleSelectChange}
+              >
+                {this.makeMenuItemsByHistoyObject()}
+              </SelectField>
+            </Card>
+          ) : (
+            <div style={{ color: "red", fontWeight: "bold" }}>
+              No Sells History Found !
+            </div>
+          )}
         </div>
         {/* Showing the tables */}
-        <div >
-        {this.renderTableUsingHistory(this.state.selectValue)}
-        </div>
+        <div>{this.renderTableUsingHistory(this.state.selectValue)}</div>
       </div>
     );
   }
