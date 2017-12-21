@@ -717,566 +717,588 @@ class TableGenerator extends Component {
       <div>
         {/* Aluminium Table div start */}
         {this.haveAluminiumType() && (
-          <div style={{ border: "2px solid  #00BCD4", margin: "3px" }}>
-            <Table
-              height="200px"
-              fixedHeader={true}
-              fixedFooter={true}
-              onCellClick={this.handleAluminiumRowClick}
-            >
-              <TableHeader
-                displaySelectAll={false}
-                adjustForCheckbox={false}
-                enableSelectAll={false}
+          <Card style={{ margin: "10px", backgroundColor: "#e5e5e5" }}>
+            <div>
+              <Table
+                bodyStyle={{ overflow: "visible", width: "-fit-content" }}
+                height="300px"
+                style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
+                fixedHeader={false}
+                fixedFooter={true}
+                onCellClick={this.handleAluminiumRowClick}
               >
-                <TableRow>
-                  <TableHeaderColumn
-                    colSpan="9"
-                    tooltip="List of Aluminium Sells Table"
-                    style={{ textAlign: "center" }}
-                  >
-                    <h2>Aluminium Sells Table</h2>
-                  </TableHeaderColumn>
-                </TableRow>
-                <TableRow>
-                  <TableHeaderColumn tooltip="ID">ID</TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Name">
-                    Name
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Company">
-                    Company
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Length">
-                    Length
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Dia">
-                    Dia
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Color">
-                    Color
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Quantity">
-                    Quantity
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Rate / Price">
-                    Rate
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Price x Quantity">
-                    Total
-                  </TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false} showRowHover={true}>
-                {this.renderAluminiumTableRow()}
-              </TableBody>
-              <TableFooter>
-                <TableRow
-                  style={{
-                    padding: 5,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "center"
-                  }}
+                <TableHeader
+                  displaySelectAll={false}
+                  adjustForCheckbox={false}
+                  enableSelectAll={false}
                 >
-                  <TableRowColumn>
-                    <Toggle
-                      style={{ marginTop: 8 }}
-                      defaultToggled={this.state.aluminiumDiscountToggle}
-                      onToggle={this.handleAluminiumDiscountToggle}
-                    />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {this.state.aluminiumDiscountToggle && (
-                      <div>
-                        <TextField
-                          style={{ marginBottom: 10 }}
-                          type="number"
-                          value={this.state.aluminiumDiscount}
-                          onChange={this.handleAluminiumDiscountChange}
-                          hintText="Discount (%)"
-                        />
-                      </div>
-                    )}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {this.state.aluminiumDiscountToggle && (
+                  <TableRow>
+                    <TableHeaderColumn
+                      colSpan="9"
+                      tooltip="List of Aluminium Sells Table"
+                      style={{ textAlign: "center" }}
+                    >
+                      <h2>Aluminium Sells Table</h2>
+                    </TableHeaderColumn>
+                  </TableRow>
+                  <TableRow>
+                    <TableHeaderColumn tooltip="ID">ID</TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Name">
+                      Name
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Company">
+                      Company
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Length">
+                      Length
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Dia">
+                      Dia
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Color">
+                      Color
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Quantity">
+                      Quantity
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Rate / Price">
+                      Rate
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Price x Quantity">
+                      Total
+                    </TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false} showRowHover={true}>
+                  {this.renderAluminiumTableRow()}
+                </TableBody>
+                <TableFooter>
+                  <TableRow
+                    style={{
+                      padding: 5,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <TableRowColumn>
+                      <Toggle
+                        style={{ marginTop: 8 }}
+                        defaultToggled={this.state.aluminiumDiscountToggle}
+                        onToggle={this.handleAluminiumDiscountToggle}
+                      />
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      {this.state.aluminiumDiscountToggle && (
+                        <div>
+                          <TextField
+                            style={{ marginBottom: 10 }}
+                            type="number"
+                            value={this.state.aluminiumDiscount}
+                            onChange={this.handleAluminiumDiscountChange}
+                            hintText="Discount (%)"
+                          />
+                        </div>
+                      )}
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      {this.state.aluminiumDiscountToggle && (
+                        <h3 style={{ marginTop: 8 }}>
+                          Discount ={" "}
+                          {this.calculateAluminiumSUM()[0] && (
+                            <b>{this.calculateAluminiumSUM()[0]}</b>
+                          )}
+                        </h3>
+                      )}
+                    </TableRowColumn>
+
+                    <TableRowColumn>
                       <h3 style={{ marginTop: 8 }}>
-                        Discount ={" "}
-                        {this.calculateAluminiumSUM()[0] && (
-                          <b>{this.calculateAluminiumSUM()[0]}</b>
+                        Result ={" "}
+                        {this.calculateAluminiumSUM()[3] !== 0 &&
+                        this.calculateAluminiumSUM()[3] ? (
+                          <b>{this.calculateAluminiumSUM()[3]}</b>
+                        ) : (
+                          <b style={{ color: "red" }}>?</b>
                         )}
                       </h3>
-                    )}
-                  </TableRowColumn>
-
-                  <TableRowColumn>
-                    <h3 style={{ marginTop: 8 }}>
-                      Result ={" "}
-                      {this.calculateAluminiumSUM()[3] !== 0 &&
-                      this.calculateAluminiumSUM()[3] ? (
-                        <b>{this.calculateAluminiumSUM()[3]}</b>
-                      ) : (
-                        <b style={{ color: "red" }}>?</b>
-                      )}
-                    </h3>
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <TextField
-                      style={{ marginBottom: 10 }}
-                      type="number"
-                      value={this.state.overideTotalSumOfAluminium}
-                      onChange={this.handleoverideTotalSumOfAluminium}
-                      hintText="Friendly Discount"
-                    />
-                  </TableRowColumn>
-                </TableRow>
-              </TableFooter>
-            </Table>
-            <div
-              style={{
-                textAlign: "center",
-                borderTop: "2px solid  #00BCD4"
-              }}
-            >
-              <RaisedButton
-                style={{ margin: "5px" }}
-                label="Submit"
-                primary={true}
-                onClick={this.handleAluminiumTableSubmit}
-              />
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      <TextField
+                        style={{ marginBottom: 10 }}
+                        type="number"
+                        value={this.state.overideTotalSumOfAluminium}
+                        onChange={this.handleoverideTotalSumOfAluminium}
+                        hintText="Friendly Discount"
+                      />
+                    </TableRowColumn>
+                  </TableRow>
+                </TableFooter>
+              </Table>
+              <div
+                style={{
+                  textAlign: "center"
+                }}
+              >
+                <RaisedButton
+                  style={{ margin: "5px" }}
+                  label="Submit"
+                  primary={true}
+                  onClick={this.handleAluminiumTableSubmit}
+                />
+              </div>
             </div>
-          </div>
+          </Card>
         )}
         {/* Aluminium Table div stop */}
         {/* Glass Table Row Start*/}
         {this.haveGlassType() && (
-          <div style={{ border: "2px solid  #00BCD4", margin: "3px" }}>
-            <Table
-              height="200px"
-              fixedHeader={true}
-              fixedFooter={true}
-              onCellClick={this.handleGlassRowClick}
-            >
-              <TableHeader
-                displaySelectAll={false}
-                adjustForCheckbox={false}
-                enableSelectAll={false}
+          <Card style={{ margin: "10px", backgroundColor: "#e5e5e5" }}>
+            <div>
+              <Table
+                bodyStyle={{ overflow: "visible", width: "-fit-content" }}
+                height="300px"
+                style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
+                fixedHeader={false}
+                fixedFooter={true}
+                onCellClick={this.handleGlassRowClick}
               >
-                <TableRow>
-                  <TableHeaderColumn
-                    colSpan="5"
-                    tooltip="List of Glass Sells Table"
-                    style={{ textAlign: "center" }}
-                  >
-                    <h2>Glass Sells Table</h2>
-                  </TableHeaderColumn>
-                </TableRow>
-                <TableRow>
-                  <TableHeaderColumn tooltip="ID">ID</TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Name">
-                    Name
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product SFT">
-                    SFT
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Rate / Price">
-                    Rate
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="SFT x Rate">
-                    Total
-                  </TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false} showRowHover={true}>
-                {this.renderGlassTableRow()}
-              </TableBody>
-              <TableFooter>
-                <TableRow
-                  style={{
-                    padding: 5,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "center"
-                  }}
+                <TableHeader
+                  displaySelectAll={false}
+                  adjustForCheckbox={false}
+                  enableSelectAll={false}
                 >
-                  <TableRowColumn>
-                    <Toggle
-                      style={{ marginTop: 8 }}
-                      defaultToggled={this.state.glassDiscountToggle}
-                      onToggle={this.handleGlassDiscountToggle}
-                    />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {this.state.glassDiscountToggle && (
-                      <div>
-                        <TextField
-                          style={{ marginBottom: 10 }}
-                          type="number"
-                          value={this.state.glassDiscount}
-                          onChange={this.handleGlassDiscountChange}
-                          hintText="Discount (%)"
-                          className="table-footer-discount"
-                        />
-                      </div>
-                    )}
-                  </TableRowColumn>
+                  <TableRow>
+                    <TableHeaderColumn
+                      colSpan="5"
+                      tooltip="List of Glass Sells Table"
+                      style={{ textAlign: "center" }}
+                    >
+                      <h2>Glass Sells Table</h2>
+                    </TableHeaderColumn>
+                  </TableRow>
+                  <TableRow>
+                    <TableHeaderColumn tooltip="ID">ID</TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Name">
+                      Name
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product SFT">
+                      SFT
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Rate / Price">
+                      Rate
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="SFT x Rate">
+                      Total
+                    </TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false} showRowHover={true}>
+                  {this.renderGlassTableRow()}
+                </TableBody>
+                <TableFooter>
+                  <TableRow
+                    style={{
+                      padding: 5,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <TableRowColumn>
+                      <Toggle
+                        style={{ marginTop: 8 }}
+                        defaultToggled={this.state.glassDiscountToggle}
+                        onToggle={this.handleGlassDiscountToggle}
+                      />
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      {this.state.glassDiscountToggle && (
+                        <div>
+                          <TextField
+                            style={{ marginBottom: 10 }}
+                            type="number"
+                            value={this.state.glassDiscount}
+                            onChange={this.handleGlassDiscountChange}
+                            hintText="Discount (%)"
+                            className="table-footer-discount"
+                          />
+                        </div>
+                      )}
+                    </TableRowColumn>
 
-                  <TableRowColumn>
-                    {this.state.glassDiscountToggle && (
+                    <TableRowColumn>
+                      {this.state.glassDiscountToggle && (
+                        <h3 style={{ marginTop: 8 }}>
+                          Discount ={" "}
+                          {this.calculateGlassSUM()[0] && (
+                            <b>{this.calculateGlassSUM()[0]}</b>
+                          )}
+                        </h3>
+                      )}
+                    </TableRowColumn>
+                    <TableRowColumn>
                       <h3 style={{ marginTop: 8 }}>
-                        Discount ={" "}
-                        {this.calculateGlassSUM()[0] && (
-                          <b>{this.calculateGlassSUM()[0]}</b>
+                        Result ={" "}
+                        {this.calculateGlassSUM()[3] !== 0 &&
+                        this.calculateGlassSUM()[3] ? (
+                          <b>{this.calculateGlassSUM()[3]}</b>
+                        ) : (
+                          <b style={{ color: "red" }}>?</b>
                         )}
                       </h3>
-                    )}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <h3 style={{ marginTop: 8 }}>
-                      Result ={" "}
-                      {this.calculateGlassSUM()[3] !== 0 &&
-                      this.calculateGlassSUM()[3] ? (
-                        <b>{this.calculateGlassSUM()[3]}</b>
-                      ) : (
-                        <b style={{ color: "red" }}>?</b>
-                      )}
-                    </h3>
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <TextField
-                      style={{ marginBottom: 10 }}
-                      type="number"
-                      value={this.state.overideTotalSumOfGlass}
-                      onChange={this.handleoverideTotalSumOfGlass}
-                      hintText="Friendly Discount"
-                    />
-                  </TableRowColumn>
-                </TableRow>
-              </TableFooter>
-            </Table>
-            <div
-              style={{
-                textAlign: "center",
-                borderTop: "2px solid  #00BCD4"
-              }}
-            >
-              <RaisedButton
-                style={{ margin: "5px" }}
-                label="Submit"
-                primary={true}
-                onClick={this.handleGlassTableSubmit}
-              />
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      <TextField
+                        style={{ marginBottom: 10 }}
+                        type="number"
+                        value={this.state.overideTotalSumOfGlass}
+                        onChange={this.handleoverideTotalSumOfGlass}
+                        hintText="Friendly Discount"
+                      />
+                    </TableRowColumn>
+                  </TableRow>
+                </TableFooter>
+              </Table>
+              <div
+                style={{
+                  textAlign: "center"
+                }}
+              >
+                <RaisedButton
+                  style={{ margin: "5px" }}
+                  label="Submit"
+                  primary={true}
+                  onClick={this.handleGlassTableSubmit}
+                />
+              </div>
             </div>
-          </div>
+          </Card>
         )}
         {/* Glass Table Row Stop */}
         {/* SS Table Row Start */}
         {this.haveSSType() && (
-          <div style={{ border: "2px solid  #00BCD4", margin: "3px" }}>
-            <Table
-              height="200px"
-              fixedHeader={true}
-              fixedFooter={true}
-              onCellClick={this.handleSSRowClick}
-            >
-              <TableHeader
-                displaySelectAll={false}
-                adjustForCheckbox={false}
-                enableSelectAll={false}
+          <Card style={{ margin: "10px", backgroundColor: "#e5e5e5" }}>
+            <div>
+              <Table
+                bodyStyle={{ overflow: "visible", width: "-fit-content" }}
+                height="300px"
+                style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
+                fixedHeader={false}
+                fixedFooter={true}
+                onCellClick={this.handleSSRowClick}
               >
-                <TableRow>
-                  <TableHeaderColumn
-                    colSpan="8"
-                    tooltip="List of SS Sells Table"
-                    style={{ textAlign: "center" }}
-                  >
-                    <h2>SS Sells Table</h2>
-                  </TableHeaderColumn>
-                </TableRow>
-                <TableRow>
-                  <TableHeaderColumn tooltip="ID">ID</TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Name">
-                    Name
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Company">
-                    Company
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Length">
-                    Length
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Thickness">
-                    Thickness
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Quantity">
-                    Quantity
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Rate / Price">
-                    Rate
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Price x Quantity">
-                    Total
-                  </TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false} showRowHover={true}>
-                {this.renderSSTableRow()}
-              </TableBody>
-              <TableFooter>
-                <TableRow
-                  style={{
-                    padding: 5,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "center"
-                  }}
+                <TableHeader
+                  displaySelectAll={false}
+                  adjustForCheckbox={false}
+                  enableSelectAll={false}
                 >
-                  <TableRowColumn>
-                    <Toggle
-                      style={{ marginTop: 8 }}
-                      defaultToggled={this.state.ssDiscountToggle}
-                      onToggle={this.handleSSDiscountToggle}
-                    />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {this.state.ssDiscountToggle && (
-                      <div>
-                        <TextField
-                          style={{ marginBottom: 10 }}
-                          type="number"
-                          value={this.state.ssDiscount}
-                          onChange={this.handleSSDiscountChange}
-                          hintText="Discount (%)"
-                          className="table-footer-discount"
-                        />
-                      </div>
-                    )}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {this.state.ssDiscountToggle && (
+                  <TableRow>
+                    <TableHeaderColumn
+                      colSpan="8"
+                      tooltip="List of SS Sells Table"
+                      style={{ textAlign: "center" }}
+                    >
+                      <h2>SS Sells Table</h2>
+                    </TableHeaderColumn>
+                  </TableRow>
+                  <TableRow>
+                    <TableHeaderColumn tooltip="ID">ID</TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Name">
+                      Name
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Company">
+                      Company
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Length">
+                      Length
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Thickness">
+                      Thickness
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Quantity">
+                      Quantity
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Rate / Price">
+                      Rate
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Price x Quantity">
+                      Total
+                    </TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false} showRowHover={true}>
+                  {this.renderSSTableRow()}
+                </TableBody>
+                <TableFooter>
+                  <TableRow
+                    style={{
+                      padding: 5,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <TableRowColumn>
+                      <Toggle
+                        style={{ marginTop: 8 }}
+                        defaultToggled={this.state.ssDiscountToggle}
+                        onToggle={this.handleSSDiscountToggle}
+                      />
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      {this.state.ssDiscountToggle && (
+                        <div>
+                          <TextField
+                            style={{ marginBottom: 10 }}
+                            type="number"
+                            value={this.state.ssDiscount}
+                            onChange={this.handleSSDiscountChange}
+                            hintText="Discount (%)"
+                            className="table-footer-discount"
+                          />
+                        </div>
+                      )}
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      {this.state.ssDiscountToggle && (
+                        <h3 style={{ marginTop: 8 }}>
+                          Discount ={" "}
+                          {this.calculateSSSUM()[0] && (
+                            <b>{this.calculateSSSUM()[0]}</b>
+                          )}
+                        </h3>
+                      )}
+                    </TableRowColumn>
+                    <TableRowColumn>
                       <h3 style={{ marginTop: 8 }}>
-                        Discount ={" "}
-                        {this.calculateSSSUM()[0] && (
-                          <b>{this.calculateSSSUM()[0]}</b>
+                        Result ={" "}
+                        {this.calculateSSSUM()[3] !== 0 &&
+                        this.calculateSSSUM()[3] ? (
+                          <b>{this.calculateSSSUM()[3]}</b>
+                        ) : (
+                          <b style={{ color: "red" }}>?</b>
                         )}
                       </h3>
-                    )}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <h3 style={{ marginTop: 8 }}>
-                      Result ={" "}
-                      {this.calculateSSSUM()[3] !== 0 &&
-                      this.calculateSSSUM()[3] ? (
-                        <b>{this.calculateSSSUM()[3]}</b>
-                      ) : (
-                        <b style={{ color: "red" }}>?</b>
-                      )}
-                    </h3>
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <TextField
-                      style={{ marginBottom: 10 }}
-                      type="number"
-                      value={this.state.overideTotalSumOfSS}
-                      onChange={this.handleoverideTotalSumOfSS}
-                      hintText="Friendly Discount"
-                    />
-                  </TableRowColumn>
-                </TableRow>
-              </TableFooter>
-            </Table>
-            <div
-              style={{
-                textAlign: "center",
-                borderTop: "2px solid  #00BCD4"
-              }}
-            >
-              <RaisedButton
-                style={{ margin: "5px" }}
-                label="Submit"
-                primary={true}
-                onClick={this.handleSSTableSubmit}
-              />
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      <TextField
+                        style={{ marginBottom: 10 }}
+                        type="number"
+                        value={this.state.overideTotalSumOfSS}
+                        onChange={this.handleoverideTotalSumOfSS}
+                        hintText="Friendly Discount"
+                      />
+                    </TableRowColumn>
+                  </TableRow>
+                </TableFooter>
+              </Table>
+              <div
+                style={{
+                  textAlign: "center"
+                }}
+              >
+                <RaisedButton
+                  style={{ margin: "5px" }}
+                  label="Submit"
+                  primary={true}
+                  onClick={this.handleSSTableSubmit}
+                />
+              </div>
             </div>
-          </div>
+          </Card>
         )}
         {/* SS Table Row Stop */}
         {/* Others Table Row Start */}
         {this.haveOthersType() && (
-          <div style={{ border: "3px solid  #00BCD4", margin: "3px" }}>
-            <Table
-              height="200px"
-              fixedHeader={true}
-              fixedFooter={true}
-              onCellClick={this.handleOthersRowClick}
-            >
-              <TableHeader
-                displaySelectAll={false}
-                adjustForCheckbox={false}
-                enableSelectAll={false}
+          <Card style={{ margin: "10px", backgroundColor: "#e5e5e5" }}>
+            <div>
+              <Table
+                bodyStyle={{ overflow: "visible", width: "-fit-content" }}
+                height="300px"
+                style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
+                fixedHeader={false}
+                fixedFooter={true}
+                onCellClick={this.handleOthersRowClick}
               >
-                <TableRow>
-                  <TableHeaderColumn
-                    colSpan="5"
-                    tooltip="List of Others Sells Table"
-                    style={{ textAlign: "center" }}
-                  >
-                    <h2>Others Sells Table</h2>
-                  </TableHeaderColumn>
-                </TableRow>
-                <TableRow>
-                  <TableHeaderColumn tooltip="ID">ID</TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Name">
-                    Name
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Quantity">
-                    Quantity
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Product Rate / Price">
-                    Rate
-                  </TableHeaderColumn>
-                  <TableHeaderColumn tooltip="Price x Quantity">
-                    Total
-                  </TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false} showRowHover={true}>
-                {this.renderOthersTableRow()}
-              </TableBody>
-              <TableFooter>
-                <TableRow
-                  style={{
-                    padding: 5,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "center"
-                  }}
+                <TableHeader
+                  displaySelectAll={false}
+                  adjustForCheckbox={false}
+                  enableSelectAll={false}
                 >
-                  <TableRowColumn>
-                    <Toggle
-                      style={{ marginTop: 8 }}
-                      defaultToggled={this.state.othersDiscountToggle}
-                      onToggle={this.handleOthersDiscountToggle}
-                    />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {this.state.othersDiscountToggle && (
-                      <div>
-                        <TextField
-                          style={{ marginBottom: 10 }}
-                          type="number"
-                          value={this.state.othersDiscount}
-                          onChange={this.handleOthersDiscountChange}
-                          hintText="Discount (%)"
-                          className="table-footer-discount"
-                        />
-                      </div>
-                    )}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {this.state.othersDiscountToggle && (
+                  <TableRow>
+                    <TableHeaderColumn
+                      colSpan="5"
+                      tooltip="List of Others Sells Table"
+                      style={{ textAlign: "center" }}
+                    >
+                      <h2>Others Sells Table</h2>
+                    </TableHeaderColumn>
+                  </TableRow>
+                  <TableRow>
+                    <TableHeaderColumn tooltip="ID">ID</TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Name">
+                      Name
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Quantity">
+                      Quantity
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Product Rate / Price">
+                      Rate
+                    </TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Price x Quantity">
+                      Total
+                    </TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false} showRowHover={true}>
+                  {this.renderOthersTableRow()}
+                </TableBody>
+                <TableFooter>
+                  <TableRow
+                    style={{
+                      padding: 5,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <TableRowColumn>
+                      <Toggle
+                        style={{ marginTop: 8 }}
+                        defaultToggled={this.state.othersDiscountToggle}
+                        onToggle={this.handleOthersDiscountToggle}
+                      />
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      {this.state.othersDiscountToggle && (
+                        <div>
+                          <TextField
+                            style={{ marginBottom: 10 }}
+                            type="number"
+                            value={this.state.othersDiscount}
+                            onChange={this.handleOthersDiscountChange}
+                            hintText="Discount (%)"
+                            className="table-footer-discount"
+                          />
+                        </div>
+                      )}
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      {this.state.othersDiscountToggle && (
+                        <h3 style={{ marginTop: 8 }}>
+                          Discount ={" "}
+                          {this.calculateOthersSUM()[0] && (
+                            <b>{this.calculateOthersSUM()[0]}</b>
+                          )}
+                        </h3>
+                      )}
+                    </TableRowColumn>
+                    <TableRowColumn>
                       <h3 style={{ marginTop: 8 }}>
-                        Discount ={" "}
-                        {this.calculateOthersSUM()[0] && (
-                          <b>{this.calculateOthersSUM()[0]}</b>
+                        Result ={" "}
+                        {this.calculateOthersSUM()[3] !== 0 &&
+                        this.calculateOthersSUM()[3] ? (
+                          <b>{this.calculateOthersSUM()[3]}</b>
+                        ) : (
+                          <b style={{ color: "red" }}>?</b>
                         )}
                       </h3>
-                    )}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <h3 style={{ marginTop: 8 }}>
-                      Result ={" "}
-                      {this.calculateOthersSUM()[3] !== 0 &&
-                      this.calculateOthersSUM()[3] ? (
-                        <b>{this.calculateOthersSUM()[3]}</b>
-                      ) : (
-                        <b style={{ color: "red" }}>?</b>
-                      )}
-                    </h3>
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <TextField
-                      style={{ marginBottom: 10 }}
-                      type="number"
-                      value={this.state.overideTotalSumOfOthers}
-                      onChange={this.handleoverideTotalSumOfOthers}
-                      hintText="Friendly Discount"
-                    />
-                  </TableRowColumn>
-                </TableRow>
-              </TableFooter>
-            </Table>
-            <div
-              style={{
-                textAlign: "center",
-                borderTop: "2px solid  #00BCD4"
-              }}
-            >
-              <RaisedButton
-                style={{ margin: "5px" }}
-                label="Submit"
-                primary={true}
-                onClick={this.handleOthersTableSubmit}
-              />
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      <TextField
+                        style={{ marginBottom: 10 }}
+                        type="number"
+                        value={this.state.overideTotalSumOfOthers}
+                        onChange={this.handleoverideTotalSumOfOthers}
+                        hintText="Friendly Discount"
+                      />
+                    </TableRowColumn>
+                  </TableRow>
+                </TableFooter>
+              </Table>
+              <div
+                style={{
+                  textAlign: "center"
+                }}
+              >
+                <RaisedButton
+                  style={{ margin: "5px" }}
+                  label="Submit"
+                  primary={true}
+                  onClick={this.handleOthersTableSubmit}
+                />
+              </div>
             </div>
-          </div>
+          </Card>
         )}
         {/* Others Table Row Stop */}
 
         {/* Finally All Table Total */}
-        {(this.props.sellsTable.aluminium.length > 0 ||
-          this.props.sellsTable.glass.length > 0 ||
-          this.props.sellsTable.ss.length > 0 ||
-          this.props.sellsTable.others.length > 0) && (
-          <div style={{ margin: 10 }}>
-            <Card style={{ textAlign: "center", padding: 3, marginBottom: 3 }}>
-              <span style={{ fontSize: "20px" }}>Table Hidden: </span>
-              <div style={{ fontSize: "25px" }}>
-                Aluminium:{" "}
-                <span style={{ color: "red" }}>
-                  <strong>{this.props.sellsTable.aluminium.length}</strong>
-                </span>{" "}
-                Glass:{" "}
-                <span style={{ color: "red" }}>
-                  <strong>{this.props.sellsTable.glass.length}</strong>
-                </span>{" "}
-                Others:{" "}
-                <span style={{ color: "red" }}>
-                  <strong>{this.props.sellsTable.others.length}</strong>
-                </span>{" "}
-                SS:{" "}
-                <span style={{ color: "red" }}>
-                  <strong>{this.props.sellsTable.ss.length}</strong>
-                </span>
-              </div>
-            </Card>
-            <Card
+        <div className="container">
+          {(this.props.sellsTable.aluminium.length > 0 ||
+            this.props.sellsTable.glass.length > 0 ||
+            this.props.sellsTable.ss.length > 0 ||
+            this.props.sellsTable.others.length > 0) && (
+            <div
               style={{
-                textAlign: "center",
-                justifyContent: "center"
+                marginTop: 10,
+                marginBottom: 10
               }}
             >
-              <span
+              <Card
                 style={{
-                  marginRight: 15,
-                  fontSize: "30px",
-                  color: "#00CD00"
+                  textAlign: "center",
+                  padding: 5,
+                  marginBottom: 5,
+                  backgroundColor: "#b2b2b2"
                 }}
               >
-                <strong>Totally = {this.finallyAllTotal()}</strong>
-              </span>
-              <TextField
+                <span style={{ fontSize: "20px" }}>Table Hidden: </span>
+                <div style={{ fontSize: "25px" }}>
+                  Aluminium:{" "}
+                  <span style={{ color: "red" }}>
+                    <strong>{this.props.sellsTable.aluminium.length}</strong>
+                  </span>{" "}
+                  Glass:{" "}
+                  <span style={{ color: "red" }}>
+                    <strong>{this.props.sellsTable.glass.length}</strong>
+                  </span>{" "}
+                  Others:{" "}
+                  <span style={{ color: "red" }}>
+                    <strong>{this.props.sellsTable.others.length}</strong>
+                  </span>{" "}
+                  SS:{" "}
+                  <span style={{ color: "red" }}>
+                    <strong>{this.props.sellsTable.ss.length}</strong>
+                  </span>
+                </div>
+              </Card>
+              <Card
                 style={{
-                  color: "#00CD00"
+                  textAlign: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#999999"
                 }}
-                type="number"
-                value={this.state.finallyAllTotalField}
-                onChange={this.handleoveridefinallyAllTotal}
-                hintText="Final Friendly Discount"
-              />
-            </Card>
-          </div>
-        )}
-
+              >
+                <span
+                  style={{
+                    marginRight: 15,
+                    fontSize: "30px"
+                  }}
+                >
+                  <strong>Totally = {this.finallyAllTotal()}</strong>
+                </span>
+                <TextField
+                  type="number"
+                  value={this.state.finallyAllTotalField}
+                  onChange={this.handleoveridefinallyAllTotal}
+                  hintText="Final Friendly Discount"
+                />
+              </Card>
+            </div>
+          )}
+        </div>
         {/* Model to Delete and Details */}
         <div>
           <Dialog

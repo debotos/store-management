@@ -8,6 +8,8 @@ import {
   TableRow,
   TableRowColumn
 } from "material-ui/Table";
+import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
+import RaisedButton from "material-ui/RaisedButton";
 
 // {this.props.allTables} returning [Array of object]
 
@@ -35,7 +37,13 @@ class HistoryTableGenerator extends Component {
   renderOthersTable = others => {
     return (
       <div>
-        <Table height="150px" fixedHeader={true} fixedFooter={true}>
+        <Table
+          bodyStyle={{ overflow: "visible", width: "-fit-content" }}
+          height="150px"
+          style={{ tableLayout: "auto" }}
+          fixedHeader={false}
+          fixedFooter={false}
+        >
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}
@@ -93,7 +101,13 @@ class HistoryTableGenerator extends Component {
   renderSSTable = ss => {
     return (
       <div>
-        <Table height="150px" fixedHeader={true} fixedFooter={true}>
+        <Table
+          bodyStyle={{ overflow: "visible", width: "-fit-content" }}
+          height="150px"
+          style={{ tableLayout: "auto" }}
+          fixedHeader={false}
+          fixedFooter={false}
+        >
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}
@@ -162,7 +176,13 @@ class HistoryTableGenerator extends Component {
   renderAluminiumTable = aluminium => {
     return (
       <div>
-        <Table height="150px" fixedHeader={true} fixedFooter={true}>
+        <Table
+          bodyStyle={{ overflow: "visible", width: "-fit-content" }}
+          height="150px"
+          style={{ tableLayout: "auto" }}
+          fixedHeader={false}
+          fixedFooter={false}
+        >
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}
@@ -212,9 +232,6 @@ class HistoryTableGenerator extends Component {
   renderGlassTableRow = glass => {
     let id = 0;
     return glass.map((singleItem, index) => {
-      console.log("====================================");
-      console.log("renderGlassTableRow() singleItem => ", singleItem);
-      console.log("====================================");
       id += 1;
       return (
         <TableRow key={index}>
@@ -228,26 +245,15 @@ class HistoryTableGenerator extends Component {
     });
   };
   renderGlassTable = glass => {
-    /*
-      [incomming an Array][so, glass is an Array of Objects]
-      Like,
-      glass: [
-        {
-          table: [{}, {}, {}],
-          attribute: {}
-        },
-        {....},
-      ]
-    */
-    console.log("====================================");
-    console.log("renderGlassTable() Incommint =>", glass);
-    console.log("====================================");
-    console.log("====================================");
-    console.log("renderGlassTable() sending =>", glass.table);
-    console.log("====================================");
     return (
       <div>
-        <Table height="150px" fixedHeader={true} fixedFooter={true}>
+        <Table
+          bodyStyle={{ overflow: "visible", width: "-fit-content" }}
+          height="150px"
+          style={{ tableLayout: "auto" }}
+          fixedHeader={false}
+          fixedFooter={false}
+        >
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}
@@ -316,23 +322,37 @@ class HistoryTableGenerator extends Component {
       }
 
       return (
-        <div
-          key={index}
-          style={{ border: "3px solid  #00BCD4", margin: "3px" }}
-        >
-          <h2 style={{ textAlign: "center" }}>
-            <strong>Date: {date}</strong>
-          </h2>
+        <div key={index} style={{ margin: "2px" }}>
+          <Card>
+            <CardHeader
+              title={`${this.toTitleCase(singleSell.customer.name)} ${
+                singleSell.customer.number
+              }`}
+              subtitle={`Memo No: ${singleSell.memoNumber} Date: ${date}`}
+              actAsExpander={true}
+              showExpandableButton={true}
+            />
 
-          {AluminiumTable}
-          {GlassTable}
-          {SSTable}
-          {OthersTable}
+            <CardText expandable={true}>
+              {AluminiumTable}
+              {GlassTable}
+              {SSTable}
+              {OthersTable}
+            </CardText>
+
+            <CardActions>
+              <RaisedButton secondary={true} label="Delete" />
+            </CardActions>
+          </Card>
         </div>
       );
     });
   };
-
+  toTitleCase = str => {
+    return str.replace(/\w\S*/g, function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
   render() {
     return <div>{this.renderTable()}</div>;
   }
