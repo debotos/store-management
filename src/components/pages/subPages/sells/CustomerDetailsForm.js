@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, CardActions } from "material-ui/Card";
+import { Card } from "material-ui/Card";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
 import isEmail from "validator/lib/isEmail";
@@ -12,6 +12,8 @@ import { removeAllSellsItem } from "../../../../actions/sells/sells-actions";
 import { startAddSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
 import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
 import { removeAllTable } from "../../../../actions/sells/table-actions";
+
+const uuidv4 = require("uuid/v4");
 
 class CustomerDetailsForm extends Component {
   handleDialogOpen = () => {
@@ -41,12 +43,7 @@ class CustomerDetailsForm extends Component {
     const address = event.target.value;
     this.setState({ address });
   };
-  calculateAllTotal = () => {
-    let Total = 0;
-    this.props.sellsTables.total.forEach(singleTotal => {
-      Total += parseFloat(singleTotal);
-    });
-  };
+
   handleDeposit = event => {
     const deposit = event.target.value;
     if (!deposit || deposit.match(/^\d{1,}(\.\d{0,2})?$/)) {
@@ -92,6 +89,7 @@ class CustomerDetailsForm extends Component {
   collectSellsData = () => ({
     number: this.state.number,
     history: {
+      id: uuidv4(),
       items: this.props.sellsTables,
       memoNumber: this.props.memoNumber,
       allTotal: this.props.allTotal,

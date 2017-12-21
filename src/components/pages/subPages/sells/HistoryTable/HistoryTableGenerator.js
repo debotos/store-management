@@ -12,7 +12,11 @@ import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
+import { connect } from "react-redux";
 
+import { startDeleteSellUnderCustomerHistory } from "../../../../../actions/sells/sells-history-actions";
+
+const uuidv4 = require("uuid/v4");
 // {this.props.allTables} returning [Array of object]
 
 class HistoryTableGenerator extends Component {
@@ -60,7 +64,7 @@ class HistoryTableGenerator extends Component {
   };
   renderOthersTable = others => {
     return (
-      <div>
+      <div key={uuidv4()}>
         <Table
           bodyStyle={{ overflow: "visible", width: "-fit-content" }}
           height="200px"
@@ -130,7 +134,7 @@ class HistoryTableGenerator extends Component {
   };
   renderSSTable = ss => {
     return (
-      <div>
+      <div key={uuidv4()}>
         <Table
           bodyStyle={{ overflow: "visible", width: "-fit-content" }}
           height="200px"
@@ -211,7 +215,7 @@ class HistoryTableGenerator extends Component {
 
   renderAluminiumTable = aluminium => {
     return (
-      <div>
+      <div key={uuidv4()}>
         <Table
           bodyStyle={{ overflow: "visible", width: "-fit-content" }}
           height="200px"
@@ -288,7 +292,7 @@ class HistoryTableGenerator extends Component {
   };
   renderGlassTable = glass => {
     return (
-      <div>
+      <div key={uuidv4()}>
         <Table
           bodyStyle={{ overflow: "visible", width: "-fit-content" }}
           height="200px"
@@ -450,6 +454,7 @@ class HistoryTableGenerator extends Component {
 
             <CardActions>
               <RaisedButton
+                style={{ margin: 5 }}
                 label="Final Sell Details"
                 onClick={() =>
                   this.handleFinalDetailsButton(
@@ -459,13 +464,30 @@ class HistoryTableGenerator extends Component {
                   )
                 }
               />
-              <RaisedButton primary={true} label="Print" />
-              <RaisedButton secondary={true} label="Delete" />
+              <RaisedButton
+                style={{ margin: 5 }}
+                primary={true}
+                label="Print"
+              />
+              <RaisedButton
+                style={{ margin: 5 }}
+                secondary={true}
+                label="Delete"
+                onClick={() =>
+                  this.handleSellHistoryDelete(
+                    singleSell.id,
+                    singleSell.customer.number
+                  )
+                }
+              />
             </CardActions>
           </Card>
         </div>
       );
     });
+  };
+  handleSellHistoryDelete = (id, number) => {
+    this.props.startDeleteSellUnderCustomerHistory(id, number);
   };
   toTitleCase = str => {
     return str.replace(/\w\S*/g, function(txt) {
@@ -505,4 +527,12 @@ class HistoryTableGenerator extends Component {
   }
 }
 
-export default HistoryTableGenerator;
+const mapDispatchToProps = dispatch => {
+  return {
+    startDeleteSellUnderCustomerHistory: (id, number) => {
+      dispatch(startDeleteSellUnderCustomerHistory(id, number));
+    }
+  };
+};
+
+export default connect(null, mapDispatchToProps)(HistoryTableGenerator);
