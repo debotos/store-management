@@ -91,15 +91,17 @@ class CustomerDetailsForm extends Component {
   }
   collectSellsData = () => ({
     number: this.state.number,
-    allTotal: this.props.allTotal,
-    customer: {
-      name: this.state.name,
-      number: this.state.number,
-      mail: this.state.mail,
-      address: this.state.address
-    },
-    history: this.props.sellsTables,
-    memoNumber: this.props.memoNumber
+    history: {
+      items: this.props.sellsTables,
+      memoNumber: this.props.memoNumber,
+      allTotal: this.props.allTotal,
+      customer: {
+        name: this.state.name,
+        number: this.state.number,
+        mail: this.state.mail,
+        address: this.state.address
+      }
+    }
   });
 
   handleSaveAndGeneratePDF = () => {
@@ -293,7 +295,10 @@ class CustomerDetailsForm extends Component {
             />
             <FlatButton
               disabled={
-                this.state.name && this.state.number && this.state.address
+                this.state.name &&
+                this.state.number &&
+                this.state.address &&
+                this.state.deposit
                   ? false
                   : true
               }
