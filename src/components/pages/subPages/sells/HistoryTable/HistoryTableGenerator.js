@@ -10,13 +10,37 @@ import {
 } from "material-ui/Table";
 import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
 
 // {this.props.allTables} returning [Array of object]
 
 class HistoryTableGenerator extends Component {
+  handleOpen = () => {
+    this.setState({ modelOpen: true });
+  };
+
+  handleClose = () => {
+    this.setState({ modelOpen: false });
+  };
+
+  handleFinalOpen = () => {
+    this.setState({ finalModelOpen: true });
+  };
+
+  handleFinalClose = () => {
+    this.setState({ finalModelOpen: false });
+  };
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      modelOpen: false,
+      modelData: "",
+      finalModelOpen: false,
+      finalModelData: "",
+      date: "",
+      customer: ""
+    };
   }
   // Give me an array of object whose type is others and i will render a tabel
   renderOthersTableRow = others => {
@@ -39,7 +63,7 @@ class HistoryTableGenerator extends Component {
       <div>
         <Table
           bodyStyle={{ overflow: "visible", width: "-fit-content" }}
-          height="150px"
+          height="200px"
           style={{ tableLayout: "auto" }}
           fixedHeader={false}
           fixedFooter={false}
@@ -76,6 +100,12 @@ class HistoryTableGenerator extends Component {
             {this.renderOthersTableRow(others.table)}
           </TableBody>
         </Table>
+        <div style={{ textAlign: "center", margin: 5 }}>
+          <FlatButton
+            label="More Details"
+            onClick={() => this.handleDetailsButton(others.attribute)}
+          />
+        </div>
       </div>
     );
   };
@@ -103,7 +133,7 @@ class HistoryTableGenerator extends Component {
       <div>
         <Table
           bodyStyle={{ overflow: "visible", width: "-fit-content" }}
-          height="150px"
+          height="200px"
           style={{ tableLayout: "auto" }}
           fixedHeader={false}
           fixedFooter={false}
@@ -149,6 +179,12 @@ class HistoryTableGenerator extends Component {
             {this.renderSSTableRow(ss.table)}
           </TableBody>
         </Table>
+        <div style={{ textAlign: "center", margin: 5 }}>
+          <FlatButton
+            label="More Details"
+            onClick={() => this.handleDetailsButton(ss.attribute)}
+          />
+        </div>
       </div>
     );
   };
@@ -178,7 +214,7 @@ class HistoryTableGenerator extends Component {
       <div>
         <Table
           bodyStyle={{ overflow: "visible", width: "-fit-content" }}
-          height="150px"
+          height="200px"
           style={{ tableLayout: "auto" }}
           fixedHeader={false}
           fixedFooter={false}
@@ -225,6 +261,12 @@ class HistoryTableGenerator extends Component {
             {this.renderAluminiumTableRow(aluminium.table)}
           </TableBody>
         </Table>
+        <div style={{ textAlign: "center", margin: 5 }}>
+          <FlatButton
+            label="More Details"
+            onClick={() => this.handleDetailsButton(aluminium.attribute)}
+          />
+        </div>
       </div>
     );
   };
@@ -249,7 +291,7 @@ class HistoryTableGenerator extends Component {
       <div>
         <Table
           bodyStyle={{ overflow: "visible", width: "-fit-content" }}
-          height="150px"
+          height="200px"
           style={{ tableLayout: "auto" }}
           fixedHeader={false}
           fixedFooter={false}
@@ -282,10 +324,76 @@ class HistoryTableGenerator extends Component {
             {this.renderGlassTableRow(glass.table)}
           </TableBody>
         </Table>
+        <div style={{ textAlign: "center", margin: 5 }}>
+          <FlatButton
+            label="More Details"
+            onClick={() => this.handleDetailsButton(glass.attribute)}
+          />
+        </div>
       </div>
     );
   };
-
+  handleDetailsButton = attribute => {
+    this.setState({ modelData: attribute });
+    this.handleOpen();
+  };
+  getAndShowModelData = () => {
+    let modelData = this.state.modelData;
+    return (
+      <div>
+        <strong>All Total = {modelData.allCellTotal}</strong> <br />
+        <strong>Discount = {modelData.discount} %</strong>
+        <br />
+        <strong>Discount Amount = {modelData.discountAmount} </strong>
+        <br />
+        <strong>After Discount = {modelData.afterDiscountTotal} </strong>
+        <br />
+        <strong>Friendly Discount = {modelData.friendlyDiscount} </strong>
+        <br />
+        <strong>
+          After Friendly Discount = {modelData.afterFriendlyDiscountTotal}{" "}
+        </strong>
+        <br />
+        <strong>Finally Total = {modelData.atLastTotalAll}</strong> <br />
+      </div>
+    );
+  };
+  handleFinalDetailsButton = (data, date, customer) => {
+    this.setState({ finalModelData: data });
+    this.setState({ date });
+    this.setState({ customer });
+    this.handleFinalOpen();
+  };
+  getAndShowFinalModelData = () => {
+    let finalModelData = this.state.finalModelData;
+    let { deposit, prevDue, totalWithDue, newDue } = this.state.customer;
+    return (
+      <div>
+        <strong>
+          All Table Total = {finalModelData.total} <br />
+          Friendly Discount = {finalModelData.finalFriendlyDiscount} <br />
+          <span style={{ color: "green" }}>
+            After Friendly Discount = {finalModelData.finalTotal}
+          </span>{" "}
+          <br />
+          <span style={{ color: "red" }}>
+            [{this.state.date}] At the time of Saving History Previous Due is ={" "}
+            {prevDue}
+          </span>{" "}
+          <br />
+          <span style={{ color: "green" }}>
+            Amount After Friendly Discount + Previous Due [ BILL HAVE TO PAY ] ={" "}
+            {totalWithDue}
+          </span>{" "}
+          <br />
+          <span style={{ color: "blue" }}>Deposited = {deposit}</span> <br />
+          <span style={{ color: "red" }}>
+            At the time of Saving History Left with Due = {newDue}{" "}
+          </span>
+        </strong>
+      </div>
+    );
+  };
   renderTable = () => {
     return this.props.allTables.map((singleSell, index) => {
       // {singleSell} is an [Object]
@@ -327,7 +435,7 @@ class HistoryTableGenerator extends Component {
             <CardHeader
               title={`${this.toTitleCase(singleSell.customer.name)} ${
                 singleSell.customer.number
-              }`}
+              } ${singleSell.customer.mail}`}
               subtitle={`Memo No: ${singleSell.memoNumber} Date: ${date}`}
               actAsExpander={true}
               showExpandableButton={true}
@@ -341,6 +449,17 @@ class HistoryTableGenerator extends Component {
             </CardText>
 
             <CardActions>
+              <RaisedButton
+                label="Final Sell Details"
+                onClick={() =>
+                  this.handleFinalDetailsButton(
+                    singleSell.allTotal,
+                    date,
+                    singleSell.customer
+                  )
+                }
+              />
+              <RaisedButton primary={true} label="Print" />
               <RaisedButton secondary={true} label="Delete" />
             </CardActions>
           </Card>
@@ -354,7 +473,35 @@ class HistoryTableGenerator extends Component {
     });
   };
   render() {
-    return <div>{this.renderTable()}</div>;
+    const actions = [
+      <FlatButton label="Okey" primary={true} onClick={this.handleClose} />
+    ];
+    const finalActions = [
+      <FlatButton label="Okey" primary={true} onClick={this.handleFinalClose} />
+    ];
+    return (
+      <div>
+        {this.renderTable()}
+        <div>
+          <Dialog
+            title="Table Details"
+            actions={actions}
+            modal={true}
+            open={this.state.modelOpen}
+          >
+            {this.getAndShowModelData()}
+          </Dialog>
+          <Dialog
+            title="Final Details Of This Sell"
+            actions={finalActions}
+            modal={true}
+            open={this.state.finalModelOpen}
+          >
+            {this.getAndShowFinalModelData()}
+          </Dialog>
+        </div>
+      </div>
+    );
   }
 }
 

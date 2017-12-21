@@ -99,7 +99,19 @@ class CustomerDetailsForm extends Component {
         name: this.state.name,
         number: this.state.number,
         mail: this.state.mail,
-        address: this.state.address
+        deposit: this.state.deposit,
+        prevDue: parseFloat(this.userAlreadyExists()[1]).toFixed(2),
+        totalWithDue: parseFloat(
+          parseFloat(this.props.allTotal.finalTotal) +
+            parseFloat(this.userAlreadyExists()[1])
+        ).toFixed(2),
+        address: this.state.address,
+        newDue: (
+          (
+            parseFloat(this.props.allTotal.finalTotal) +
+            parseFloat(this.userAlreadyExists()[1])
+          ).toFixed(2) - parseFloat(this.state.deposit).toFixed(2)
+        ).toFixed(2)
       }
     }
   });
