@@ -15,6 +15,7 @@ import FlatButton from "material-ui/FlatButton";
 import { connect } from "react-redux";
 
 import { startDeleteSellUnderCustomerHistory } from "../../../../../actions/sells/sells-history-actions";
+import GENERATE_PDF from "../PDF";
 
 const uuidv4 = require("uuid/v4");
 // {this.props.allTables} returning [Array of object]
@@ -468,6 +469,7 @@ class HistoryTableGenerator extends Component {
                 style={{ margin: 5 }}
                 primary={true}
                 label="Print"
+                onClick={() => this.handleHistoryPrint(singleSell, date)}
               />
               <RaisedButton
                 style={{ margin: 5 }}
@@ -485,6 +487,27 @@ class HistoryTableGenerator extends Component {
         </div>
       );
     });
+  };
+  handleHistoryPrint = (singleSell, date) => {
+    const dataForPDF = {
+      tables: singleSell.items,
+      customer: {
+        name: singleSell.customer.name,
+        number: singleSell.customer.number,
+        mail: singleSell.customer.mail,
+        address: singleSell.customer.address,
+        allTotal: singleSell.allTotal,
+        prevDue: singleSell.customer.prevDue,
+        totalWithDue: singleSell.customer.totalWithDue,
+        depositNow: singleSell.customer.deposit,
+        newDue: singleSell.customer.newDue
+      },
+      memoNumber: singleSell.memoNumber
+    };
+    console.log("====================================");
+    console.log("History PDF generator sending Date ", date);
+    console.log("====================================");
+    GENERATE_PDF(dataForPDF, date);
   };
   handleSellHistoryDelete = (id, number) => {
     this.props.startDeleteSellUnderCustomerHistory(id, number);

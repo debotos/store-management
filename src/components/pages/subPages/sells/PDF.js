@@ -18,63 +18,70 @@ const renderTables = tables => {
   let ssTables = [];
   let othersTables = [];
 
-  if (aluminium.length > 0) {
-    aluminium.forEach(singleAluminiumItem => {
-      aluminiumTables.push({
-        style: "tableDesign",
-        table: {
-          widths: [17, "*", "*", 40, 40, 45, 45, 40, "*"],
-          headerRows: 2,
-          dontBreakRows: true,
-          keepWithHeaderRows: 1,
-          body: renderAluminiumContent(singleAluminiumItem)
-        }
+  if (aluminium) {
+    if (aluminium.length > 0) {
+      aluminium.forEach(singleAluminiumItem => {
+        aluminiumTables.push({
+          style: "tableDesign",
+          table: {
+            widths: [17, "*", "*", 40, 40, 45, 45, 40, "*"],
+            headerRows: 2,
+            dontBreakRows: true,
+            keepWithHeaderRows: 1,
+            body: renderAluminiumContent(singleAluminiumItem)
+          }
+        });
       });
-    });
+    }
   }
-  if (glass.length > 0) {
-    glass.forEach(singleGlassItem => {
-      glassTables.push({
-        style: "tableDesign",
-        table: {
-          widths: [17, "*", "*", "*", "*"],
-          headerRows: 2,
-          dontBreakRows: true,
-          keepWithHeaderRows: 1,
-          body: renderGlassContent(singleGlassItem)
-        }
+  if (glass) {
+    if (glass.length > 0) {
+      glass.forEach(singleGlassItem => {
+        glassTables.push({
+          style: "tableDesign",
+          table: {
+            widths: [17, "*", "*", "*", "*"],
+            headerRows: 2,
+            dontBreakRows: true,
+            keepWithHeaderRows: 1,
+            body: renderGlassContent(singleGlassItem)
+          }
+        });
       });
-    });
+    }
   }
-  if (ss.length > 0) {
-    ss.forEach(singleSSItem => {
-      ssTables.push({
-        style: "tableDesign",
-        table: {
-          widths: [17, "*", "*", 55, 40, 45, 40, "*"],
-          headerRows: 2,
-          dontBreakRows: true,
-          keepWithHeaderRows: 1,
-          body: renderSSContent(singleSSItem)
-        }
+  if (ss) {
+    if (ss.length > 0) {
+      ss.forEach(singleSSItem => {
+        ssTables.push({
+          style: "tableDesign",
+          table: {
+            widths: [17, "*", "*", 55, 40, 45, 40, "*"],
+            headerRows: 2,
+            dontBreakRows: true,
+            keepWithHeaderRows: 1,
+            body: renderSSContent(singleSSItem)
+          }
+        });
       });
-    });
+    }
   }
-  if (others.length > 0) {
-    others.forEach(singleOthersItem => {
-      othersTables.push({
-        style: "tableDesign",
-        table: {
-          widths: [17, "*", "*", "*", "*"],
-          headerRows: 2,
-          dontBreakRows: true,
-          keepWithHeaderRows: 1,
-          body: renderOthersContent(singleOthersItem)
-        }
+  if (others) {
+    if (others.length > 0) {
+      others.forEach(singleOthersItem => {
+        othersTables.push({
+          style: "tableDesign",
+          table: {
+            widths: [17, "*", "*", "*", "*"],
+            headerRows: 2,
+            dontBreakRows: true,
+            keepWithHeaderRows: 1,
+            body: renderOthersContent(singleOthersItem)
+          }
+        });
       });
-    });
+    }
   }
-
   return [aluminiumTables, glassTables, ssTables, othersTables];
 };
 
@@ -89,8 +96,12 @@ const friendlyDiscountRender = customer => {
     return {};
   }
 };
-function GENERATE_PDF(data) {
+function GENERATE_PDF(data, date = null) {
   let { tables, customer, memoNumber } = data;
+
+  console.log("====================================");
+  console.log("GENERATE_PDF got Date ", date);
+  console.log("====================================");
   //Start
   var docDefinition = {
     watermark: {
@@ -138,7 +149,7 @@ function GENERATE_PDF(data) {
                 alignment: "right"
               },
               {
-                text: "Date: " + Date().substr(0, 15),
+                text: date ? `Date: ${date}` : `Date: ${Date().substr(0, 15)}`,
                 alignment: "right"
               }
             ]
@@ -234,12 +245,31 @@ function GENERATE_PDF(data) {
   };
 
   //End
-
-  pdfMake
-    .createPdf(docDefinition)
-    .download(
-      customer.number + "-" + customer.name + "-" + Date().substr(0, 15)
-    );
+  let pdf_name;
+  if (date) {
+    pdf_name =
+      "[" +
+      customer.number +
+      "]" +
+      "history_memo_" +
+      memoNumber +
+      "_" +
+      customer.name +
+      "_" +
+      Date().substr(0, 15);
+  } else {
+    pdf_name =
+      "[" +
+      customer.number +
+      "]" +
+      "sell_memo_" +
+      memoNumber +
+      "_" +
+      customer.name +
+      "_" +
+      Date().substr(0, 15);
+  }
+  pdfMake.createPdf(docDefinition).download(pdf_name);
 }
 
 const renderAluminiumContent = sellingItems => {
