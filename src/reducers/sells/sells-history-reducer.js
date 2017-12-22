@@ -13,14 +13,20 @@ export const sellsHistoryReducer = (
   switch (action.type) {
     case DELETE_SELL_UNDER_CUSTOMER_HISTORY:
       let number = action.number;
-      return {
-        ...state,
-        [number]: {
-          history: state[number].history.filter(
-            singleSell => singleSell.id !== action.id
-          )
-        }
-      };
+      if (state[number].history.length === 1) {
+        delete state[number];
+        return { ...state };
+      } else {
+        return {
+          ...state,
+          [number]: {
+            history: state[number].history.filter(
+              singleSell => singleSell.id !== action.id
+            )
+          }
+        };
+      }
+
     case ADD_SELL_UNDER_CUSTOMER_HISTORY:
       let objectSize = Object.keys(state).length;
       if (objectSize > 0) {

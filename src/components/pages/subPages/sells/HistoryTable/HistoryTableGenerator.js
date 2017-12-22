@@ -36,6 +36,13 @@ class HistoryTableGenerator extends Component {
   handleFinalClose = () => {
     this.setState({ finalModelOpen: false });
   };
+  handleSingleHistoryDeleteConfirmDialogOpen = () => {
+    this.setState({ singleHistoryDeleteConfirm: true });
+  };
+
+  handleSingleHistoryDeleteConfirmDialogClose = () => {
+    this.setState({ singleHistoryDeleteConfirm: false });
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -44,7 +51,10 @@ class HistoryTableGenerator extends Component {
       finalModelOpen: false,
       finalModelData: "",
       date: "",
-      customer: ""
+      customer: "",
+      singleHistoryDeleteConfirm: false,
+      singleHistoryDeleteId: "",
+      singleHistoryDeleteNumber: ""
     };
   }
   // Give me an array of object whose type is others and i will render a tabel
@@ -510,7 +520,16 @@ class HistoryTableGenerator extends Component {
     GENERATE_PDF(dataForPDF, date);
   };
   handleSellHistoryDelete = (id, number) => {
-    this.props.startDeleteSellUnderCustomerHistory(id, number);
+    this.setState({ singleHistoryDeleteId: id });
+    this.setState({ singleHistoryDeleteNumber: number });
+    this.handleSingleHistoryDeleteConfirmDialogOpen();
+  };
+  handleSingleHistoryDelete = () => {
+    this.props.startDeleteSellUnderCustomerHistory(
+      this.state.singleHistoryDeleteId,
+      this.state.singleHistoryDeleteNumber
+    );
+    this.handleSingleHistoryDeleteConfirmDialogClose();
   };
   toTitleCase = str => {
     return str.replace(/\w\S*/g, function(txt) {
@@ -523,6 +542,17 @@ class HistoryTableGenerator extends Component {
     ];
     const finalActions = [
       <FlatButton label="Okey" primary={true} onClick={this.handleFinalClose} />
+    ];
+    const singleHistoryDeleteConfirmModelActions = [
+      <FlatButton
+        label="Cancel"
+        onClick={this.handleSingleHistoryDeleteConfirmDialogClose}
+      />,
+      <FlatButton
+        label="Delete"
+        secondary={true}
+        onClick={this.handleSingleHistoryDelete}
+      />
     ];
     return (
       <div>
@@ -543,6 +573,14 @@ class HistoryTableGenerator extends Component {
             open={this.state.finalModelOpen}
           >
             {this.getAndShowFinalModelData()}
+          </Dialog>
+          <Dialog
+            actions={singleHistoryDeleteConfirmModelActions}
+            modal={false}
+            open={this.state.singleHistoryDeleteConfirm}
+            onRequestClose={this.handleSingleHistoryDeleteConfirmDialogClose}
+          >
+            Are you Sure ?
           </Dialog>
         </div>
       </div>
