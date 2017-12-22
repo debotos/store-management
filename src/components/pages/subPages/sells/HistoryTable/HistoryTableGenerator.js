@@ -13,6 +13,7 @@ import RaisedButton from "material-ui/RaisedButton";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import { connect } from "react-redux";
+import numeral from "numeral";
 
 import { startDeleteSellUnderCustomerHistory } from "../../../../../actions/sells/sells-history-actions";
 import GENERATE_PDF from "../PDF";
@@ -67,8 +68,12 @@ class HistoryTableGenerator extends Component {
           <TableRowColumn>{id}</TableRowColumn>
           <TableRowColumn>{singleItem.productName}</TableRowColumn>
           <TableRowColumn>{singleItem.quantity}</TableRowColumn>
-          <TableRowColumn>{singleItem.rate}</TableRowColumn>
-          <TableRowColumn>{singleItem.total}</TableRowColumn>
+          <TableRowColumn>
+            {numeral(parseFloat(singleItem.rate)).format("0,0.00")}
+          </TableRowColumn>
+          <TableRowColumn>
+            {numeral(parseFloat(singleItem.total)).format("0,0.00")}
+          </TableRowColumn>
         </TableRow>
       );
     });
@@ -137,8 +142,12 @@ class HistoryTableGenerator extends Component {
           <TableRowColumn>{singleItem.length}</TableRowColumn>
           <TableRowColumn>{singleItem.thickness}</TableRowColumn>
           <TableRowColumn>{singleItem.quantity}</TableRowColumn>
-          <TableRowColumn>{singleItem.rate}</TableRowColumn>
-          <TableRowColumn>{singleItem.total}</TableRowColumn>
+          <TableRowColumn>
+            {numeral(parseFloat(singleItem.rate)).format("0,0.00")}
+          </TableRowColumn>
+          <TableRowColumn>
+            {numeral(parseFloat(singleItem.total)).format("0,0.00")}
+          </TableRowColumn>
         </TableRow>
       );
     });
@@ -217,8 +226,12 @@ class HistoryTableGenerator extends Component {
           <TableRowColumn>{singleItem.dia}</TableRowColumn>
           <TableRowColumn>{singleItem.color}</TableRowColumn>
           <TableRowColumn>{singleItem.quantity}</TableRowColumn>
-          <TableRowColumn>{singleItem.rate}</TableRowColumn>
-          <TableRowColumn>{singleItem.total}</TableRowColumn>
+          <TableRowColumn>
+            {numeral(parseFloat(singleItem.rate)).format("0,0.00")}
+          </TableRowColumn>
+          <TableRowColumn>
+            {numeral(parseFloat(singleItem.total)).format("0,0.00")}
+          </TableRowColumn>
         </TableRow>
       );
     });
@@ -295,8 +308,12 @@ class HistoryTableGenerator extends Component {
           <TableRowColumn>{id}</TableRowColumn>
           <TableRowColumn>{singleItem.productName}</TableRowColumn>
           <TableRowColumn>{singleItem.sft}</TableRowColumn>
-          <TableRowColumn>{singleItem.rate}</TableRowColumn>
-          <TableRowColumn>{singleItem.total}</TableRowColumn>
+          <TableRowColumn>
+            {numeral(parseFloat(singleItem.rate)).format("0,0.00")}
+          </TableRowColumn>
+          <TableRowColumn>
+            {numeral(parseFloat(singleItem.total)).format("0,0.00")}
+          </TableRowColumn>
         </TableRow>
       );
     });
@@ -356,20 +373,40 @@ class HistoryTableGenerator extends Component {
     let modelData = this.state.modelData;
     return (
       <div>
-        <strong>All Total = {modelData.allCellTotal}</strong> <br />
+        <strong>
+          All Total ={" "}
+          {numeral(parseFloat(modelData.allCellTotal)).format("0,0.00")}
+        </strong>{" "}
+        <br />
         <strong>Discount = {modelData.discount} %</strong>
         <br />
-        <strong>Discount Amount = {modelData.discountAmount} </strong>
-        <br />
-        <strong>After Discount = {modelData.afterDiscountTotal} </strong>
-        <br />
-        <strong>Friendly Discount = {modelData.friendlyDiscount} </strong>
-        <br />
         <strong>
-          After Friendly Discount = {modelData.afterFriendlyDiscountTotal}{" "}
+          Discount Amount ={" "}
+          {numeral(parseFloat(modelData.discountAmount)).format("0,0.00")}{" "}
         </strong>
         <br />
-        <strong>Finally Total = {modelData.atLastTotalAll}</strong> <br />
+        <strong>
+          After Discount ={" "}
+          {numeral(parseFloat(modelData.afterDiscountTotal)).format("0,0.00")}{" "}
+        </strong>
+        <br />
+        <strong>
+          Friendly Discount ={" "}
+          {numeral(parseFloat(modelData.friendlyDiscount)).format("0,0.00")}{" "}
+        </strong>
+        <br />
+        <strong>
+          After Friendly Discount ={" "}
+          {numeral(parseFloat(modelData.afterFriendlyDiscountTotal)).format(
+            "0,0.00"
+          )}{" "}
+        </strong>
+        <br />
+        <strong>
+          Finally Total ={" "}
+          {numeral(parseFloat(modelData.atLastTotalAll)).format("0,0.00")}
+        </strong>{" "}
+        <br />
       </div>
     );
   };
@@ -385,25 +422,35 @@ class HistoryTableGenerator extends Component {
     return (
       <div>
         <strong>
-          All Table Total = {finalModelData.total} <br />
-          Friendly Discount = {finalModelData.finalFriendlyDiscount} <br />
+          All Table Total ={" "}
+          {numeral(parseFloat(finalModelData.total)).format("0,0.00")} <br />
+          Friendly Discount ={" "}
+          {numeral(parseFloat(finalModelData.finalFriendlyDiscount)).format(
+            "0,0.00"
+          )}{" "}
+          <br />
           <span style={{ color: "green" }}>
-            After Friendly Discount = {finalModelData.finalTotal}
+            After Friendly Discount ={" "}
+            {numeral(parseFloat(finalModelData.finalTotal)).format("0,0.00")}
           </span>{" "}
           <br />
           <span style={{ color: "red" }}>
             [{this.state.date}] At the time of Saving History Previous Due is ={" "}
-            {prevDue}
+            {numeral(parseFloat(prevDue)).format("0,0.00")}
           </span>{" "}
           <br />
           <span style={{ color: "green" }}>
             Amount After Friendly Discount + Previous Due [ BILL HAVE TO PAY ] ={" "}
-            {totalWithDue}
+            {numeral(parseFloat(totalWithDue)).format("0,0.00")}
           </span>{" "}
           <br />
-          <span style={{ color: "blue" }}>Deposited = {deposit}</span> <br />
+          <span style={{ color: "blue" }}>
+            Deposited = {numeral(parseFloat(deposit)).format("0,0.00")}
+          </span>{" "}
+          <br />
           <span style={{ color: "red" }}>
-            At the time of Saving History Left with Due = {newDue}{" "}
+            At the time of Saving History Left with Due ={" "}
+            {numeral(parseFloat(newDue)).format("0,0.00")}{" "}
           </span>
         </strong>
       </div>

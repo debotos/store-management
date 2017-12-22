@@ -191,9 +191,40 @@ class View extends Component {
       <div>
         <div
           className="container"
-          style={{ textAlign: "center", marginTop: 5, marginBottom: 5 }}
+          style={{ textAlign: "center", marginTop: 10, marginBottom: 10 }}
         >
-          <Card>
+          <Card style={{ padding: 10, backgroundColor: "#d3d3d3" }}>
+            <h1>Stock Have {this.calculateStockTotal()[0]} &#x9f3;</h1>
+            <div style={{}}>
+              <Card style={{ padding: 5, marginBottom: 5, color: "green" }}>
+                <h4>
+                  <strong>
+                    Aluminium: {this.calculateStockTotal()[1]} &#x9f3;
+                  </strong>
+                </h4>{" "}
+              </Card>
+              <Card style={{ padding: 5, marginBottom: 5, color: "green" }}>
+                <h4>
+                  <strong>
+                    Glass: {this.calculateStockTotal()[2]} &#x9f3;
+                  </strong>
+                </h4>{" "}
+              </Card>
+              <Card style={{ padding: 5, marginBottom: 5, color: "green" }}>
+                <h4>
+                  <strong>SS: {this.calculateStockTotal()[3]} &#x9f3;</strong>
+                </h4>{" "}
+              </Card>
+              <Card style={{ padding: 5, marginBottom: 5, color: "green" }}>
+                <h4>
+                  <strong>
+                    Others: {this.calculateStockTotal()[4]} &#x9f3;
+                  </strong>
+                </h4>{" "}
+              </Card>
+            </div>
+          </Card>
+          <Card style={{ marginTop: 10 }}>
             {/* Select Category */}
             <SelectField
               style={{ marginTop: 5 }}
@@ -218,25 +249,6 @@ class View extends Component {
                 First Add Item to Stock then Select Category !
               </div>
             )}
-          </Card>
-          <Card
-            style={{ marginTop: 10, padding: 10, backgroundColor: "#d3d3d3" }}
-          >
-            <h1>Stock Have {this.calculateStockTotal()[0]} &#x9f3;</h1>
-            <div style={{}}>
-              <Card style={{ padding: 5, marginBottom: 5 }}>
-                <h4>Aluminium: {this.calculateStockTotal()[1]}</h4>{" "}
-              </Card>
-              <Card style={{ padding: 5, marginBottom: 5 }}>
-                <h4>Glass: {this.calculateStockTotal()[2]}</h4>{" "}
-              </Card>
-              <Card style={{ padding: 5, marginBottom: 5 }}>
-                <h4>SS: {this.calculateStockTotal()[3]}</h4>{" "}
-              </Card>
-              <Card style={{ padding: 5, marginBottom: 5 }}>
-                <h4>Others: {this.calculateStockTotal()[4]}</h4>{" "}
-              </Card>
-            </div>
           </Card>
         </div>
         {/* Form to In */}

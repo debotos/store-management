@@ -4,6 +4,7 @@ import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import RaisedButton from "material-ui/RaisedButton";
 import { connect } from "react-redux";
+import numeral from "numeral";
 
 import { startRemoveItemToStock } from "../../../../../actions/stock/stock-action";
 
@@ -66,10 +67,12 @@ class Glass extends Component {
             Amount (Quantity x Rate):{" "}
             <span style={{ color: "green" }}>
               <strong>
-                {(
-                  parseFloat(this.state.glass.sft) *
-                  parseFloat(this.state.glass.rate)
-                ).toFixed(2)}{" "}
+                {numeral(
+                  parseFloat(
+                    parseFloat(this.state.glass.sft) *
+                      parseFloat(this.state.glass.rate)
+                  )
+                ).format("0,0.00")}{" "}
                 &#x9f3;
               </strong>
             </span>{" "}

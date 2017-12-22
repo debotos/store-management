@@ -768,7 +768,7 @@ class TableGenerator extends Component {
             <div>
               <Table
                 bodyStyle={{ overflow: "visible", width: "-fit-content" }}
-                height="300px"
+                height="400px"
                 style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
                 fixedHeader={false}
                 fixedFooter={true}
@@ -912,7 +912,7 @@ class TableGenerator extends Component {
             <div>
               <Table
                 bodyStyle={{ overflow: "visible", width: "-fit-content" }}
-                height="300px"
+                height="400px"
                 style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
                 fixedHeader={false}
                 fixedFooter={true}
@@ -1045,7 +1045,7 @@ class TableGenerator extends Component {
             <div>
               <Table
                 bodyStyle={{ overflow: "visible", width: "-fit-content" }}
-                height="300px"
+                height="400px"
                 style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
                 fixedHeader={false}
                 fixedFooter={true}
@@ -1186,7 +1186,7 @@ class TableGenerator extends Component {
             <div>
               <Table
                 bodyStyle={{ overflow: "visible", width: "-fit-content" }}
-                height="300px"
+                height="400px"
                 style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
                 fixedHeader={false}
                 fixedFooter={true}
