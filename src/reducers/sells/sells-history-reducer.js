@@ -1,7 +1,8 @@
 import {
   ADD_SELL_UNDER_CUSTOMER_HISTORY,
   SET_ADD_SELL_UNDER_CUSTOMER_HISTORY,
-  DELETE_SELL_UNDER_CUSTOMER_HISTORY
+  DELETE_SELL_UNDER_CUSTOMER_HISTORY,
+  DELETE_ALL_HISTORY_OF_THIS_NUMBER
 } from "../../actions/constants";
 
 const sellsHistoryDefaultReducer = {};
@@ -11,6 +12,9 @@ export const sellsHistoryReducer = (
   action
 ) => {
   switch (action.type) {
+    case DELETE_ALL_HISTORY_OF_THIS_NUMBER:
+      delete state[action.number];
+      return { ...state };
     case DELETE_SELL_UNDER_CUSTOMER_HISTORY:
       let number = action.number;
       if (state[number].history.length === 1) {
@@ -42,7 +46,8 @@ export const sellsHistoryReducer = (
           return {
             ...state,
             [number]: {
-              history: [action.data.history, ...state[number].history]
+              history: [action.data.history, ...state[number].history],
+              id: action.data.id
             }
           }; // concentrate! you learned a lot from here debotos
         } else {
@@ -50,7 +55,8 @@ export const sellsHistoryReducer = (
           return {
             ...state,
             [newNumber]: {
-              history: [action.data.history]
+              history: [action.data.history],
+              id: action.data.id
             }
           };
         }
@@ -59,7 +65,8 @@ export const sellsHistoryReducer = (
         return {
           ...state,
           [newNumber]: {
-            history: [action.data.history]
+            history: [action.data.history],
+            id: action.data.id
           }
         };
       }

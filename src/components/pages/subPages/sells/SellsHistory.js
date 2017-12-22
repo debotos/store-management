@@ -3,12 +3,18 @@ import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 import { Card } from "material-ui/Card";
 import { connect } from "react-redux";
+import RaisedButton from "material-ui/RaisedButton";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
 
 import HistoryTableGenerator from "./HistoryTable/HistoryTableGenerator";
+import { startDeleteAllHistoryOfThisNumber } from "../../../../actions/sells/sells-history-actions";
 
 class SellsHistory extends Component {
-  handleSelectChange = (event, index, value) =>
+  handleSelectChange = (event, index, value) => {
     this.setState({ selectValue: value });
+    this.setState({ showDeleteButton: true });
+  };
   makeMenuItemsByHistoyObject = () => {
     const history = this.props.sellsHistory;
     const customerNumbers = [];
@@ -24,10 +30,20 @@ class SellsHistory extends Component {
       );
     });
   };
+  handleFullHistoryDeleteConfirmDialogOpen = () => {
+    this.setState({ fullHistoryDeleteConfirm: true });
+  };
+
+  handleFullHistoryDeleteConfirmDialogClose = () => {
+    this.setState({ fullHistoryDeleteConfirm: false });
+  };
   constructor(props) {
     super(props);
     this.state = {
-      selectValue: null
+      selectValue: null,
+      fullHistoryDeleteConfirm: false,
+      idOfTheVictiom: "",
+      showDeleteButton: false
     };
   }
   renderTableUsingHistory = phone => {
@@ -49,7 +65,62 @@ class SellsHistory extends Component {
       return <HistoryTableGenerator allTables={historyINeed.history} />;
     }
   };
+  handleAllDelete = () => {
+    this.props.startDeleteAllHistoryOfThisNumber(
+      this.state.idOfTheVictiom,
+      this.state.selectValue
+    );
+    this.setState({ showDeleteButton: false });
+    this.handleFullHistoryDeleteConfirmDialogClose();
+  };
+  showModelAndGetIdOfTheNumber = () => {
+    // Now Get The Id
+    let idOfTheVictiom = this.props.sellsHistory[this.state.selectValue].id;
+    // Set State
+    this.setState({ idOfTheVictiom });
+    // Show Confirm
+    this.handleFullHistoryDeleteConfirmDialogOpen();
+  };
+
+  renderAllHistoryDeleteButton = () => {
+    if (this.state.showDeleteButton) {
+      return (
+        <div
+          className="container"
+          style={{
+            marginTop: 10,
+            marginBottom: 10
+          }}
+        >
+          <Card
+            style={{
+              backgroundColor: "#e5e5e5",
+              padding: 10
+            }}
+          >
+            <RaisedButton
+              secondary={true}
+              label="Delete All History Of This Number"
+              fullWidth={true}
+              onClick={this.showModelAndGetIdOfTheNumber}
+            />
+          </Card>
+        </div>
+      );
+    }
+  };
   render() {
+    const fullHistoryDeleteConfirmModelActions = [
+      <FlatButton
+        label="Cancel"
+        onClick={this.handleFullHistoryDeleteConfirmDialogClose}
+      />,
+      <FlatButton
+        label="Delete"
+        secondary={true}
+        onClick={this.handleAllDelete}
+      />
+    ];
     return (
       <div>
         <div
@@ -57,24 +128,37 @@ class SellsHistory extends Component {
           style={{ textAlign: "center", marginTop: 5, marginBottom: 5 }}
         >
           {Object.keys(this.props.sellsHistory).length > 0 ? (
-            <Card>
-              <SelectField
-                style={{ marginTop: 5 }}
-                hintText="Select Customer"
-                value={this.state.selectValue}
-                onChange={this.handleSelectChange}
-              >
-                {this.makeMenuItemsByHistoyObject()}
-              </SelectField>
-            </Card>
+            <div>
+              <Card>
+                <SelectField
+                  style={{ marginTop: 5 }}
+                  hintText="Select Customer"
+                  value={this.state.selectValue}
+                  onChange={this.handleSelectChange}
+                >
+                  {this.makeMenuItemsByHistoyObject()}
+                </SelectField>
+              </Card>
+            </div>
           ) : (
             <div style={{ color: "red", fontWeight: "bold" }}>
               No Sells History Found !
             </div>
           )}
         </div>
+        {this.renderAllHistoryDeleteButton()}
         {/* Showing the tables */}
         <div>{this.renderTableUsingHistory(this.state.selectValue)}</div>
+        <div>
+          <Dialog
+            actions={fullHistoryDeleteConfirmModelActions}
+            modal={false}
+            open={this.state.fullHistoryDeleteConfirm}
+            onRequestClose={this.handleFullHistoryDeleteConfirmDialogClose}
+          >
+            Are you Sure ? Removing All Sells History Of this Customer !!
+          </Dialog>
+        </div>
       </div>
     );
   }
@@ -86,4 +170,12 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, null)(SellsHistory);
+const mapDispatchToProps = dispatch => {
+  return {
+    startDeleteAllHistoryOfThisNumber: (id, number) => {
+      dispatch(startDeleteAllHistoryOfThisNumber(id, number));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SellsHistory);

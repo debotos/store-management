@@ -3,8 +3,29 @@ import database from "../../secrets/firebase";
 import {
   ADD_SELL_UNDER_CUSTOMER_HISTORY,
   SET_ADD_SELL_UNDER_CUSTOMER_HISTORY,
-  DELETE_SELL_UNDER_CUSTOMER_HISTORY
+  DELETE_SELL_UNDER_CUSTOMER_HISTORY,
+  DELETE_ALL_HISTORY_OF_THIS_NUMBER
 } from "../constants";
+
+export const deleteAllHistoryOfThisNumber = (id, number) => {
+  return {
+    type: DELETE_ALL_HISTORY_OF_THIS_NUMBER,
+    id,
+    number
+  };
+};
+
+export const startDeleteAllHistoryOfThisNumber = (id, number) => {
+  return dispatch => {
+    return database
+      .ref(`history/${id}`)
+      .remove()
+      .then(() => {
+        console.log("Total History of this Number is Deleted from Database!");
+        dispatch(deleteAllHistoryOfThisNumber(id, number));
+      });
+  };
+};
 
 export const deleteSellUnderCustomerHistory = (id, number) => {
   return {
@@ -179,7 +200,8 @@ export const startSetAddSellUnderCustomerHistory = () => {
 
         snapshot.forEach(childSnapshot => {
           history[childSnapshot.val().number] = {
-            history: childSnapshot.val().history
+            history: childSnapshot.val().history,
+            id: childSnapshot.key
           };
         });
 
