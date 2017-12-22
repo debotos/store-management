@@ -7,6 +7,7 @@ import {
 
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import numeral from "numeral";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 // it will take an object that contain an array and return an array object of table instance
@@ -88,9 +89,12 @@ const renderTables = tables => {
 const friendlyDiscountRender = customer => {
   if (parseInt(customer.allTotal.finalFriendlyDiscount, 10) > 0) {
     return [
-      "- " + parseFloat(customer.allTotal.finalFriendlyDiscount).toFixed(2),
+      "- " +
+        numeral(parseFloat(customer.allTotal.finalFriendlyDiscount)).format(
+          "0,0.00"
+        ),
       "---------------------------------",
-      "= " + parseFloat(customer.allTotal.finalTotal).toFixed(2)
+      "= " + numeral(parseFloat(customer.allTotal.finalTotal)).format("0,0.00")
     ];
   } else {
     return {};
@@ -169,24 +173,30 @@ function GENERATE_PDF(data, date = null) {
         type: "none",
         ul: [
           "All Tables Total = " +
-            parseFloat(customer.allTotal.total).toFixed(2),
+            numeral(parseFloat(customer.allTotal.total)).format("0,0.00"),
           friendlyDiscountRender(customer),
           {
-            text: "Previous Due = " + customer.prevDue,
+            text:
+              "Previous Due = " +
+              numeral(parseFloat(customer.prevDue)).format("0,0.00"),
             italics: true,
             bold: true,
             color: "red"
           },
           "All Tables Total With Previous Due = " +
-            parseFloat(customer.totalWithDue).toFixed(2),
+            numeral(parseFloat(customer.totalWithDue)).format("0,0.00"),
           {
-            text: "Deposit Now = " + customer.depositNow,
+            text:
+              "Deposit Now = " +
+              numeral(parseFloat(customer.depositNow)).format("0,0.00"),
             italics: true,
             bold: true,
             color: "green"
           },
           {
-            text: "New Due From Now = " + customer.newDue,
+            text:
+              "New Due From Now = " +
+              numeral(parseFloat(customer.newDue)).format("0,0.00"),
             italics: true,
             bold: true,
             color: "red"
@@ -313,14 +323,16 @@ const renderAluminiumContent = sellingItems => {
       singleItem.dia,
       singleItem.color,
       singleItem.quantity,
-      singleItem.rate,
-      singleItem.total
+      numeral(parseFloat(singleItem.rate)).format("0,0.00"),
+      numeral(parseFloat(singleItem.total)).format("0,0.00")
     ];
     Content.push(item);
   });
   Content.push([
     {
-      text: sellingItems.attribute.allCellTotal,
+      text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
+        "0,0.00"
+      ),
       bold: true,
       colSpan: 9,
       alignment: "right"
@@ -354,11 +366,15 @@ const renderAluminiumContent = sellingItems => {
   } else {
     Content.push([
       {
-        text: `${sellingItems.attribute.discount}% = ${
-          sellingItems.attribute.discountAmount
-        } Now Total = ${sellingItems.attribute.allCellTotal} - ${
-          sellingItems.attribute.discountAmount
-        } = ${sellingItems.attribute.afterDiscountTotal}`,
+        text: `${sellingItems.attribute.discount}% = ${numeral(
+          parseFloat(sellingItems.attribute.discountAmount)
+        ).format("0,0.00")} Now Total = ${numeral(
+          parseFloat(sellingItems.attribute.allCellTotal)
+        ).format("0,0.00")} - ${numeral(
+          parseFloat(sellingItems.attribute.discountAmount)
+        ).format("0,0.00")} = ${numeral(
+          parseFloat(sellingItems.attribute.afterDiscountTotal)
+        ).format("0,0.00")}`,
         bold: true,
         colSpan: 9,
         alignment: "right"
@@ -376,7 +392,9 @@ const renderAluminiumContent = sellingItems => {
   if (parseInt(sellingItems.attribute.friendlyDiscount, 10) !== 0) {
     Content.push([
       {
-        text: `- ${sellingItems.attribute.friendlyDiscount}`,
+        text: `- ${numeral(
+          parseFloat(sellingItems.attribute.friendlyDiscount)
+        ).format("0,0.00")}`,
         bold: true,
         colSpan: 9,
         alignment: "right"
@@ -394,7 +412,9 @@ const renderAluminiumContent = sellingItems => {
 
   Content.push([
     {
-      text: `Final Amount = ${sellingItems.attribute.atLastTotalAll}`,
+      text: `Final Amount = ${numeral(
+        parseFloat(sellingItems.attribute.atLastTotalAll)
+      ).format("0,0.00")}`,
       bold: true,
       color: "#006A4E",
       colSpan: 9,
@@ -435,14 +455,16 @@ const renderGlassContent = sellingItems => {
       (index + 1).toString(),
       singleItem.productName,
       singleItem.sft,
-      singleItem.rate,
-      singleItem.total
+      numeral(parseFloat(singleItem.rate)).format("0,0.00"),
+      numeral(parseFloat(singleItem.total)).format("0,0.00")
     ];
     Content.push(item);
   });
   Content.push([
     {
-      text: sellingItems.attribute.allCellTotal,
+      text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
+        "0,0.00"
+      ),
       bold: true,
       colSpan: 5,
       alignment: "right"
@@ -468,11 +490,15 @@ const renderGlassContent = sellingItems => {
   } else {
     Content.push([
       {
-        text: `${sellingItems.attribute.discount}% = ${
-          sellingItems.attribute.discountAmount
-        } Now Total = ${sellingItems.attribute.allCellTotal} - ${
-          sellingItems.attribute.discountAmount
-        } = ${sellingItems.attribute.afterDiscountTotal}`,
+        text: `${sellingItems.attribute.discount}% = ${numeral(
+          parseFloat(sellingItems.attribute.discountAmount)
+        ).format("0,0.00")} Now Total = ${numeral(
+          parseFloat(sellingItems.attribute.allCellTotal)
+        ).format("0,0.00")} - ${numeral(
+          parseFloat(sellingItems.attribute.discountAmount)
+        ).format("0,0.00")} = ${numeral(
+          parseFloat(sellingItems.attribute.afterDiscountTotal)
+        ).format("0,0.00")}`,
         bold: true,
         colSpan: 5,
         alignment: "right"
@@ -486,7 +512,9 @@ const renderGlassContent = sellingItems => {
   if (parseInt(sellingItems.attribute.friendlyDiscount, 10) !== 0) {
     Content.push([
       {
-        text: `- ${sellingItems.attribute.friendlyDiscount}`,
+        text: `- ${numeral(
+          parseFloat(sellingItems.attribute.friendlyDiscount)
+        ).format("0,0.00")}`,
         bold: true,
         colSpan: 5,
         alignment: "right"
@@ -499,7 +527,9 @@ const renderGlassContent = sellingItems => {
   }
   Content.push([
     {
-      text: `Final Amount = ${sellingItems.attribute.atLastTotalAll}`,
+      text: `Final Amount = ${numeral(
+        parseFloat(sellingItems.attribute.atLastTotalAll)
+      ).format("0,0.00")}`,
       bold: true,
       color: "#006A4E",
       colSpan: 5,
@@ -550,14 +580,16 @@ const renderSSContent = sellingItems => {
       singleItem.thickness,
       singleItem.length,
       singleItem.quantity,
-      singleItem.rate,
-      singleItem.total
+      numeral(parseFloat(singleItem.rate)).format("0,0.00"),
+      numeral(parseFloat(singleItem.total)).format("0,0.00")
     ];
     Content.push(item);
   });
   Content.push([
     {
-      text: sellingItems.attribute.allCellTotal,
+      text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
+        "0,0.00"
+      ),
       bold: true,
       colSpan: 8,
       alignment: "right"
@@ -589,11 +621,15 @@ const renderSSContent = sellingItems => {
   } else {
     Content.push([
       {
-        text: `${sellingItems.attribute.discount}% = ${
-          sellingItems.attribute.discountAmount
-        } Now Total = ${sellingItems.attribute.allCellTotal} - ${
-          sellingItems.attribute.discountAmount
-        } = ${sellingItems.attribute.afterDiscountTotal}`,
+        text: `${sellingItems.attribute.discount}% = ${numeral(
+          parseFloat(sellingItems.attribute.discountAmount)
+        ).format("0,0.00")} Now Total = ${numeral(
+          parseFloat(sellingItems.attribute.allCellTotal)
+        ).format("0,0.00")} - ${numeral(
+          parseFloat(sellingItems.attribute.discountAmount)
+        ).format("0,0.00")} = ${numeral(
+          parseFloat(sellingItems.attribute.afterDiscountTotal)
+        ).format("0,0.00")}`,
         bold: true,
         colSpan: 8,
         alignment: "right"
@@ -610,7 +646,9 @@ const renderSSContent = sellingItems => {
   if (parseInt(sellingItems.attribute.friendlyDiscount, 10) !== 0) {
     Content.push([
       {
-        text: `- ${sellingItems.attribute.friendlyDiscount}`,
+        text: `- ${numeral(
+          parseFloat(sellingItems.attribute.friendlyDiscount)
+        ).format("0,0.00")}`,
         bold: true,
         colSpan: 8,
         alignment: "right"
@@ -626,7 +664,9 @@ const renderSSContent = sellingItems => {
   }
   Content.push([
     {
-      text: `Final Amount = ${sellingItems.attribute.atLastTotalAll}`,
+      text: `Final Amount = ${numeral(
+        parseFloat(sellingItems.attribute.atLastTotalAll)
+      ).format("0,0.00")}`,
       bold: true,
       color: "#006A4E",
       colSpan: 8,
@@ -665,14 +705,16 @@ const renderOthersContent = sellingItems => {
       (index + 1).toString(),
       singleItem.productName,
       singleItem.quantity,
-      singleItem.rate,
-      singleItem.total
+      numeral(parseFloat(singleItem.rate)).format("0,0.00"),
+      numeral(parseFloat(singleItem.total)).format("0,0.00")
     ];
     Content.push(item);
   });
   Content.push([
     {
-      text: sellingItems.attribute.allCellTotal,
+      text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
+        "0,0.00"
+      ),
       bold: true,
       colSpan: 5,
       alignment: "right"
@@ -698,11 +740,15 @@ const renderOthersContent = sellingItems => {
   } else {
     Content.push([
       {
-        text: `${sellingItems.attribute.discount}% = ${
-          sellingItems.attribute.discountAmount
-        } Now Total = ${sellingItems.attribute.allCellTotal} - ${
-          sellingItems.attribute.discountAmount
-        } = ${sellingItems.attribute.afterDiscountTotal}`,
+        text: `${sellingItems.attribute.discount}% = ${numeral(
+          parseFloat(sellingItems.attribute.discountAmount)
+        ).format("0,0.00")} Now Total = ${numeral(
+          parseFloat(sellingItems.attribute.allCellTotal)
+        ).format("0,0.00")} - ${numeral(
+          parseFloat(sellingItems.attribute.discountAmount)
+        ).format("0,0.00")} = ${numeral(
+          parseFloat(sellingItems.attribute.afterDiscountTotal)
+        ).format("0,0.00")}`,
         bold: true,
         colSpan: 5,
         alignment: "right"
@@ -716,7 +762,9 @@ const renderOthersContent = sellingItems => {
   if (parseInt(sellingItems.attribute.friendlyDiscount, 10) !== 0) {
     Content.push([
       {
-        text: `- ${sellingItems.attribute.friendlyDiscount}`,
+        text: `- ${numeral(
+          parseFloat(sellingItems.attribute.friendlyDiscount)
+        ).format("0,0.00")}`,
         bold: true,
         colSpan: 5,
         alignment: "right"
@@ -729,7 +777,9 @@ const renderOthersContent = sellingItems => {
   }
   Content.push([
     {
-      text: `Final Amount = ${sellingItems.attribute.atLastTotalAll}`,
+      text: `Final Amount = ${numeral(
+        parseFloat(sellingItems.attribute.atLastTotalAll)
+      ).format("0,0.00")}`,
       bold: true,
       color: "#006A4E",
       colSpan: 5,

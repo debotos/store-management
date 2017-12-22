@@ -15,6 +15,7 @@ import TextField from "material-ui/TextField";
 import Toggle from "material-ui/Toggle";
 import { Card } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
+import numeral from "numeral";
 
 import "../../../../../style/sells/table.css";
 import { removeSellItem } from "../../../../../actions/sells/sells-actions";
@@ -86,8 +87,15 @@ class TableGenerator extends Component {
           <strong>{this.state.ModalData.dia}</strong> <br /> Color:{" "}
           <strong>{this.state.ModalData.color}</strong> <br /> Quantity:{" "}
           <strong>{this.state.ModalData.quantity}</strong> <br /> Rate:{" "}
-          <strong>{this.state.ModalData.rate}</strong> <br />
-          Total: <strong>{this.state.ModalData.total}</strong> <br />
+          <strong>
+            {numeral(parseFloat(this.state.ModalData.rate)).format("0,0.00")}
+          </strong>{" "}
+          <br />
+          Total:{" "}
+          <strong>
+            {numeral(parseFloat(this.state.ModalData.total)).format("0,0.00")}
+          </strong>{" "}
+          <br />
         </div>
       );
     }
@@ -96,8 +104,16 @@ class TableGenerator extends Component {
         <div>
           Item: <strong>{this.state.ModalData.productName}</strong> <br /> SFT:{" "}
           <strong>{this.state.ModalData.sft}</strong> <br />
-          Rate: <strong>{this.state.ModalData.rate}</strong> <br />
-          Total: <strong>{this.state.ModalData.total}</strong>
+          Rate:{" "}
+          <strong>
+            {numeral(parseFloat(this.state.ModalData.rate)).format("0,0.00")}
+          </strong>{" "}
+          <br />
+          Total:{" "}
+          <strong>
+            {numeral(parseFloat(this.state.ModalData.total)).format("0,0.00")}
+          </strong>{" "}
+          <br />
         </div>
       );
     }
@@ -109,8 +125,15 @@ class TableGenerator extends Component {
           Length: <strong>{this.state.ModalData.length}</strong> <br />{" "}
           Thickness: <strong>{this.state.ModalData.thickness}</strong> <br />Quantity:{" "}
           <strong>{this.state.ModalData.quantity}</strong> <br /> Rate:{" "}
-          <strong>{this.state.ModalData.rate}</strong> <br />
-          Total: <strong>{this.state.ModalData.total}</strong> <br />
+          <strong>
+            {numeral(parseFloat(this.state.ModalData.rate)).format("0,0.00")}
+          </strong>{" "}
+          <br />
+          Total:{" "}
+          <strong>
+            {numeral(parseFloat(this.state.ModalData.total)).format("0,0.00")}
+          </strong>{" "}
+          <br />
         </div>
       );
     }
@@ -119,8 +142,16 @@ class TableGenerator extends Component {
         <div>
           Item: <strong>{this.state.ModalData.productName}</strong> <br />{" "}
           Quantity: <strong>{this.state.ModalData.quantity}</strong> <br />
-          Rate: <strong>{this.state.ModalData.rate}</strong> <br />
-          Total: <strong>{this.state.ModalData.total}</strong>
+          Rate:{" "}
+          <strong>
+            {numeral(parseFloat(this.state.ModalData.rate)).format("0,0.00")}
+          </strong>{" "}
+          <br />
+          Total:{" "}
+          <strong>
+            {numeral(parseFloat(this.state.ModalData.total)).format("0,0.00")}
+          </strong>{" "}
+          <br />
         </div>
       );
     }
@@ -139,8 +170,12 @@ class TableGenerator extends Component {
             <TableRowColumn>{singleItem.dia}</TableRowColumn>
             <TableRowColumn>{singleItem.color}</TableRowColumn>
             <TableRowColumn>{singleItem.quantity}</TableRowColumn>
-            <TableRowColumn>{singleItem.rate}</TableRowColumn>
-            <TableRowColumn>{singleItem.total}</TableRowColumn>
+            <TableRowColumn>
+              {numeral(parseFloat(singleItem.rate)).format("0,0.00")}
+            </TableRowColumn>
+            <TableRowColumn>
+              {numeral(parseFloat(singleItem.total)).format("0,0.00")}
+            </TableRowColumn>
           </TableRow>
         );
       }
@@ -156,8 +191,12 @@ class TableGenerator extends Component {
             <TableRowColumn>{id}</TableRowColumn>
             <TableRowColumn>{singleItem.productName}</TableRowColumn>
             <TableRowColumn>{singleItem.sft}</TableRowColumn>
-            <TableRowColumn>{singleItem.rate}</TableRowColumn>
-            <TableRowColumn>{singleItem.total}</TableRowColumn>
+            <TableRowColumn>
+              {numeral(parseFloat(singleItem.rate)).format("0,0.00")}
+            </TableRowColumn>
+            <TableRowColumn>
+              {numeral(parseFloat(singleItem.total)).format("0,0.00")}
+            </TableRowColumn>
           </TableRow>
         );
       }
@@ -176,8 +215,12 @@ class TableGenerator extends Component {
             <TableRowColumn>{singleItem.length}</TableRowColumn>
             <TableRowColumn>{singleItem.thickness}</TableRowColumn>
             <TableRowColumn>{singleItem.quantity}</TableRowColumn>
-            <TableRowColumn>{singleItem.rate}</TableRowColumn>
-            <TableRowColumn>{singleItem.total}</TableRowColumn>
+            <TableRowColumn>
+              {numeral(parseFloat(singleItem.rate)).format("0,0.00")}
+            </TableRowColumn>
+            <TableRowColumn>
+              {numeral(parseFloat(singleItem.total)).format("0,0.00")}
+            </TableRowColumn>
           </TableRow>
         );
       }
@@ -193,8 +236,12 @@ class TableGenerator extends Component {
             <TableRowColumn>{id}</TableRowColumn>
             <TableRowColumn>{singleItem.productName}</TableRowColumn>
             <TableRowColumn>{singleItem.quantity}</TableRowColumn>
-            <TableRowColumn>{singleItem.rate}</TableRowColumn>
-            <TableRowColumn>{singleItem.total}</TableRowColumn>
+            <TableRowColumn>
+              {numeral(parseFloat(singleItem.rate)).format("0,0.00")}
+            </TableRowColumn>
+            <TableRowColumn>
+              {numeral(parseFloat(singleItem.total)).format("0,0.00")}
+            </TableRowColumn>
           </TableRow>
         );
       }
@@ -550,10 +597,10 @@ class TableGenerator extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      aluminiumDiscount: null,
-      glassDiscount: null,
-      ssDiscount: null,
-      othersDiscount: null,
+      aluminiumDiscount: "",
+      glassDiscount: "",
+      ssDiscount: "",
+      othersDiscount: "",
       detailsModelOpen: false,
       ModalData: "",
       aluminiumDiscountToggle: false,
@@ -806,7 +853,11 @@ class TableGenerator extends Component {
                         <h3 style={{ marginTop: 8 }}>
                           Discount ={" "}
                           {this.calculateAluminiumSUM()[0] && (
-                            <b>{this.calculateAluminiumSUM()[0]}</b>
+                            <b>
+                              {numeral(
+                                parseFloat(this.calculateAluminiumSUM()[0])
+                              ).format("0,0.00")}
+                            </b>
                           )}
                         </h3>
                       )}
@@ -817,7 +868,11 @@ class TableGenerator extends Component {
                         Result ={" "}
                         {this.calculateAluminiumSUM()[3] !== 0 &&
                         this.calculateAluminiumSUM()[3] ? (
-                          <b>{this.calculateAluminiumSUM()[3]}</b>
+                          <b>
+                            {numeral(
+                              parseFloat(this.calculateAluminiumSUM()[3])
+                            ).format("0,0.00")}
+                          </b>
                         ) : (
                           <b style={{ color: "red" }}>?</b>
                         )}
@@ -932,7 +987,11 @@ class TableGenerator extends Component {
                         <h3 style={{ marginTop: 8 }}>
                           Discount ={" "}
                           {this.calculateGlassSUM()[0] && (
-                            <b>{this.calculateGlassSUM()[0]}</b>
+                            <b>
+                              {numeral(
+                                parseFloat(this.calculateGlassSUM()[0])
+                              ).format("0,0.00")}
+                            </b>
                           )}
                         </h3>
                       )}
@@ -942,7 +1001,11 @@ class TableGenerator extends Component {
                         Result ={" "}
                         {this.calculateGlassSUM()[3] !== 0 &&
                         this.calculateGlassSUM()[3] ? (
-                          <b>{this.calculateGlassSUM()[3]}</b>
+                          <b>
+                            {numeral(
+                              parseFloat(this.calculateGlassSUM()[3])
+                            ).format("0,0.00")}
+                          </b>
                         ) : (
                           <b style={{ color: "red" }}>?</b>
                         )}
@@ -1065,7 +1128,11 @@ class TableGenerator extends Component {
                         <h3 style={{ marginTop: 8 }}>
                           Discount ={" "}
                           {this.calculateSSSUM()[0] && (
-                            <b>{this.calculateSSSUM()[0]}</b>
+                            <b>
+                              {numeral(
+                                parseFloat(this.calculateSSSUM()[0])
+                              ).format("0,0.00")}
+                            </b>
                           )}
                         </h3>
                       )}
@@ -1075,7 +1142,11 @@ class TableGenerator extends Component {
                         Result ={" "}
                         {this.calculateSSSUM()[3] !== 0 &&
                         this.calculateSSSUM()[3] ? (
-                          <b>{this.calculateSSSUM()[3]}</b>
+                          <b>
+                            {numeral(
+                              parseFloat(this.calculateSSSUM()[3])
+                            ).format("0,0.00")}
+                          </b>
                         ) : (
                           <b style={{ color: "red" }}>?</b>
                         )}
@@ -1189,7 +1260,11 @@ class TableGenerator extends Component {
                         <h3 style={{ marginTop: 8 }}>
                           Discount ={" "}
                           {this.calculateOthersSUM()[0] && (
-                            <b>{this.calculateOthersSUM()[0]}</b>
+                            <b>
+                              {numeral(
+                                parseFloat(this.calculateOthersSUM()[0])
+                              ).format("0,0.00")}
+                            </b>
                           )}
                         </h3>
                       )}
@@ -1199,7 +1274,11 @@ class TableGenerator extends Component {
                         Result ={" "}
                         {this.calculateOthersSUM()[3] !== 0 &&
                         this.calculateOthersSUM()[3] ? (
-                          <b>{this.calculateOthersSUM()[3]}</b>
+                          <b>
+                            {numeral(
+                              parseFloat(this.calculateOthersSUM()[3])
+                            ).format("0,0.00")}
+                          </b>
                         ) : (
                           <b style={{ color: "red" }}>?</b>
                         )}
@@ -1287,7 +1366,12 @@ class TableGenerator extends Component {
                     fontSize: "30px"
                   }}
                 >
-                  <strong>Totally = {this.finallyAllTotal()}</strong>
+                  <strong>
+                    Totally ={" "}
+                    {numeral(parseFloat(this.finallyAllTotal())).format(
+                      "0,0.00"
+                    )}
+                  </strong>
                 </span>
                 <TextField
                   type="number"

@@ -5,6 +5,7 @@ import FlatButton from "material-ui/FlatButton";
 import isEmail from "validator/lib/isEmail";
 import { connect } from "react-redux";
 import Dialog from "material-ui/Dialog";
+import numeral from "numeral";
 
 import GENERATE_PDF from "./PDF";
 import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
@@ -212,24 +213,25 @@ class CustomerDetailsForm extends Component {
     } = this.state.modelData;
     return (
       <div>
-        All Table Total: {allTotal}
+        All Table Total: {numeral(parseFloat(allTotal)).format("0,0.00")}
         <br />
         <strong>Previous Due: </strong>
         <b style={{ color: "red" }}>
           {parseFloat(prevDue).toFixed(2) === parseFloat(0).toFixed(2)
             ? "No Previous Due"
-            : parseFloat(prevDue).toFixed(2)}
+            : numeral(parseFloat(prevDue)).format("0,0.00")}
         </b>
         <br />
-        All Total + Previous Due: {totalWithDue}
+        All Total + Previous Due:{" "}
+        {numeral(parseFloat(totalWithDue)).format("0,0.00")}
         <br />
-        Deposit Now: {depositNow}
+        Deposit Now: {numeral(parseFloat(depositNow)).format("0,0.00")}
         <br />
         <strong>New Due From Now: </strong>
         <b style={{ color: "red" }}>
           {parseFloat(newDue).toFixed(2) === parseFloat(0).toFixed(2)
             ? "No Due"
-            : parseFloat(newDue).toFixed(2)}
+            : numeral(parseFloat(newDue)).format("0,0.00")}
         </b>
         <br />
       </div>

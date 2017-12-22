@@ -32,6 +32,7 @@ class SS extends Component {
     this.setState({ length });
   };
   friendlyHandleReset = () => {
+    this.setState({ length: "" });
     this.setState({ quantity: "" });
   };
   componentDidUpdate = () => {
@@ -41,7 +42,6 @@ class SS extends Component {
       this.setState({ thickness: this.props.values.thickness });
       this.setState({ productName: this.props.values.productName });
       this.setState({ rate: this.props.values.rate });
-      this.setState({ length: this.props.values.length });
     }
   };
   constructor(props) {
@@ -49,7 +49,7 @@ class SS extends Component {
     this.state = {
       productCode: this.props.values.productCode,
       companyName: this.props.values.companyName,
-      length: this.props.values.length,
+      length: "",
       thickness: this.props.values.thickness,
       productName: this.props.values.productName,
       quantity: "",
@@ -61,7 +61,9 @@ class SS extends Component {
       productCode: this.props.values.productCode,
       productCategoryToSell: this.props.values.productCategoryToSell,
       companyName: this.state.companyName,
-      length: this.state.length,
+      length: (
+        parseFloat(this.state.length) + parseFloat(this.props.values.length)
+      ).toFixed(2),
       thickness: this.state.thickness,
       productName: this.state.productName,
       quantity: (
@@ -79,7 +81,9 @@ class SS extends Component {
       productCode: this.props.values.productCode,
       productCategoryToSell: this.props.values.productCategoryToSell,
       companyName: this.state.companyName,
-      length: this.state.length,
+      length: (
+        parseFloat(this.props.values.length) - parseFloat(this.state.length)
+      ).toFixed(2),
       thickness: this.state.thickness,
       productName: this.state.productName,
       quantity: (
@@ -90,7 +94,10 @@ class SS extends Component {
     //Dispatch the function to add the details to the store
     let length = this.state.length;
     let quantity = this.state.quantity;
-    if (parseFloat(quantity) <= parseFloat(this.props.values.quantity)) {
+    if (
+      parseFloat(length) <= parseFloat(this.props.values.length) &&
+      parseFloat(quantity) <= parseFloat(this.props.values.quantity)
+    ) {
       this.props.startUpdateStockItem(this.props.values.id, Data);
       this.friendlyHandleReset();
       this.props.showSnackBar("Out Action Successfully !");
@@ -126,7 +133,7 @@ class SS extends Component {
             value={this.state.length}
             onChange={this.handleLengthChange}
             hintText="Length"
-            floatingLabelText="Update Length"
+            floatingLabelText={`Add Length (Now: ${this.props.values.length})`}
           />
           <TextField
             type="number"

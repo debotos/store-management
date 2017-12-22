@@ -5,6 +5,7 @@ import MenuItem from "material-ui/MenuItem";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
+import numeral from "numeral";
 
 import Aluminium from "./ViewTemplate/Aluminium";
 import Glass from "./ViewTemplate/Glass";
@@ -120,6 +121,64 @@ class View extends Component {
       return values;
     }
   };
+
+  calculateStockTotal = () => {
+    let aluminiumTotal = 0;
+    let glassTotal = 0;
+    let ssTotal = 0;
+    let othersTotal = 0;
+
+    this.props.stock.aluminium.forEach(singleItem => {
+      aluminiumTotal =
+        parseFloat(aluminiumTotal) +
+        parseFloat(
+          parseFloat(singleItem.quantity) * parseFloat(singleItem.rate)
+        );
+    });
+
+    this.props.stock.glass.forEach(singleItem => {
+      glassTotal =
+        parseFloat(glassTotal) +
+        parseFloat(parseFloat(singleItem.sft) * parseFloat(singleItem.rate));
+    });
+
+    this.props.stock.ss.forEach(singleItem => {
+      ssTotal =
+        parseFloat(ssTotal) +
+        parseFloat(
+          parseFloat(singleItem.quantity) * parseFloat(singleItem.rate)
+        );
+    });
+
+    this.props.stock.others.forEach(singleItem => {
+      othersTotal =
+        parseFloat(othersTotal) +
+        parseFloat(
+          parseFloat(singleItem.quantity) * parseFloat(singleItem.rate)
+        );
+    });
+    console.log("====================================");
+    console.log("Aluminium", aluminiumTotal);
+    console.log("Glass", glassTotal);
+    console.log("SS", ssTotal);
+    console.log("Others", othersTotal);
+    console.log("====================================");
+
+    let Total = numeral(
+      parseFloat(aluminiumTotal) +
+        parseFloat(glassTotal) +
+        parseFloat(ssTotal) +
+        parseFloat(othersTotal)
+    ).format("0,0.00");
+    return [
+      Total,
+      numeral(parseFloat(aluminiumTotal)).format("0,0.00"),
+      numeral(parseFloat(glassTotal)).format("0,0.00"),
+      numeral(parseFloat(ssTotal)).format("0,0.00"),
+      numeral(parseFloat(othersTotal)).format("0,0.00")
+    ];
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -159,6 +218,25 @@ class View extends Component {
                 First Add Item to Stock then Select Category !
               </div>
             )}
+          </Card>
+          <Card
+            style={{ marginTop: 10, padding: 10, backgroundColor: "#d3d3d3" }}
+          >
+            <h1>Stock Have {this.calculateStockTotal()[0]} &#x9f3;</h1>
+            <div style={{}}>
+              <Card style={{ padding: 5, marginBottom: 5 }}>
+                <h4>Aluminium: {this.calculateStockTotal()[1]}</h4>{" "}
+              </Card>
+              <Card style={{ padding: 5, marginBottom: 5 }}>
+                <h4>Glass: {this.calculateStockTotal()[2]}</h4>{" "}
+              </Card>
+              <Card style={{ padding: 5, marginBottom: 5 }}>
+                <h4>SS: {this.calculateStockTotal()[3]}</h4>{" "}
+              </Card>
+              <Card style={{ padding: 5, marginBottom: 5 }}>
+                <h4>Others: {this.calculateStockTotal()[4]}</h4>{" "}
+              </Card>
+            </div>
           </Card>
         </div>
         {/* Form to In */}

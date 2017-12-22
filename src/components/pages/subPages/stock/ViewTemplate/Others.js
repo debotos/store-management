@@ -57,11 +57,22 @@ class Others extends Component {
             Code: <strong>{this.state.others.productCode}</strong> <br />
             Name: <strong>{this.state.others.productName}</strong> <br />
             Quantity:{" "}
-            <span style={{ color: "green" }}>
+            <span style={{ color: "blue" }}>
               <strong>{this.state.others.quantity}</strong>
             </span>{" "}
             <br />
             Rate: <strong>{this.state.others.rate}</strong>
+            <br />
+            Amount (Quantity x Rate):{" "}
+            <span style={{ color: "green" }}>
+              <strong>
+                {(
+                  parseFloat(this.state.others.quantity) *
+                  parseFloat(this.state.others.rate)
+                ).toFixed(2)}{" "}
+                &#x9f3;
+              </strong>
+            </span>{" "}
           </CardText>
 
           <CardActions>

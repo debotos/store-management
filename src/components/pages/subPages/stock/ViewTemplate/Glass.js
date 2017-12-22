@@ -57,11 +57,22 @@ class Glass extends Component {
             Code: <strong>{this.state.glass.productCode}</strong> <br />
             Name: <strong>{this.state.glass.productName}</strong> <br />
             SFT:{" "}
-            <span style={{ color: "green" }}>
+            <span style={{ color: "blue" }}>
               <strong>{this.state.glass.sft}</strong>
             </span>{" "}
             <br />
             Rate: <strong>{this.state.glass.rate}</strong>
+            <br />
+            Amount (Quantity x Rate):{" "}
+            <span style={{ color: "green" }}>
+              <strong>
+                {(
+                  parseFloat(this.state.glass.sft) *
+                  parseFloat(this.state.glass.rate)
+                ).toFixed(2)}{" "}
+                &#x9f3;
+              </strong>
+            </span>{" "}
           </CardText>
 
           <CardActions>

@@ -59,21 +59,32 @@ class Aluminium extends Component {
             Company: <strong>{this.state.aluminium.companyName}</strong> <br />
             Color: <strong>{this.state.aluminium.color}</strong> <br />
             Length:{" "}
-            <span style={{ color: "green" }}>
+            <span>
               <strong>{this.state.aluminium.length}</strong>
             </span>{" "}
             <br />
             Dia:{" "}
-            <span style={{ color: "green" }}>
+            <span>
               <strong>{this.state.aluminium.dia}</strong>
             </span>{" "}
             <br />
             Quantity:{" "}
-            <span style={{ color: "green" }}>
+            <span style={{ color: "blue" }}>
               <strong>{this.state.aluminium.quantity}</strong>
             </span>{" "}
             <br />
             Rate: <strong>{this.state.aluminium.rate}</strong>
+            <br />
+            Amount (Quantity x Rate):{" "}
+            <span style={{ color: "green" }}>
+              <strong>
+                {(
+                  parseFloat(this.state.aluminium.quantity) *
+                  parseFloat(this.state.aluminium.rate)
+                ).toFixed(2)}{" "}
+                &#x9f3;
+              </strong>
+            </span>{" "}
           </CardText>
 
           <CardActions>

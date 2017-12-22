@@ -16,7 +16,7 @@ class SS extends Component {
     this.setState({ open: false });
   };
   componentDidUpdate = () => {
-    if (JSON.stringify(this.props.values) === JSON.stringify(this.state.ss)) {
+    if (JSON.stringify(this.props.values) !== JSON.stringify(this.state.ss)) {
       this.setState({ ss: this.props.values });
     }
   };
@@ -56,18 +56,29 @@ class SS extends Component {
             Name: <strong>{this.state.ss.productName}</strong> <br />
             Company: <strong>{this.state.ss.companyName}</strong> <br />
             Length:{" "}
-            <span style={{ color: "green" }}>
+            <span>
               <strong>{this.state.ss.length}</strong>
             </span>{" "}
             <br />
             Thickness: <strong>{this.state.ss.thickness}</strong>
             <br />
             Quantity:{" "}
-            <span style={{ color: "green" }}>
+            <span style={{ color: "blue" }}>
               <strong>{this.state.ss.quantity}</strong>
             </span>{" "}
             <br />
             Rate: <strong>{this.state.ss.rate}</strong>
+            <br />
+            Amount (Quantity x Rate):{" "}
+            <span style={{ color: "green" }}>
+              <strong>
+                {(
+                  parseFloat(this.state.ss.quantity) *
+                  parseFloat(this.state.ss.rate)
+                ).toFixed(2)}{" "}
+                &#x9f3;
+              </strong>
+            </span>{" "}
           </CardText>
 
           <CardActions>

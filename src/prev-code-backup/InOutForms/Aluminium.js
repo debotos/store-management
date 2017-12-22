@@ -6,7 +6,32 @@ import { connect } from "react-redux";
 
 import { startUpdateStockItem } from "../../../../../actions/stock/stock-action";
 
-class SS extends Component {
+class Aluminium extends Component {
+  handleQuantyChange = event => {
+    const quantity = event.target.value;
+    if (!quantity || quantity.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ quantity });
+    }
+  };
+  handleLengthChange = event => {
+    const length = event.target.value;
+    if (!length || length.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ length });
+    }
+  };
+
+  handleDiaChange = event => {
+    const dia = event.target.value;
+    if (!dia || dia.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ dia });
+    }
+  };
+  handleRateChange = event => {
+    const rate = event.target.value;
+    if (!rate || rate.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ rate });
+    }
+  };
   handleProductNameChange = event => {
     const productName = event.target.value;
     this.setState({ productName });
@@ -15,33 +40,22 @@ class SS extends Component {
     const companyName = event.target.value;
     this.setState({ companyName });
   };
-  handleThicknessChange = event => {
-    const thickness = event.target.value;
-    this.setState({ thickness });
-  };
-  handleRateChange = event => {
-    const rate = event.target.value;
-    this.setState({ rate });
-  };
-  handleQuantyChange = event => {
-    const quantity = event.target.value;
-    this.setState({ quantity });
-  };
-  handleLengthChange = event => {
-    const length = event.target.value;
-    this.setState({ length });
+  handleColorChange = event => {
+    const color = event.target.value;
+    this.setState({ color });
   };
   friendlyHandleReset = () => {
+    this.setState({ length: "" });
     this.setState({ quantity: "" });
+    this.setState({ dia: "" });
   };
   componentDidUpdate = () => {
     if (this.props.values.productCode !== this.state.productCode) {
       this.setState({ productCode: this.props.values.productCode });
       this.setState({ companyName: this.props.values.companyName });
-      this.setState({ thickness: this.props.values.thickness });
+      this.setState({ color: this.props.values.color });
       this.setState({ productName: this.props.values.productName });
       this.setState({ rate: this.props.values.rate });
-      this.setState({ length: this.props.values.length });
     }
   };
   constructor(props) {
@@ -49,8 +63,9 @@ class SS extends Component {
     this.state = {
       productCode: this.props.values.productCode,
       companyName: this.props.values.companyName,
-      length: this.props.values.length,
-      thickness: this.props.values.thickness,
+      color: this.props.values.color,
+      length: "",
+      dia: "",
       productName: this.props.values.productName,
       quantity: "",
       rate: this.props.values.rate
@@ -61,8 +76,13 @@ class SS extends Component {
       productCode: this.props.values.productCode,
       productCategoryToSell: this.props.values.productCategoryToSell,
       companyName: this.state.companyName,
-      length: this.state.length,
-      thickness: this.state.thickness,
+      color: this.state.color,
+      length: (
+        parseFloat(this.state.length) + parseFloat(this.props.values.length)
+      ).toFixed(2),
+      dia: (
+        parseFloat(this.state.dia) + parseFloat(this.props.values.dia)
+      ).toFixed(2),
       productName: this.state.productName,
       quantity: (
         parseFloat(this.state.quantity) + parseFloat(this.props.values.quantity)
@@ -79,8 +99,13 @@ class SS extends Component {
       productCode: this.props.values.productCode,
       productCategoryToSell: this.props.values.productCategoryToSell,
       companyName: this.state.companyName,
-      length: this.state.length,
-      thickness: this.state.thickness,
+      color: this.state.color,
+      length: (
+        parseFloat(this.props.values.length) - parseFloat(this.state.length)
+      ).toFixed(2),
+      dia: (
+        parseFloat(this.props.values.dia) - parseFloat(this.state.dia)
+      ).toFixed(2),
       productName: this.state.productName,
       quantity: (
         parseFloat(this.props.values.quantity) - parseFloat(this.state.quantity)
@@ -89,8 +114,13 @@ class SS extends Component {
     };
     //Dispatch the function to add the details to the store
     let length = this.state.length;
+    let dia = this.state.dia;
     let quantity = this.state.quantity;
-    if (parseFloat(quantity) <= parseFloat(this.props.values.quantity)) {
+    if (
+      parseFloat(length) <= parseFloat(this.props.values.length) &&
+      parseFloat(dia) <= parseFloat(this.props.values.dia) &&
+      parseFloat(quantity) <= parseFloat(this.props.values.quantity)
+    ) {
       this.props.startUpdateStockItem(this.props.values.id, Data);
       this.friendlyHandleReset();
       this.props.showSnackBar("Out Action Successfully !");
@@ -122,18 +152,24 @@ class SS extends Component {
             floatingLabelText="Update Company Name"
           />
           <TextField
+            value={this.state.color}
+            onChange={this.handleColorChange}
+            hint="Color Name"
+            floatingLabelText="Update Color Name"
+          />
+          <TextField
             type="number"
             value={this.state.length}
             onChange={this.handleLengthChange}
             hintText="Length"
-            floatingLabelText="Update Length"
+            floatingLabelText={`Add Length (Now: ${this.props.values.length})`}
           />
           <TextField
             type="number"
-            value={this.state.thickness}
-            onChange={this.handleThicknessChange}
-            hintText="Thickness"
-            floatingLabelText="Update the Thickness "
+            value={this.state.dia}
+            onChange={this.handleDiaChange}
+            hintText="DIA"
+            floatingLabelText={`Add DIA (Now: ${this.props.values.dia})`}
           />
           <TextField
             type="number"
@@ -151,38 +187,38 @@ class SS extends Component {
             hintText="Price/Rate"
             floatingLabelText="Update the Price/Rate "
           />
-
-          <FlatButton
-            disabled={
-              this.state.companyName &&
-              this.state.productName &&
-              this.state.quantity &&
-              this.state.length &&
-              this.state.thickness &&
-              this.state.rate
-                ? false
-                : true
-            }
-            secondary={true}
-            label="Out"
-            onClick={this.handleStockOut}
-          />
-
-          <FlatButton
-            disabled={
-              this.state.companyName &&
-              this.state.productName &&
-              this.state.quantity &&
-              this.state.length &&
-              this.state.thickness &&
-              this.state.rate
-                ? false
-                : true
-            }
-            primary={true}
-            label="In"
-            onClick={this.handleStockIn}
-          />
+          <div style={{ textAlign: "center", marginTop: 5 }}>
+            <FlatButton
+              disabled={
+                this.state.companyName &&
+                this.state.productName &&
+                this.state.quantity &&
+                this.state.length &&
+                this.state.dia &&
+                this.state.rate
+                  ? false
+                  : true
+              }
+              secondary={true}
+              label="Out"
+              onClick={this.handleStockOut}
+            />
+            <FlatButton
+              disabled={
+                this.state.companyName &&
+                this.state.productName &&
+                this.state.quantity &&
+                this.state.length &&
+                this.state.dia &&
+                this.state.rate
+                  ? false
+                  : true
+              }
+              primary={true}
+              label="In"
+              onClick={this.handleStockIn}
+            />
+          </div>
         </div>
       </Card>
     );
@@ -193,4 +229,4 @@ const mapDispatchToProps = dispatch => ({
   startUpdateStockItem: (id, data) => dispatch(startUpdateStockItem(id, data))
 });
 
-export default connect(null, mapDispatchToProps)(SS);
+export default connect(null, mapDispatchToProps)(Aluminium);

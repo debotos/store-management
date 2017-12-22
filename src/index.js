@@ -54,7 +54,7 @@ store.subscribe(() => {
 //     ReactDOM.render(jsx, document.getElementById("root"));
 //   });
 
-store.dispatch(startSetAddSellUnderCustomerHistory()).then(() => {
+store.dispatch(startSetStock()).then(() => {
   ReactDOM.render(jsx, document.getElementById("root"));
 });
 

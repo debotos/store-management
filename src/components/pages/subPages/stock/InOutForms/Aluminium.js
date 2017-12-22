@@ -45,9 +45,7 @@ class Aluminium extends Component {
     this.setState({ color });
   };
   friendlyHandleReset = () => {
-    this.setState({ length: "" });
     this.setState({ quantity: "" });
-    this.setState({ dia: "" });
   };
   componentDidUpdate = () => {
     if (this.props.values.productCode !== this.state.productCode) {
@@ -56,6 +54,8 @@ class Aluminium extends Component {
       this.setState({ color: this.props.values.color });
       this.setState({ productName: this.props.values.productName });
       this.setState({ rate: this.props.values.rate });
+      this.setState({ length: this.props.values.length });
+      this.setState({ dia: this.props.values.dia });
     }
   };
   constructor(props) {
@@ -64,8 +64,8 @@ class Aluminium extends Component {
       productCode: this.props.values.productCode,
       companyName: this.props.values.companyName,
       color: this.props.values.color,
-      length: "",
-      dia: "",
+      length: this.props.values.length,
+      dia: this.props.values.dia,
       productName: this.props.values.productName,
       quantity: "",
       rate: this.props.values.rate
@@ -77,12 +77,8 @@ class Aluminium extends Component {
       productCategoryToSell: this.props.values.productCategoryToSell,
       companyName: this.state.companyName,
       color: this.state.color,
-      length: (
-        parseFloat(this.state.length) + parseFloat(this.props.values.length)
-      ).toFixed(2),
-      dia: (
-        parseFloat(this.state.dia) + parseFloat(this.props.values.dia)
-      ).toFixed(2),
+      length: this.state.length,
+      dia: this.state.dia,
       productName: this.state.productName,
       quantity: (
         parseFloat(this.state.quantity) + parseFloat(this.props.values.quantity)
@@ -100,12 +96,8 @@ class Aluminium extends Component {
       productCategoryToSell: this.props.values.productCategoryToSell,
       companyName: this.state.companyName,
       color: this.state.color,
-      length: (
-        parseFloat(this.props.values.length) - parseFloat(this.state.length)
-      ).toFixed(2),
-      dia: (
-        parseFloat(this.props.values.dia) - parseFloat(this.state.dia)
-      ).toFixed(2),
+      length: this.state.length,
+      dia: this.state.dia,
       productName: this.state.productName,
       quantity: (
         parseFloat(this.props.values.quantity) - parseFloat(this.state.quantity)
@@ -116,11 +108,7 @@ class Aluminium extends Component {
     let length = this.state.length;
     let dia = this.state.dia;
     let quantity = this.state.quantity;
-    if (
-      parseFloat(length) <= parseFloat(this.props.values.length) &&
-      parseFloat(dia) <= parseFloat(this.props.values.dia) &&
-      parseFloat(quantity) <= parseFloat(this.props.values.quantity)
-    ) {
+    if (parseFloat(quantity) <= parseFloat(this.props.values.quantity)) {
       this.props.startUpdateStockItem(this.props.values.id, Data);
       this.friendlyHandleReset();
       this.props.showSnackBar("Out Action Successfully !");
@@ -162,14 +150,14 @@ class Aluminium extends Component {
             value={this.state.length}
             onChange={this.handleLengthChange}
             hintText="Length"
-            floatingLabelText={`Add Length (Now: ${this.props.values.length})`}
+            floatingLabelText="Update Length"
           />
           <TextField
             type="number"
             value={this.state.dia}
             onChange={this.handleDiaChange}
             hintText="DIA"
-            floatingLabelText={`Add DIA (Now: ${this.props.values.dia})`}
+            floatingLabelText="Update Dia"
           />
           <TextField
             type="number"

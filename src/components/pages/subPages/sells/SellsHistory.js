@@ -156,7 +156,11 @@ class SellsHistory extends Component {
             open={this.state.fullHistoryDeleteConfirm}
             onRequestClose={this.handleFullHistoryDeleteConfirmDialogClose}
           >
-            Are you Sure ? Removing All Sells History Of this Customer !!
+            <strong>
+              <span style={{ color: "red" }}>
+                Are you Sure ? Removing All Sells History Of this Customer !!
+              </span>
+            </strong>
           </Dialog>
         </div>
       </div>
