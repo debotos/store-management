@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Card } from "material-ui/Card";
 import TextField from "material-ui/TextField";
+import numeral from "numeral";
 
 import AppBarMain from "../ui-element/AppBarMain";
 import "../../style/due/due.css";
@@ -22,9 +23,12 @@ class Due extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="due-main-container">
         <AppBarMain title={"Due"} />
-        <Card style={{ padding: 7, margin: 5, textAlign: "center" }}>
+        <Card
+          className="container"
+          style={{ marginTop: 10, padding: 7, textAlign: "center" }}
+        >
           <TextField
             type="number"
             floatingLabelText="Search Specific Due by Number"
@@ -61,7 +65,10 @@ class Due extends Component {
                           </h3>
                         </div>
                         <h3 className="list-item-amount">
-                          {parseFloat(singleDue.amount).toFixed(2)} &#x9f3;
+                          {numeral(parseFloat(singleDue.amount)).format(
+                            "0,0.00"
+                          )}{" "}
+                          &#x9f3;
                         </h3>
                       </div>
                     </Card>

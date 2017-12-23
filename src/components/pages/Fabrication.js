@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 
 import AppBarMain from "../ui-element/AppBarMain";
-// import Navigation from "../Navigation";
+import Form from "./subPages/fabrication/Form";
+// import "../../style/fabrication/fabrication.css";
 
 class Fabrication extends Component {
   render() {
     return (
-      <div>
+      <div className="fabrication-main-container">
         <AppBarMain title={"Fabrication"} />
-        <h1>Fabrication.js</h1>
+        <div className="container">
+          <Form />
+        </div>
       </div>
     );
   }

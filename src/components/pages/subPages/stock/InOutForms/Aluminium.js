@@ -105,8 +105,7 @@ class Aluminium extends Component {
       rate: this.state.rate
     };
     //Dispatch the function to add the details to the store
-    let length = this.state.length;
-    let dia = this.state.dia;
+
     let quantity = this.state.quantity;
     if (parseFloat(quantity) <= parseFloat(this.props.values.quantity)) {
       this.props.startUpdateStockItem(this.props.values.id, Data);

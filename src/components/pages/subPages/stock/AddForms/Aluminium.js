@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Card } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
-import uuid from "uuid/v4";
 import { connect } from "react-redux";
 
 import { startAddItemToStock } from "../../../../../actions/stock/stock-action";
@@ -82,7 +81,6 @@ class Aluminium extends Component {
     };
   }
   productCodeAlreadyExists = () => {
-    let category = this.state.productCategoryToSell;
     let productCode = this.state.productCode;
     let flag = false;
     if (Object.keys(this.props.stock).length > 0) {

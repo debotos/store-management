@@ -5,6 +5,7 @@ import TextField from "material-ui/TextField";
 import SnackBar from "../ui-element/SnackBar";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
+import numeral from "numeral";
 
 import AppBarMain from "../ui-element/AppBarMain";
 import "../../style/due/due.css";
@@ -122,9 +123,12 @@ class MoneyReceipt extends Component {
       />
     ];
     return (
-      <div>
+      <div className="money-receipt-main-container">
         <AppBarMain title={"Money Receipt"} />
-        <Card style={{ padding: 7, margin: 5, textAlign: "center" }}>
+        <Card
+          className="container"
+          style={{ marginTop: 10, padding: 7, textAlign: "center" }}
+        >
           <TextField
             type="number"
             floatingLabelText="Search Specific Due by Number"
@@ -174,7 +178,10 @@ class MoneyReceipt extends Component {
                           </h3>
                         </div>
                         <h3 className="list-item-amount">
-                          {parseFloat(singleDue.amount).toFixed(2)} &#x9f3;
+                          {numeral(parseFloat(singleDue.amount)).format(
+                            "0,0.00"
+                          )}{" "}
+                          &#x9f3;
                         </h3>
                       </div>
                     </Card>
@@ -196,11 +203,21 @@ class MoneyReceipt extends Component {
         >
           <div>
             <h5 style={{ color: "orange" }}>
-              Previous Due: <strong>{this.state.currentlySelectedDue}</strong>
+              Previous Due:{" "}
+              <strong>
+                {numeral(parseFloat(this.state.currentlySelectedDue)).format(
+                  "0,0.00"
+                )}
+              </strong>
             </h5>
             {this.state.newDewFromNow && this.state.newDewFromNow !== "NaN" ? (
               <h5 style={{ color: "red" }}>
-                From Now: <strong>{this.state.newDewFromNow}</strong>
+                From Now:{" "}
+                <strong>
+                  {numeral(parseFloat(this.state.newDewFromNow)).format(
+                    "0,0.00"
+                  )}
+                </strong>
               </h5>
             ) : (
               <div />

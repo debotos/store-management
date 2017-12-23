@@ -54,6 +54,7 @@ class Pad extends Component {
           <PrintTemplate>
             <div>
               <h1 style={{ textAlign: "center" }}>{COMPANY_NAME}</h1>
+              <h3 style={{ textAlign: "center" }}>PAD</h3>
               <div className="header">
                 <div>
                   {/* Left part */}
@@ -65,7 +66,7 @@ class Pad extends Component {
                   Accessories
                 </div>
                 {/* middle part */}
-                <h3 style={{ justifyContent: "center" }}>PAD</h3>
+
                 {/* Right part */}
                 <div>
                   <strong>show Room & Sales Center</strong>
@@ -83,11 +84,7 @@ class Pad extends Component {
                   ))}
                 </div>
               </div>
-              <div className="form">
-                <strong>Name:</strong> <br />
-                <strong>Address: </strong>
-              </div>
-              <br />
+              <hr />
               <br />
               <div className="content" style={{ fontSize: "x-large" }}>
                 {this.state.note}

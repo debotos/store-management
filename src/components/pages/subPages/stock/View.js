@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Card } from "material-ui/Card";
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
-import RaisedButton from "material-ui/RaisedButton";
-import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 import numeral from "numeral";
 

@@ -36,27 +36,27 @@ store.subscribe(() => {
 });
 
 // Uncomment this line to work with Database
-// store
-//   .dispatch(startSetExpenses())
-//   .then(() => {
-//     return store.dispatch(startSetStock());
-//   })
-//   .then(() => {
-//     return store.dispatch(startSetExistingDueFromServer());
-//   })
-//   .then(() => {
-//     return store.dispatch(startSetAddSellUnderCustomerHistory());
-//   })
-//   .then(() => {
-//     return store.dispatch(startSetMemoNumber());
-//   })
-//   .then(() => {
-//     ReactDOM.render(jsx, document.getElementById("root"));
-//   });
+store
+  .dispatch(startSetExpenses())
+  .then(() => {
+    return store.dispatch(startSetStock());
+  })
+  .then(() => {
+    return store.dispatch(startSetExistingDueFromServer());
+  })
+  .then(() => {
+    return store.dispatch(startSetAddSellUnderCustomerHistory());
+  })
+  .then(() => {
+    return store.dispatch(startSetMemoNumber());
+  })
+  .then(() => {
+    ReactDOM.render(jsx, document.getElementById("root"));
+  });
 
-store.dispatch(startSetStock()).then(() => {
-  ReactDOM.render(jsx, document.getElementById("root"));
-});
+// store.dispatch(startSetExistingDueFromServer()).then(() => {
+//   ReactDOM.render(jsx, document.getElementById("root"));
+// });
 
 // ReactDOM.render(jsx, document.getElementById("root"));
 

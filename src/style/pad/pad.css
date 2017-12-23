@@ -17,12 +17,11 @@
 
 .background {
   background-image: url("../../assets/images/background.jpg");
-  /* Full height */
-  height: 100%;
-
-  /* Center and scale the image nicely */
-  background-repeat: no-repeat;
   background-size: cover;
+  position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+  background-repeat: no-repeat;
 }
 
 .content {
