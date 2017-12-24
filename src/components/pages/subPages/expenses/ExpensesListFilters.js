@@ -62,6 +62,7 @@ class ExpenseListFilters extends React.Component {
             </div>
             <div className="col-sm-6">
               <TextField
+                autoFocus
                 hintText="Search Expenses"
                 floatingLabelText="Search By Text"
                 type="text"

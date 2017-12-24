@@ -53,7 +53,7 @@ class CustomerDetailsForm extends Component {
   };
   handleNumber = event => {
     const number = event.target.value;
-    if (!number || number.match(/^\d{1,}(\.\d{0,2})?$/)) {
+    if (!number || number.match(/^\d{1,}(\.\d{0})?$/)) {
       this.setState({ number });
     }
   };
@@ -70,10 +70,7 @@ class CustomerDetailsForm extends Component {
     });
     return [flag, prevDue];
   };
-  getPrevDue = () => {
-    if (this.userAlreadyExists()) {
-    }
-  };
+
   constructor(props) {
     super(props);
     this.state = {

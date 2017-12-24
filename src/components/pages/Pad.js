@@ -31,13 +31,39 @@ class Pad extends Component {
         <div id="react-no-print">
           <AppBarMain title={"Your Pad"} />
           <div className="container">
-            <Card style={{ borderRadius: "20px", marginTop: 10, padding: 5 }}>
-              <h3 style={{ textAlign: "center" }}>Pad</h3>
+            <Card
+              style={{
+                borderRadius: "20px",
+                marginTop: 10,
+                padding: 5,
+                backgroundColor: "lightblue"
+              }}
+            >
+              <div style={{ textAlign: "center", pointerEvents: "none" }}>
+                <strong>PAD</strong>
+                <br />
+                <iframe
+                  src="http://free.timeanddate.com/clock/i61ddbap/n942/fn3/fs28/tcadd8e6/pcadd8e6/tt0/tw0/tm3/ts1/tb2"
+                  frameBorder="0"
+                  width="320"
+                  height="34"
+                  title="Pad Page Date"
+                />
+              </div>
             </Card>
           </div>
           <div style={{ marginTop: 10 }} className="container">
-            <Card style={{ padding: 15, borderRadius: "20px" }}>
+            <Card
+              style={{
+                padding: 15,
+                borderRadius: "20px",
+                backgroundColor: "lightblue"
+              }}
+            >
               <textarea
+                style={{
+                  borderRadius: "20px"
+                }}
                 className="textarea"
                 placeholder="Add your note "
                 value={this.state.note}
@@ -45,8 +71,8 @@ class Pad extends Component {
               />
             </Card>
           </div>
-          <div style={{ textAlign: "center", marginTop: 10, marginBottom: 20 }}>
-            <RaisedButton onClick={this.print} label="print" />
+          <div style={{ textAlign: "center", marginTop: 10 }}>
+            <RaisedButton primary={true} onClick={this.print} label="print" />
           </div>
         </div>
         <br />

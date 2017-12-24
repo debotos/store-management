@@ -130,6 +130,7 @@ class MoneyReceipt extends Component {
           style={{ marginTop: 10, padding: 7, textAlign: "center" }}
         >
           <TextField
+            autoFocus
             type="number"
             floatingLabelText="Search Specific Due by Number"
             value={this.props.filter}

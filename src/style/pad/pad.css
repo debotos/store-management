@@ -15,15 +15,6 @@
   flex-direction: row;
 }
 
-.background {
-  background-image: url("../../assets/images/background.jpg");
-  background-size: cover;
-  position: absolute;
-  width: 100% !important;
-  height: 100% !important;
-  background-repeat: no-repeat;
-}
-
 .content {
   white-space: pre-wrap;
 }

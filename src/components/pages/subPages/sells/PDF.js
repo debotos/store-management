@@ -261,7 +261,7 @@ function GENERATE_PDF(data, date = null) {
       "[" +
       customer.number +
       "]" +
-      "history_memo_" +
+      "sell_history_memo_" +
       memoNumber +
       "_" +
       customer.name +

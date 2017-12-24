@@ -30,3 +30,12 @@
   width: 100% !important;
   height: 100% !important;
 }
+
+.ready-cash-main-container {
+  background-color: #78909c;
+  background-size: cover;
+  position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+}
+

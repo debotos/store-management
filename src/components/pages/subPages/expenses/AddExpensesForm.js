@@ -69,6 +69,7 @@ class AddExpensesForm extends Component {
       <div>
         <Card className="container" style={{ textAlign: "center" }}>
           <TextField
+            autoFocus
             onChange={this.handleExpensesTitleChange}
             value={this.state.expensesTitle}
             hintText="Expenses Title"
