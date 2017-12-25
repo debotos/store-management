@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import { Card } from "material-ui/Card";
+import numeral from "numeral";
+
+// import schedular from "./subPages/ready-cash/schedular/schedular";
+import schedular from "./schedular/schedular";
 
 class ReadyCashTotal extends Component {
   calculateIncomeTotal = () => {
@@ -14,13 +18,54 @@ class ReadyCashTotal extends Component {
     this.props.readyCash.expenses.forEach(singleItem => {
       expensesTotal = parseFloat(expensesTotal) + parseFloat(singleItem.amount);
     });
+    /* Calling the Schedular to save today's Ready Cash and delete Old Entries */
+    schedular(expensesTotal);
     return expensesTotal;
   };
+
   render() {
     return (
-      <Card>
-        <h2>{this.calculateIncomeTotal()}</h2>
-        <h2>{this.calculateExpensesTotal()}</h2>
+      <Card
+        style={{
+          marginTop: 10,
+          marginBottom: 10,
+          padding: 10,
+          textAlign: "center"
+        }}
+      >
+        <div className="row">
+          <div className="col-sm-6" style={{ marginBottom: 10 }}>
+            <Card style={{ padding: 10 }}>
+              <h2>
+                {numeral(parseFloat(this.calculateIncomeTotal())).format(
+                  "0,0.00"
+                )}{" "}
+                &#x9f3;
+              </h2>
+            </Card>
+          </div>
+          <div className="col-sm-6">
+            <Card style={{ padding: 10 }}>
+              <h2>
+                {numeral(parseFloat(this.calculateExpensesTotal())).format(
+                  "0,0.00"
+                )}{" "}
+                &#x9f3;
+              </h2>
+            </Card>
+          </div>
+        </div>
+
+        <Card style={{ padding: 10 }}>
+          <h2>
+            {numeral(
+              parseFloat(
+                this.calculateIncomeTotal() - this.calculateExpensesTotal()
+              )
+            ).format("0,0.00")}{" "}
+            &#x9f3;
+          </h2>
+        </Card>
       </Card>
     );
   }

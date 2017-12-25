@@ -7,7 +7,7 @@ class ReadyCashExpensesList extends Component {
   renderAmount = singleItem => {
     return (
       <span style={{ color: "green" }}>
-        {numeral(singleItem.amount).format("0,0.00") + " Taka"}
+        {numeral(singleItem.amount).format("0,0.00")} &#x9f3;
       </span>
     );
   };
@@ -15,6 +15,7 @@ class ReadyCashExpensesList extends Component {
     return this.props.expenses.map((singleItem, index) => {
       return (
         <ListItem
+          key={index}
           primaryText={singleItem.title}
           secondaryText={this.renderAmount(singleItem)}
         />

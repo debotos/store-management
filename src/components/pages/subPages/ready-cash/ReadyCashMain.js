@@ -45,6 +45,7 @@ class ReadyCashMain extends Component {
                 frameBorder="0"
                 width="192"
                 height="18"
+                title="Ready Cash Clock"
               />
             </div>
           </div>
@@ -53,7 +54,7 @@ class ReadyCashMain extends Component {
         {/* Main Section */}
         <div className="container">
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-6" style={{ marginBottom: 10 }}>
               <Card>
                 <CardTitle
                   title="Income Section"
@@ -62,10 +63,7 @@ class ReadyCashMain extends Component {
                 <ReadyCashIncomeList income={this.props.readyCash.income} />
               </Card>
             </div>
-            <div
-              className="col-sm-6"
-              style={{ marginTop: 10, marginBottom: 10 }}
-            >
+            <div className="col-sm-6">
               <Card>
                 <CardTitle
                   title="Expenses Section"
@@ -78,7 +76,7 @@ class ReadyCashMain extends Component {
             </div>
           </div>
         </div>
-        <div>
+        <div className="container">
           <ReadyCashTotal readyCash={this.props.readyCash} />
         </div>
       </div>

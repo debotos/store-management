@@ -7,15 +7,24 @@ class ReadyCashIncomeList extends Component {
   renderAmount = singleItem => {
     return (
       <span style={{ color: "green" }}>
-        {numeral(singleItem.amount).format("0,0.00") + " Taka"}
+        {numeral(singleItem.amount).format("0,0.00")} &#x9f3;
       </span>
+    );
+  };
+  renderDetails = singleItem => {
+    return (
+      <div>
+        From <strong>{singleItem.number}</strong> Via{" "}
+        {singleItem.category.toUpperCase()}
+      </div>
     );
   };
   renderIncomeListItem = () => {
     return this.props.income.map((singleItem, index) => {
       return (
         <ListItem
-          primaryText={singleItem.number}
+          key={index}
+          primaryText={this.renderDetails(singleItem)}
           secondaryText={this.renderAmount(singleItem)}
         />
       );

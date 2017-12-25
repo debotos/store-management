@@ -22,7 +22,11 @@ class ReadyCash extends Component {
         </div>
       );
     }
-    return <ReadyCashMain />;
+    return (
+      <div>
+        <ReadyCashMain />
+      </div>
+    );
   }
 }
 
