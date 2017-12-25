@@ -7,6 +7,7 @@ import { SingleDatePicker } from "react-dates";
 import { Card, CardActions } from "material-ui/Card";
 
 import { startAddExpense } from "../../../../actions/expenses/expenses-actions";
+import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
 
 class AddExpensesForm extends Component {
   handleReset = () => {
@@ -29,6 +30,13 @@ class AddExpensesForm extends Component {
     this.setState({ expensesDetails: "" });
     this.setState({ expensesDate: moment() });
     this.props.showSnackBar("Successfully Added !");
+    const dataForReadyCash = {
+      type: "expenses",
+      moment: moment().valueOf(),
+      amount: parseFloat(this.state.expensesAmount, 10),
+      title: this.state.expensesTitle
+    };
+    this.props.startAddAnEntryToReadyCash(dataForReadyCash);
   };
   onFocusChange = ({ focused }) => {
     this.setState(() => ({ calendarFocused: focused }));
@@ -141,6 +149,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     startAddExpense: expense => {
       dispatch(startAddExpense(expense));
+    },
+    startAddAnEntryToReadyCash: data => {
+      dispatch(startAddAnEntryToReadyCash(data));
     }
   };
 };

@@ -18,6 +18,7 @@ import { startSetExpenses } from "./actions/expenses/expenses-actions";
 import { startSetStock } from "./actions/stock/stock-action";
 import { startSetAddSellUnderCustomerHistory } from "./actions/sells/sells-history-actions";
 import { startSetMemoNumber } from "./actions/sells/memo-no-actions";
+import { startSetReadyCash } from "./actions/ready-cash/ready-cash-actions";
 
 const store = configureStore();
 
@@ -54,10 +55,10 @@ store.subscribe(() => {
 //     ReactDOM.render(jsx, document.getElementById("root"));
 //   });
 
-// store.dispatch(startSetExistingDueFromServer()).then(() => {
-//   ReactDOM.render(jsx, document.getElementById("root"));
-// });
+store.dispatch(startSetReadyCash()).then(() => {
+  ReactDOM.render(jsx, document.getElementById("root"));
+});
 
-ReactDOM.render(jsx, document.getElementById("root"));
+// ReactDOM.render(jsx, document.getElementById("root"));
 
 registerServiceWorker();

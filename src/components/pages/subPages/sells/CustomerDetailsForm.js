@@ -6,6 +6,7 @@ import isEmail from "validator/lib/isEmail";
 import { connect } from "react-redux";
 import Dialog from "material-ui/Dialog";
 import numeral from "numeral";
+import moment from "moment";
 
 import GENERATE_PDF from "./PDF";
 import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
@@ -13,6 +14,7 @@ import { removeAllSellsItem } from "../../../../actions/sells/sells-actions";
 import { startAddSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
 import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
 import { removeAllTable } from "../../../../actions/sells/table-actions";
+import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
 
 const uuidv4 = require("uuid/v4");
 
@@ -147,8 +149,16 @@ class CustomerDetailsForm extends Component {
             },
             memoNumber: this.props.memoNumber
           };
-
           GENERATE_PDF(dataForPDF);
+
+          const dataForReadyCash = {
+            type: "income",
+            moment: moment().valueOf(),
+            amount: deposit,
+            category: "sell",
+            number: this.state.number
+          };
+          this.props.startAddAnEntryToReadyCash(dataForReadyCash);
 
           this.handleReset();
           this.props.startIncrementMemoNumber();
@@ -190,9 +200,22 @@ class CustomerDetailsForm extends Component {
           },
           memoNumber: this.props.memoNumber
         };
-
+        console.log("====================================");
+        console.log("Data for PDF sending", dataForPDF);
+        console.log("====================================");
         GENERATE_PDF(dataForPDF);
 
+        const dataForReadyCash = {
+          type: "income",
+          moment: moment().valueOf(),
+          amount: deposit,
+          category: "sell",
+          number: this.state.number
+        };
+        console.log("====================================");
+        console.log("data for ready cash", dataForReadyCash);
+        console.log("====================================");
+        this.props.startAddAnEntryToReadyCash(dataForReadyCash);
         this.handleReset();
         this.props.startIncrementMemoNumber();
       } else {
@@ -346,6 +369,9 @@ const mapDispatchToProps = dispatch => {
     },
     removeAllTable: () => {
       dispatch(removeAllTable());
+    },
+    startAddAnEntryToReadyCash: data => {
+      dispatch(startAddAnEntryToReadyCash(data));
     }
   };
 };

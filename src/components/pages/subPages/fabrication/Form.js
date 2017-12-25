@@ -6,8 +6,10 @@ import isEmail from "validator/lib/isEmail";
 import { connect } from "react-redux";
 import numeral from "numeral";
 import Dialog from "material-ui/Dialog";
+import moment from "moment";
 
 import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
+import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
 import GENERATE_PDF from "./PDF";
 
 class Form extends Component {
@@ -28,6 +30,7 @@ class Form extends Component {
     this.setState({ bill: "" });
     this.setState({ details: "" });
   };
+
   handleName = event => {
     const name = event.target.value;
     this.setState({ name });
@@ -171,6 +174,15 @@ class Form extends Component {
       };
       // Generating PDF
       GENERATE_PDF(dataForPDF);
+      const dataForReadyCash = {
+        type: "income",
+        moment: moment().valueOf(),
+        amount: deposit,
+        category: "fabrication",
+        number: this.state.number
+      };
+      this.props.startAddAnEntryToReadyCash(dataForReadyCash);
+      this.handleReset();
     } else {
       this.props.showSnackBar("Error! Valid Deposit Please!");
     }
@@ -293,6 +305,9 @@ const mapDispatchToProps = dispatch => {
   return {
     startAddPrevDue: (number, amount) => {
       dispatch(startAddPrevDue(number, amount));
+    },
+    startAddAnEntryToReadyCash: data => {
+      dispatch(startAddAnEntryToReadyCash(data));
     }
   };
 };

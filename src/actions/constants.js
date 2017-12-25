@@ -39,3 +39,6 @@ export const SET_DUE_TEXT_FILTER = "SET_DUE_TEXT_FILTER";
 export const SET_DUE = "SET_DUE";
 export const REMOVE_A_PREV_DUE = "REMOVE_A_PREV_DUE";
 export const UPDATE_A_PREV_DUE = "UPDATE_A_PREV_DUE";
+// Ready-Cash.js
+export const ADD_AN_ENTRY_TO_READY_CASH = "ADD_AN_ENTRY_TO_READY_CASH";
+export const SET_READY_CASH = "SET_READY_CASH";
