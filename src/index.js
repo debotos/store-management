@@ -19,6 +19,7 @@ import { startSetStock } from "./actions/stock/stock-action";
 import { startSetAddSellUnderCustomerHistory } from "./actions/sells/sells-history-actions";
 import { startSetMemoNumber } from "./actions/sells/memo-no-actions";
 import { startSetReadyCash } from "./actions/ready-cash/ready-cash-actions";
+import { startSetReadyCashAmount } from "./actions/ready-cash/ready-cash-amount-actions";
 
 const store = configureStore();
 
@@ -37,27 +38,34 @@ store.subscribe(() => {
 });
 
 // Uncomment this line to work with Database
-// store
-//   .dispatch(startSetExpenses())
-//   .then(() => {
-//     return store.dispatch(startSetStock());
-//   })
-//   .then(() => {
-//     return store.dispatch(startSetExistingDueFromServer());
-//   })
-//   .then(() => {
-//     return store.dispatch(startSetAddSellUnderCustomerHistory());
-//   })
-//   .then(() => {
-//     return store.dispatch(startSetMemoNumber());
-//   })
-//   .then(() => {
-//     ReactDOM.render(jsx, document.getElementById("root"));
-//   });
 
-store.dispatch(startSetReadyCash()).then(() => {
-  ReactDOM.render(jsx, document.getElementById("root"));
-});
+store
+  .dispatch(startSetExpenses())
+  .then(() => {
+    return store.dispatch(startSetStock());
+  })
+  .then(() => {
+    return store.dispatch(startSetExistingDueFromServer());
+  })
+  .then(() => {
+    return store.dispatch(startSetAddSellUnderCustomerHistory());
+  })
+  .then(() => {
+    return store.dispatch(startSetMemoNumber());
+  })
+  .then(() => {
+    return store.dispatch(startSetReadyCash());
+  })
+  .then(() => {
+    return store.dispatch(startSetReadyCashAmount());
+  })
+  .then(() => {
+    ReactDOM.render(jsx, document.getElementById("root"));
+  });
+
+// store.dispatch(startSetReadyCash()).then(() => {
+//   ReactDOM.render(jsx, document.getElementById("root"));
+// });
 
 // ReactDOM.render(jsx, document.getElementById("root"));
 

@@ -1,6 +1,7 @@
 import {
   ADD_AN_ENTRY_TO_READY_CASH,
-  SET_READY_CASH
+  SET_READY_CASH,
+  RESET_READY_CASH
 } from "../../actions/constants";
 
 let readyCashDefaultReducer = {
@@ -23,6 +24,8 @@ export const readyCashReducer = (state = readyCashDefaultReducer, action) => {
           expenses: [action.data, ...state.expenses]
         };
       }
+    case RESET_READY_CASH:
+      return readyCashDefaultReducer;
     case SET_READY_CASH:
       if (
         !action.data.hasOwnProperty("income") &&

@@ -1,4 +1,8 @@
-import { ADD_AN_ENTRY_TO_READY_CASH, SET_READY_CASH } from "../constants";
+import {
+  ADD_AN_ENTRY_TO_READY_CASH,
+  SET_READY_CASH,
+  RESET_READY_CASH
+} from "../constants";
 import database from "../../secrets/firebase";
 
 export const addAnEntryToReadyCash = data => {
@@ -25,6 +29,19 @@ export const startAddAnEntryToReadyCash = data => {
           dispatch(addAnEntryToReadyCash({ id: ref.key, ...data }));
         });
     }
+  };
+};
+
+export const resetReadyCash = () => ({ type: RESET_READY_CASH });
+
+export const startResetReadyCash = () => {
+  return dispatch => {
+    return database
+      .ref(`ready-cash`)
+      .remove()
+      .then(() => {
+        dispatch(resetReadyCash());
+      });
   };
 };
 

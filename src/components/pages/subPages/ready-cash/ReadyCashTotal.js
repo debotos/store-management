@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { Card } from "material-ui/Card";
 import numeral from "numeral";
 
-// import schedular from "./subPages/ready-cash/schedular/schedular";
-import schedular from "./schedular/schedular";
-
 class ReadyCashTotal extends Component {
   calculateIncomeTotal = () => {
     let incomeTotal = 0;
@@ -18,8 +15,6 @@ class ReadyCashTotal extends Component {
     this.props.readyCash.expenses.forEach(singleItem => {
       expensesTotal = parseFloat(expensesTotal) + parseFloat(singleItem.amount);
     });
-    /* Calling the Schedular to save today's Ready Cash and delete Old Entries */
-    schedular(expensesTotal);
     return expensesTotal;
   };
 

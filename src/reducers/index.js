@@ -11,6 +11,7 @@ import dueFilterReducer from "./due/due-filter-reducer";
 import memoNoReducer from "./sells/memo-no-reducer";
 import { tableReducer } from "./sells/table-reducers";
 import { readyCashReducer } from "./ready-cash/ready-cash-reducers";
+import { readyCashAmountReducer } from "./ready-cash/ready-cash-amount-reducers";
 
 const RootReducer = combineReducers({
   bank: bankReducer,
@@ -23,7 +24,8 @@ const RootReducer = combineReducers({
   dueFilter: dueFilterReducer,
   memoNumber: memoNoReducer,
   sellsTable: tableReducer,
-  readyCash: readyCashReducer
+  readyCash: readyCashReducer,
+  readyCashAmount: readyCashAmountReducer
 });
 
 export default RootReducer;

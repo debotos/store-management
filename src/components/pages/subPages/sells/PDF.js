@@ -87,7 +87,7 @@ const renderTables = tables => {
 };
 
 const friendlyDiscountRender = customer => {
-  if (parseInt(customer.allTotal.finalFriendlyDiscount, 10) > 0) {
+  if (parseFloat(customer.allTotal.finalFriendlyDiscount, 10) > 0) {
     return [
       "- " +
         numeral(parseFloat(customer.allTotal.finalFriendlyDiscount)).format(
