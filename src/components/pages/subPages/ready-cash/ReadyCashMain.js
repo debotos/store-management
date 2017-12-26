@@ -35,7 +35,10 @@ class ReadyCashMain extends Component {
     this.handleClose();
     this.props.startResetReadyCash();
     this.props.startUpdateReadyCash(
-      parseFloat(this.calculateIncomeTotal() - this.calculateExpensesTotal())
+      parseFloat(
+        parseFloat(this.calculateIncomeTotal()) -
+          parseFloat(this.calculateExpensesTotal())
+      )
     );
   };
   calculateExpensesTotal = () => {
@@ -79,7 +82,11 @@ class ReadyCashMain extends Component {
           >
             <div>
               <strong>
-                Ready Cash {numeral(1000).format("0,0.00")} &#x9f3;
+                Previous Ready Cash{" "}
+                {numeral(parseFloat(this.props.readyCashAmount.amount)).format(
+                  "0,0.00"
+                )}{" "}
+                &#x9f3;
               </strong>
             </div>
             <div>
@@ -123,7 +130,10 @@ class ReadyCashMain extends Component {
               </div>
             </div>
             <div className="container">
-              <ReadyCashTotal readyCash={this.props.readyCash} />
+              <ReadyCashTotal
+                readyCash={this.props.readyCash}
+                readyCashAmount={this.props.readyCashAmount.amount}
+              />
             </div>
             <div className="container" style={{ textAlign: "center" }}>
               <RaisedButton
@@ -162,7 +172,8 @@ class ReadyCashMain extends Component {
 
 const mapStateToProps = state => {
   return {
-    readyCash: state.readyCash
+    readyCash: state.readyCash,
+    readyCashAmount: state.readyCashAmount
   };
 };
 

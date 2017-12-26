@@ -55,7 +55,9 @@ class ReadyCashTotal extends Component {
           <h2>
             {numeral(
               parseFloat(
-                this.calculateIncomeTotal() - this.calculateExpensesTotal()
+                parseFloat(this.props.readyCashAmount) +
+                  this.calculateIncomeTotal() -
+                  this.calculateExpensesTotal()
               )
             ).format("0,0.00")}{" "}
             &#x9f3;
