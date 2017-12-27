@@ -258,23 +258,23 @@ function GENERATE_PDF(data, date = null) {
   let pdf_name;
   if (date) {
     pdf_name =
+      memoNumber +
+      "_" +
       "[" +
       customer.number +
       "]" +
       "sell_history_memo_" +
-      memoNumber +
-      "_" +
       customer.name +
       "_" +
       Date().substr(0, 15);
   } else {
     pdf_name =
+      memoNumber +
+      "_" +
       "[" +
       customer.number +
       "]" +
       "sell_memo_" +
-      memoNumber +
-      "_" +
       customer.name +
       "_" +
       Date().substr(0, 15);

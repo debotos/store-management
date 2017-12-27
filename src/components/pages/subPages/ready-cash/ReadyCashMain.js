@@ -278,7 +278,7 @@ class ReadyCashMain extends Component {
           onRequestClose={this.handleClose}
         >
           <span style={{ color: "red", fontWeight: "bold" }}>
-            Are You Sure? Resetting All Data !!!
+            Are You Sure? You Should Reset it Only After 24 Hour !
           </span>
         </Dialog>
         <SnackBar
