@@ -31,6 +31,9 @@ class ReadyCashTotal extends Component {
         <div className="row">
           <div className="col-sm-6" style={{ marginBottom: 10 }}>
             <Card style={{ padding: 10 }}>
+              <h5 style={{ color: "green" }}>
+                <strong>Total Today's Income &#8595;</strong>
+              </h5>
               <h2>
                 {numeral(parseFloat(this.calculateIncomeTotal())).format(
                   "0,0.00"
@@ -41,6 +44,9 @@ class ReadyCashTotal extends Component {
           </div>
           <div className="col-sm-6">
             <Card style={{ padding: 10 }}>
+              <h5 style={{ color: "green" }}>
+                <strong>Total Today's Expenses &#8595;</strong>
+              </h5>
               <h2>
                 {numeral(parseFloat(this.calculateExpensesTotal())).format(
                   "0,0.00"
@@ -52,16 +58,24 @@ class ReadyCashTotal extends Component {
         </div>
 
         <Card style={{ padding: 10 }}>
-          <h2>
-            {numeral(
-              parseFloat(
-                parseFloat(this.props.readyCashAmount) +
-                  this.calculateIncomeTotal() -
-                  this.calculateExpensesTotal()
-              )
-            ).format("0,0.00")}{" "}
-            &#x9f3;
-          </h2>
+          <div>
+            <h5 style={{ color: "green" }}>
+              <strong>
+                Today's Ready Cash = ( Previous Day Ready Cash + Today's Income
+                ) - ( Today's Expenses ) &#8595;
+              </strong>
+            </h5>
+            <h2>
+              {numeral(
+                parseFloat(
+                  parseFloat(this.props.readyCashAmount) +
+                    this.calculateIncomeTotal() -
+                    this.calculateExpensesTotal()
+                )
+              ).format("0,0.00")}{" "}
+              &#x9f3;
+            </h2>
+          </div>
         </Card>
       </Card>
     );

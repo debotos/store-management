@@ -1,5 +1,65 @@
 import database from "../../secrets/firebase";
-import { UPDATE_READY_CASH_AMOUNT, SET_READY_CASH_AMOUNT } from "../constants";
+import {
+  UPDATE_READY_CASH_AMOUNT,
+  SET_READY_CASH_AMOUNT,
+  OVERRIDE_READY_CASH_AMOUNT
+} from "../constants";
+
+export const overrideReadyCash = (id, amount) => {
+  return {
+    type: OVERRIDE_READY_CASH_AMOUNT,
+    data: {
+      id,
+      amount
+    }
+  };
+};
+
+export const startOverrideReadyCash = amount => {
+  return dispatch => {
+    let currentValue;
+    let currentValueId;
+    let allValue = [];
+    database
+      .ref("ready-cash-amount")
+      .once("value")
+      .then(snapshot => {
+        snapshot.forEach(childSnapshot => {
+          currentValue = childSnapshot.val().amount;
+          console.log("current Ready Cash Amount ", currentValue);
+          currentValueId = childSnapshot.key;
+          console.log("current Ready Cash Amount ID ", currentValueId);
+          allValue.push(childSnapshot.val());
+        });
+      })
+      .then(() => {
+        let data;
+        if (allValue.length > 0) {
+          console.log("got amount", amount);
+          let value = parseFloat(amount).toFixed(2);
+          data = {
+            amount: value
+          };
+          return database
+            .ref(`ready-cash-amount/${currentValueId}`)
+            .update(data)
+            .then(() => {
+              dispatch(overrideReadyCash(currentValueId, value));
+            });
+        } else {
+          data = {
+            amount: parseFloat(amount).toFixed(2)
+          };
+          return database
+            .ref("ready-cash-amount")
+            .push(data)
+            .then(ref => {
+              dispatch(overrideReadyCash(ref.key, data.amount));
+            });
+        }
+      });
+  };
+};
 
 export const updateReadyCash = (id, amount) => {
   return {
