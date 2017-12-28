@@ -93,6 +93,7 @@ class AddExpensesForm extends Component {
           />
           <br />
           <textarea
+            className="animated lightSpeedIn"
             style={{
               width: "70%",
               height: "100px",
@@ -106,11 +107,12 @@ class AddExpensesForm extends Component {
           />
           <br />
           <div className="single-date-picker">
-            <label>
+            <label className="animated lightSpeedIn">
               Select Data [Default: <b>Today</b>]
             </label>
             <br />
             <SingleDatePicker
+              className="animated lightSpeedIn"
               date={this.state.expensesDate}
               numberOfMonths={1}
               onDateChange={this.onDateChange}

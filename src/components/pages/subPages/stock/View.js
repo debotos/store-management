@@ -191,7 +191,10 @@ class View extends Component {
           className="container"
           style={{ textAlign: "center", marginTop: 10, marginBottom: 10 }}
         >
-          <Card style={{ padding: 10, backgroundColor: "#d3d3d3" }}>
+          <Card
+            className="animated rollIn"
+            style={{ padding: 10, backgroundColor: "#d3d3d3" }}
+          >
             <h1>Stock Have {this.calculateStockTotal()[0]} &#x9f3;</h1>
             <div style={{}}>
               <Card style={{ padding: 5, marginBottom: 5, color: "green" }}>

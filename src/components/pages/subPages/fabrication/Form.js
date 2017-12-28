@@ -204,7 +204,10 @@ class Form extends Component {
     ];
     return (
       <div>
-        <Card style={{ marginTop: 10, padding: 15, borderRadius: 20 }}>
+        <Card
+          className="animated zoomInUp"
+          style={{ marginTop: 10, padding: 15, borderRadius: 20 }}
+        >
           <b>Input Fabrication & Customer Details:</b>
           <br />
           {/* All Fields */}
@@ -265,6 +268,7 @@ class Form extends Component {
           <br />
           <div style={{ textAlign: "center" }}>
             <FlatButton
+              class="animated infinite tada"
               disabled={
                 this.state.name &&
                 this.state.number &&

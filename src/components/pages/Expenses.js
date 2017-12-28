@@ -53,7 +53,12 @@ class Expenses extends Component {
     return (
       <div>
         <AppBarMain title={"Expenses"} />
-        <h1 style={{ textAlign: "center" }}>EXPENSES RECORD</h1>
+        <h1
+          className="animated infinite rubberBand"
+          style={{ textAlign: "center" }}
+        >
+          EXPENSES RECORD
+        </h1>
         <div>
           <div style={{ marginTop: 10 }}>
             <Tabs

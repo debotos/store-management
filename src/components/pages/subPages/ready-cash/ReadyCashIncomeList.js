@@ -35,7 +35,7 @@ class ReadyCashIncomeList extends Component {
     return (
       <p>
         <strong>
-          E-mail: {singleItem.mail}&nbsp;Time:{" "}
+          E-mail: {singleItem.mail ? singleItem.mail : "Not Provided !"}&nbsp;Time:{" "}
           <span style={{ color: "orange" }}>
             {this.extractDate(singleItem.moment)}
           </span>

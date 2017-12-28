@@ -36,9 +36,9 @@ class Glass extends Component {
       sft: this.state.sft,
       productName: this.state.productName,
       rate: this.state.rate,
-      total: (
-        parseFloat(this.state.sft) * parseFloat(this.state.rate)
-      ).toFixed(2)
+      total: (parseFloat(this.state.sft) * parseFloat(this.state.rate)).toFixed(
+        2
+      )
     };
     this.props.addSellItem(sellsItemData);
     this.friendlyHandleReset();
@@ -53,15 +53,17 @@ class Glass extends Component {
       productCategoryToSell: "glass"
     };
   }
-  
+
   render() {
     return (
       <Card
+        className="animated bounceInLeft"
         style={{
           marginTop: 10,
           paddingLeft: 40,
           paddingRight: 40,
-          paddingBottom: 20
+          paddingBottom: 20,
+          backgroundColor: "#CFD8DC"
         }}
       >
         {/* All Fields */}

@@ -80,7 +80,9 @@ const renderIncomeTable = DataIncomming => {
               text: "Phone Number: " + singleIncomeItem.number,
               bold: true
             },
-            "E-mail: " + singleIncomeItem.mail,
+            "E-mail: " + singleIncomeItem.mail
+              ? singleIncomeItem.mail
+              : "Not Provided !",
             "Address: " + singleIncomeItem.address,
             {
               text: "Memo Number: " + singleIncomeItem.memoNumber,
@@ -109,7 +111,7 @@ const renderIncomeTable = DataIncomming => {
       style: "tableHeader",
       colSpan: 2,
       alignment: "right",
-      color: "#FF3D00"
+      color: "#4A148C"
     },
     {}
   ];
@@ -183,7 +185,7 @@ const renderExpensesTable = DataIncomming => {
       style: "tableHeader",
       colSpan: 2,
       alignment: "right",
-      color: "#FF3D00"
+      color: "#4A148C"
     },
     {}
   ];
@@ -253,7 +255,62 @@ const GENERATE_PDF = DataIncomming => {
         }
       },
       { text: "\n\n" },
+      {
+        alignment: "right",
+        type: "none",
+        ul: [
+          {
+            text: "Summary : ",
+            bold: true
+          },
+          "------------------",
+          {
+            text:
+              "Today's Income Total = " +
+              numeral(parseFloat(DataIncomming.incomeTotal)).format("0,0.00"),
+            italics: true,
+            bold: true,
+            color: "green"
+          },
+          {
+            text:
+              "Today's Expenses Total = " +
+              numeral(parseFloat(DataIncomming.expensesTotal)).format("0,0.00"),
+            italics: true,
+            bold: true,
+            color: "red"
+          },
+          {
+            text:
+              "Previous Day Ready Cash = " +
+              numeral(parseFloat(DataIncomming.previousReadyCash)).format(
+                "0,0.00"
+              ),
+            italics: true,
+            bold: true,
+            color: "#0D47A1"
+          },
 
+          {
+            text:
+              "Today's Ready Cash = ( Previous Day Ready Cash + Today's Income) - ( Today's Expenses ) ",
+            italics: true,
+            bold: true,
+            color: "#1565C0"
+          },
+          {
+            text:
+              " = " +
+              numeral(parseFloat(DataIncomming.fromNowReadyCash)).format(
+                "0,0.00"
+              ),
+            italics: true,
+            bold: true,
+            color: "#1565C0"
+          }
+        ]
+      },
+      { text: "\n\n" },
       {
         columns: [
           {

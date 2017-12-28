@@ -25,18 +25,20 @@ class Due extends Component {
     return (
       <div className="due-main-container">
         <AppBarMain title={"Due"} />
-        <Card
-          className="container"
-          style={{ marginTop: 10, padding: 7, textAlign: "center" }}
-        >
-          <TextField
-            autoFocus
-            type="number"
-            floatingLabelText="Search Specific Due by Number"
-            value={this.props.filter}
-            onChange={this.handleDueSearch}
-          />
-        </Card>
+        <div className="animated rollIn">
+          <Card
+            className="container"
+            style={{ marginTop: 10, padding: 7, textAlign: "center" }}
+          >
+            <TextField
+              autoFocus
+              type="number"
+              floatingLabelText="Search Specific Due by Number"
+              value={this.props.filter}
+              onChange={this.handleDueSearch}
+            />
+          </Card>
+        </div>
         <Card className="container" style={{ marginTop: 10, padding: 5 }}>
           <div className="list-header">
             <div>
@@ -58,21 +60,23 @@ class Due extends Component {
               this.props.allDue.map((singleDue, index) => {
                 return (
                   parseFloat(singleDue.amount) > 0 && (
-                    <Card key={index} className="due-list-item">
-                      <div className="list-item">
-                        <div>
-                          <h3 className="list-item-number">
-                            {singleDue.number}
+                    <div className="animated rollIn">
+                      <Card key={index} className="due-list-item">
+                        <div className="list-item">
+                          <div>
+                            <h3 className="list-item-number">
+                              {singleDue.number}
+                            </h3>
+                          </div>
+                          <h3 className="list-item-amount">
+                            {numeral(parseFloat(singleDue.amount)).format(
+                              "0,0.00"
+                            )}{" "}
+                            &#x9f3;
                           </h3>
                         </div>
-                        <h3 className="list-item-amount">
-                          {numeral(parseFloat(singleDue.amount)).format(
-                            "0,0.00"
-                          )}{" "}
-                          &#x9f3;
-                        </h3>
-                      </div>
-                    </Card>
+                      </Card>
+                    </div>
                   )
                 );
               })

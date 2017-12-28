@@ -126,11 +126,13 @@ class Aluminium extends Component {
   render() {
     return (
       <Card
+        className="animated bounceInRight"
         style={{
           marginTop: 10,
           paddingLeft: 40,
           paddingRight: 40,
-          paddingBottom: 20
+          paddingBottom: 20,
+          backgroundColor: "#CFD8DC"
         }}
       >
         {/* All Fields */}

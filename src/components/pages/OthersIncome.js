@@ -52,7 +52,10 @@ class OthersIncome extends Component {
     return (
       <div>
         <AppBarMain title={"Others Income"} />
-        <h1 style={{ textAlign: "center" }}> INCOME RECORD</h1>
+        <h1 className="animated infinite jello" style={{ textAlign: "center" }}>
+          {" "}
+          INCOME RECORD
+        </h1>
         <div>
           <div style={{ marginTop: 10 }}>
             <Tabs

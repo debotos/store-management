@@ -145,6 +145,7 @@ class ReadyCashMain extends Component {
         {/* Title Bar */}
 
         <Card
+          className="animated slideInUp"
           style={{
             padding: 5
           }}
@@ -211,7 +212,7 @@ class ReadyCashMain extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-sm-6" style={{ marginBottom: 10 }}>
-                  <Card>
+                  <Card className="animated slideInLeft">
                     <CardTitle
                       title="Income Section"
                       subtitle="Get all the list of today's Income"
@@ -220,7 +221,7 @@ class ReadyCashMain extends Component {
                   </Card>
                 </div>
                 <div className="col-sm-6">
-                  <Card>
+                  <Card className="animated slideInRight">
                     <CardTitle
                       title="Expenses Section"
                       subtitle="Get all the list of today's Expenses"

@@ -32,6 +32,7 @@ class Pad extends Component {
           <AppBarMain title={"Your Pad"} />
           <div className="container">
             <Card
+              class="animated infinite swing"
               style={{
                 borderRadius: "20px",
                 marginTop: 10,
@@ -54,6 +55,7 @@ class Pad extends Component {
           </div>
           <div style={{ marginTop: 10 }} className="container">
             <Card
+              className="animated flip"
               style={{
                 padding: 15,
                 borderRadius: "20px",
@@ -72,7 +74,12 @@ class Pad extends Component {
             </Card>
           </div>
           <div style={{ textAlign: "center", marginTop: 10 }}>
-            <RaisedButton primary={true} onClick={this.print} label="print" />
+            <RaisedButton
+              class="animated infinite tada"
+              primary={true}
+              onClick={this.print}
+              label="print"
+            />
           </div>
         </div>
         <br />

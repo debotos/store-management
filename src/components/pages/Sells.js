@@ -98,7 +98,10 @@ class Sells extends Component {
                 className="container"
                 style={{ textAlign: "center", marginTop: 5, marginBottom: 5 }}
               >
-                <Card>
+                <Card
+                  className="animated bounceIn"
+                  style={{ backgroundColor: "#90A4AE" }}
+                >
                   <SelectField
                     style={{ marginTop: 5 }}
                     hintText="Select Item"

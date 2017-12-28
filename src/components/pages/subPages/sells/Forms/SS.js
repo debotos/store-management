@@ -77,11 +77,13 @@ class SS extends Component {
   render() {
     return (
       <Card
+        className="animated bounceInUp"
         style={{
           marginTop: 10,
           paddingLeft: 40,
           paddingRight: 40,
-          paddingBottom: 20
+          paddingBottom: 20,
+          backgroundColor: "#CFD8DC"
         }}
       >
         {/* All Fields */}
