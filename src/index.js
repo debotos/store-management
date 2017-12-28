@@ -20,6 +20,7 @@ import { startSetAddSellUnderCustomerHistory } from "./actions/sells/sells-histo
 import { startSetMemoNumber } from "./actions/sells/memo-no-actions";
 import { startSetReadyCash } from "./actions/ready-cash/ready-cash-actions";
 import { startSetReadyCashAmount } from "./actions/ready-cash/ready-cash-amount-actions";
+import { startSetIncomes } from "./actions/others-income/income-actions";
 
 const store = configureStore();
 
@@ -58,6 +59,9 @@ store
   })
   .then(() => {
     return store.dispatch(startSetReadyCashAmount());
+  })
+  .then(() => {
+    return store.dispatch(startSetIncomes());
   })
   .then(() => {
     ReactDOM.render(jsx, document.getElementById("root"));

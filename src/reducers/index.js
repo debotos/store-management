@@ -1,8 +1,13 @@
 import { combineReducers } from "redux";
 
-import { bankReducer } from "./bank/bank-reducer";
+// import { bankReducer } from "./bank/bank-reducer";
+
+import incomeReducer from "./others-income/income-reducer";
+import incomeFiltersReducer from "./others-income/incomes-filters-reducer";
+
 import expensesReducer from "./expenses/expenses-reducer";
 import filtersReducer from "./expenses/expenses-filters-reducer";
+
 import { sellsReducer } from "./sells/sells-reducer";
 import { stockReducer } from "./stock/stock-reducer";
 import { sellsHistoryReducer } from "./sells/sells-history-reducer";
@@ -14,9 +19,11 @@ import { readyCashReducer } from "./ready-cash/ready-cash-reducers";
 import { readyCashAmountReducer } from "./ready-cash/ready-cash-amount-reducers";
 
 const RootReducer = combineReducers({
-  bank: bankReducer,
+  // bank: bankReducer,
+  income: incomeReducer,
   expenses: expensesReducer,
   filters: filtersReducer,
+  incomeFilter: incomeFiltersReducer,
   sells: sellsReducer,
   stock: stockReducer,
   sellsHistory: sellsHistoryReducer,

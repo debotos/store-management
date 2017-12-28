@@ -4,6 +4,7 @@ import createHistory from "history/createBrowserHistory";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 
+import OthersIncome from "./pages/OthersIncome";
 import Bank from "./pages/Bank";
 import Due from "./pages/Due";
 import Employee from "./pages/Employee";
@@ -27,17 +28,24 @@ class MainRouter extends Component {
         <div>
           <Switch>
             <Route path="/" component={Home} exact={true} />
-            <Route path="/bank" component={Bank} exact={true} />
-            <Route path="/due" component={Due} exact={true} />
-            <Route path="/employee" component={Employee} exact={true} />
-            <Route path="/expenses" component={Expenses} exact={true} />
+            <Route path="/readycash" component={ReadyCash} exact={true} />
+            <Route path="/sell" component={Sell} exact={true} />
             <Route path="/fabrication" component={Fabrication} exact={true} />
+            <Route
+              path="/others-income"
+              component={OthersIncome}
+              exact={true}
+            />
+
+            <Route path="/expenses" component={Expenses} exact={true} />
+            {/* <Route path="/bank" component={Bank} exact={true} /> */}
+            <Route path="/due" component={Due} exact={true} />
+            {/* <Route path="/employee" component={Employee} exact={true} /> */}
             <Route path="/moneyreceipt" component={MoneyReceipt} exact={true} />
             <Route path="/pad" component={Pad} exact={true} />
-            <Route path="/readycash" component={ReadyCash} exact={true} />
-            <Route path="/salary" component={Salary} exact={true} />
-            <Route path="/sell" component={Sell} exact={true} />
+            {/* <Route path="/salary" component={Salary} exact={true} /> */}
             <Route path="/stock" component={Stock} exact={true} />
+
             <Route component={NotFoundpage} exact={true} />
           </Switch>
         </div>

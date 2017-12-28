@@ -16,28 +16,43 @@ export default props => (
     <MenuItem
       onClick={() => {
         props.handleClose();
+        history.push("/readycash");
+      }}
+    >
+      <Link to="/readycash">Ready Cash</Link>
+    </MenuItem>
+    <MenuItem
+      onClick={() => {
+        props.handleClose();
+        history.push("/sell");
+      }}
+    >
+      <Link to="/sell">Sells</Link>
+    </MenuItem>
+    <MenuItem
+      onClick={() => {
+        props.handleClose();
+        history.push("/fabrication");
+      }}
+    >
+      <Link to="/fabrication">Fabrication</Link>
+    </MenuItem>
+    <MenuItem
+      onClick={() => {
+        props.handleClose();
+        history.push("/others-income");
+      }}
+    >
+      <Link to="/others-income">Others Income</Link>
+    </MenuItem>
+    {/* <MenuItem
+      onClick={() => {
+        props.handleClose();
         history.push("/bank");
       }}
     >
     <Link to="/bank">Bank</Link>
-    </MenuItem>
-
-    <MenuItem
-      onClick={() => {
-        props.handleClose();
-        history.push("/due");
-      }}
-    >
-      <Link to="/due">Due</Link>
-    </MenuItem>
-    <MenuItem
-      onClick={() => {
-        props.handleClose();
-        history.push("/employee");
-      }}
-    >
-      <Link to="/employee">Employee</Link>
-    </MenuItem>
+    </MenuItem> */}
     <MenuItem
       onClick={() => {
         props.handleClose();
@@ -49,11 +64,20 @@ export default props => (
     <MenuItem
       onClick={() => {
         props.handleClose();
-        history.push("/fabrication");
+        history.push("/due");
       }}
     >
-      <Link to="/fabrication">Fabrication</Link>
+      <Link to="/due">Due</Link>
     </MenuItem>
+    {/* <MenuItem
+      onClick={() => {
+        props.handleClose();
+        history.push("/employee");
+      }}
+    >
+      <Link to="/employee">Employee</Link>
+    </MenuItem> */}
+
     <MenuItem
       onClick={() => {
         props.handleClose();
@@ -70,30 +94,16 @@ export default props => (
     >
       <Link to="/pad">Pad</Link>
     </MenuItem>
-    <MenuItem
-      onClick={() => {
-        props.handleClose();
-        history.push("/readycash");
-      }}
-    >
-      <Link to="/readycash">Ready Cash</Link>
-    </MenuItem>
-    <MenuItem
+
+    {/* <MenuItem
       onClick={() => {
         props.handleClose();
         history.push("/salary");
       }}
     >
       <Link to="/salary">Salary</Link>
-    </MenuItem>
-    <MenuItem
-      onClick={() => {
-        props.handleClose();
-        history.push("/sell");
-      }}
-    >
-      <Link to="/sell">Sells</Link>
-    </MenuItem>
+    </MenuItem> */}
+
     <MenuItem
       onClick={() => {
         props.handleClose();
