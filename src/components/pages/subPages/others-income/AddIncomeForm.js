@@ -34,7 +34,9 @@ class AddIncomeForm extends Component {
       type: "income",
       moment: moment().valueOf(),
       amount: parseFloat(this.state.incomeAmount, 10),
-      title: this.state.incomeTitle
+      title: this.state.incomeTitle,
+      details: this.state.incomeDetails,
+      category: "others-income"
     };
     this.props.startAddAnEntryToReadyCash(dataForReadyCash);
   };
@@ -75,7 +77,10 @@ class AddIncomeForm extends Component {
   render() {
     return (
       <div>
-        <Card style={{ textAlign: "center" }}>
+        <Card
+          className="container"
+          style={{ textAlign: "center", marginTop: 10 }}
+        >
           <TextField
             autoFocus
             onChange={this.handleIncomeTitleChange}
@@ -91,12 +96,17 @@ class AddIncomeForm extends Component {
             floatingLabelText="Income Amount Here"
           />
           <br />
-          <TextField
+          <textarea
+            style={{
+              width: "70%",
+              height: "100px",
+              border: "3px solid #cccccc",
+              padding: "5px",
+              fontFamily: "Tahoma"
+            }}
             onChange={this.handleIncomeDetailsChange}
             value={this.state.incomeDetails}
-            multiLine={true}
-            rows={1}
-            hintText="Income Details Here (optional) !"
+            placeholder="Income Details Here (optional) !"
           />
           <br />
           <div className="single-date-picker">

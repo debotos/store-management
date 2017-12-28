@@ -34,7 +34,8 @@ class AddExpensesForm extends Component {
       type: "expenses",
       moment: moment().valueOf(),
       amount: parseFloat(this.state.expensesAmount, 10),
-      title: this.state.expensesTitle
+      title: this.state.expensesTitle,
+      details: this.state.expensesDetails
     };
     this.props.startAddAnEntryToReadyCash(dataForReadyCash);
   };
@@ -91,12 +92,17 @@ class AddExpensesForm extends Component {
             floatingLabelText="Expenses Amount Here"
           />
           <br />
-          <TextField
+          <textarea
+            style={{
+              width: "70%",
+              height: "100px",
+              border: "3px solid #cccccc",
+              padding: "5px",
+              fontFamily: "Tahoma"
+            }}
             onChange={this.handleExpensesDetailsChange}
             value={this.state.expensesDetails}
-            multiLine={true}
-            rows={1}
-            hintText="Expenses Details Here (optional) !"
+            placeholder="Expenses Details Here (optional) !"
           />
           <br />
           <div className="single-date-picker">

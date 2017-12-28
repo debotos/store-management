@@ -47,14 +47,43 @@ class ReadyCashIncomeList extends Component {
   };
   renderIncomeListItem = () => {
     return this.props.income.map((singleItem, index) => {
-      return (
-        <ListItem
-          key={index}
-          primaryText={this.renderAmount(singleItem)}
-          secondaryText={this.renderDetails(singleItem)}
-          secondaryTextLines={2}
-        />
-      );
+      if (singleItem.category === "others-income") {
+        return (
+          <ListItem
+            key={index}
+            primaryText={
+              <span>
+                <span style={{ color: "green" }}>
+                  <strong>
+                    {numeral(singleItem.amount).format("0,0.00")} &#x9f3;
+                  </strong>
+                </span>
+                &nbsp;Via{" "}
+                <strong>{singleItem.category.toUpperCase()}&nbsp;</strong>Time:{" "}
+                <span style={{ color: "orange" }}>
+                  {this.extractDate(singleItem.moment)}
+                </span>
+                <br />
+              </span>
+            }
+            secondaryText={
+              <span>
+                Title: <strong>{singleItem.title}</strong>
+              </span>
+            }
+            secondaryTextLines={2}
+          />
+        );
+      } else {
+        return (
+          <ListItem
+            key={index}
+            primaryText={this.renderAmount(singleItem)}
+            secondaryText={this.renderDetails(singleItem)}
+            secondaryTextLines={2}
+          />
+        );
+      }
     });
   };
   render() {

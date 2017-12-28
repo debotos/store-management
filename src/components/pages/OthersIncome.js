@@ -3,7 +3,6 @@ import { Tabs, Tab } from "material-ui/Tabs";
 import SwipeableViews from "react-swipeable-views";
 import SnackBar from "../ui-element/SnackBar";
 
-import "../../style/others-income/income.css";
 import AppBarMain from "../ui-element/AppBarMain";
 import AddIncomeForm from "./subPages/others-income/AddIncomeForm";
 import IncomeDashboardPage from "./subPages/others-income/IncomeDashboardPage";
@@ -53,7 +52,7 @@ class OthersIncome extends Component {
     return (
       <div>
         <AppBarMain title={"Others Income"} />
-        <h1 style={{ textAlign: "center" }}>Record Income</h1>
+        <h1 style={{ textAlign: "center" }}> INCOME RECORD</h1>
         <div>
           <div style={{ marginTop: 10 }}>
             <Tabs
@@ -71,7 +70,7 @@ class OthersIncome extends Component {
               <div>
                 <IncomeDashboardPage showSnackBar={this.showSnackBar} />
               </div>
-              <div style={tabStyles.slide}>
+              <div>
                 <AddIncomeForm showSnackBar={this.showSnackBar} />
               </div>
             </SwipeableViews>
