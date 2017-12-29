@@ -19,6 +19,7 @@ import memoNoReducer from "./sells/memo-no-reducer";
 import { tableReducer } from "./sells/table-reducers";
 import { readyCashReducer } from "./ready-cash/ready-cash-reducers";
 import { readyCashAmountReducer } from "./ready-cash/ready-cash-amount-reducers";
+import authReducer from "./auth";
 
 const RootReducer = combineReducers({
   // bank: bankReducer,
@@ -35,7 +36,8 @@ const RootReducer = combineReducers({
   sellsTable: tableReducer,
   readyCash: readyCashReducer,
   readyCashAmount: readyCashAmountReducer,
-  storeInfo: storeInfoReducer
+  storeInfo: storeInfoReducer,
+  auth: authReducer
 });
 
 export default RootReducer;

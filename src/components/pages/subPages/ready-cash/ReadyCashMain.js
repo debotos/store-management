@@ -270,7 +270,9 @@ class ReadyCashMain extends Component {
           </div>
         ) : (
           <div style={{ color: "red", textAlign: "center", marginTop: 15 }}>
-            <h4>Income and Expenses Is Empty !</h4>
+            <h4 className="animated infinite swing">
+              Income and Expenses Is Empty !
+            </h4>
           </div>
         )}
 

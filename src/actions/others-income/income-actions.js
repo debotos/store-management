@@ -13,7 +13,8 @@ export const addIncome = income => ({
 });
 
 export const startAddIncome = (incomeData = {}) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     const {
       description = "",
       note = "",
@@ -23,7 +24,7 @@ export const startAddIncome = (incomeData = {}) => {
     const income = { description, note, amount, createdAt };
 
     return database
-      .ref("incomes")
+      .ref(`users/${uid}/incomes`)
       .push(income)
       .then(ref => {
         dispatch(
@@ -43,9 +44,10 @@ export const removeIncome = ({ id } = {}) => ({
 });
 
 export const startRemoveIncome = ({ id } = {}) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref(`incomes/${id}`)
+      .ref(`users/${uid}/incomes/${id}`)
       .remove()
       .then(() => {
         dispatch(removeIncome({ id }));
@@ -61,9 +63,10 @@ export const editIncome = (id, updates) => ({
 });
 
 export const startEditIncome = (id, updates) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref(`incomes/${id}`)
+      .ref(`users/${uid}/incomes/${id}`)
       .update(updates)
       .then(() => {
         dispatch(editIncome(id, updates));
@@ -78,9 +81,10 @@ export const setIncomes = incomes => ({
 });
 
 export const startSetIncomes = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref("incomes")
+      .ref(`users/${uid}/incomes`)
       .once("value")
       .then(snapshot => {
         const incomes = [];

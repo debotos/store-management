@@ -12,12 +12,13 @@ export const incrementMemoNumber = (id, memoNumber) => {
 };
 
 export const startIncrementMemoNumber = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     let currentValue;
     let currentValueId;
     let allValue = [];
     database
-      .ref("memo")
+      .ref(`users/${uid}/memo`)
       .once("value")
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
@@ -36,7 +37,7 @@ export const startIncrementMemoNumber = () => {
             memoNumber: value
           };
           return database
-            .ref(`memo/${currentValueId}`)
+            .ref(`users/${uid}/memo/${currentValueId}`)
             .update(data)
             .then(() => {
               dispatch(incrementMemoNumber(currentValueId, value));
@@ -46,7 +47,7 @@ export const startIncrementMemoNumber = () => {
             memoNumber: 2
           };
           return database
-            .ref("memo")
+            .ref(`users/${uid}/memo`)
             .push(data)
             .then(ref => {
               dispatch(incrementMemoNumber(ref.key, data.memoNumber));
@@ -62,9 +63,10 @@ export const setMemoNumber = data => ({
 });
 
 export const startSetMemoNumber = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref("memo")
+      .ref(`users/${uid}/memo`)
       .once("value")
       .then(snapshot => {
         let memo = { id: "", memoNumber: 1 };

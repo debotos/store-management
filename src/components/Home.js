@@ -159,7 +159,7 @@ class Home extends Component {
         <div className="container">
           <Card style={{ backgroundColor: "#4DB6AC" }}>
             <div style={styles.wrapper}>
-              <Link style={styles.link} to="/">
+              <Link style={styles.link} to="/home">
                 <Card className="animated infinite pulse" style={styles.button}>
                   <h4>Home</h4>
                 </Card>

@@ -16,9 +16,10 @@ export const deleteAllHistoryOfThisNumber = (id, number) => {
 };
 
 export const startDeleteAllHistoryOfThisNumber = (id, number) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref(`history/${id}`)
+      .ref(`users/${uid}/history/${id}`)
       .remove()
       .then(() => {
         console.log("Total History of this Number is Deleted from Database!");
@@ -36,12 +37,13 @@ export const deleteSellUnderCustomerHistory = (id, number) => {
 };
 
 export const startDeleteSellUnderCustomerHistory = (id, number) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     let historyInDatabase = [];
     // Putting all id in an array
     dispatch(deleteSellUnderCustomerHistory(id, number));
     database
-      .ref("history")
+      .ref(`users/${uid}/history`)
       .once("value")
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
@@ -77,7 +79,7 @@ export const startDeleteSellUnderCustomerHistory = (id, number) => {
 
           if (length === 1) {
             return database
-              .ref(`history/${idOfThePath}`)
+              .ref(`users/${uid}/history/${idOfThePath}`)
               .remove()
               .then(() => {
                 console.log(
@@ -86,7 +88,7 @@ export const startDeleteSellUnderCustomerHistory = (id, number) => {
               });
           } else {
             return database
-              .ref(`history/${idOfThePath}`)
+              .ref(`users/${uid}/history/${idOfThePath}`)
               .set(updatedHistory[position])
               .then(() => {
                 console.log("History Deleted from Database!");
@@ -105,7 +107,8 @@ export const addSellUnderCustomerHistory = data => {
 };
 
 export const startAddSellUnderCustomerHistory = data => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     let pushData = {
       number: data.number,
       history: [data.history] // Array of objects
@@ -113,7 +116,7 @@ export const startAddSellUnderCustomerHistory = data => {
     let historyInDatabase = [];
     // Putting all id in an array
     database
-      .ref("history")
+      .ref(`users/${uid}/history`)
       .once("value")
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
@@ -145,7 +148,7 @@ export const startAddSellUnderCustomerHistory = data => {
               number: data.number
             };
             return database
-              .ref(`history/${historyItemIdThatAlreadyExists}`)
+              .ref(`users/${uid}/history/${historyItemIdThatAlreadyExists}`)
               .update(updateData)
               .then(() => {
                 const saveDataLocal = {
@@ -157,7 +160,7 @@ export const startAddSellUnderCustomerHistory = data => {
               });
           } else {
             return database
-              .ref("history")
+              .ref(`users/${uid}/history`)
               .push(pushData)
               .then(ref => {
                 const saveDataLocal = {
@@ -170,7 +173,7 @@ export const startAddSellUnderCustomerHistory = data => {
           }
         } else {
           return database
-            .ref("history")
+            .ref(`users/${uid}/history`)
             .push(pushData)
             .then(ref => {
               const saveDataLocal = {
@@ -191,9 +194,10 @@ export const setAddSellUnderCustomerHistory = data => ({
 });
 
 export const startSetAddSellUnderCustomerHistory = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref("history")
+      .ref(`users/${uid}/history`)
       .once("value")
       .then(snapshot => {
         const history = {};

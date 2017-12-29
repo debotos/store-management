@@ -16,9 +16,10 @@ export const addItemToStock = data => ({
 });
 
 export const startAddItemToStock = data => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref(`stock/${data.productCategoryToSell}`)
+      .ref(`users/${uid}/stock/${data.productCategoryToSell}`)
       .push(data)
       .then(ref => {
         dispatch(addItemToStock({ id: ref.key, ...data }));
@@ -35,9 +36,10 @@ export const removeItemToStock = (productCategoryToSell, id) => ({
 });
 
 export const startRemoveItemToStock = (productCategoryToSell, id) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref(`stock/${productCategoryToSell}/${id}`)
+      .ref(`users/${uid}/stock/${productCategoryToSell}/${id}`)
       .remove()
       .then(() => {
         dispatch(removeItemToStock(productCategoryToSell, id));
@@ -53,9 +55,10 @@ export const updateStockItem = (id, data) => ({
 });
 
 export const startUpdateStockItem = (id, data) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref(`stock/${data.productCategoryToSell}/${id}`)
+      .ref(`users/${uid}/stock/${data.productCategoryToSell}/${id}`)
       .update(data)
       .then(() => {
         dispatch(updateStockItem(id, { id, ...data }));
@@ -71,9 +74,10 @@ export const setStock = data => ({
 });
 
 export const startSetStock = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref("stock")
+      .ref(`users/${uid}/stock`)
       .once("value")
       .then(snapshot => {
         const stock = {};

@@ -11,9 +11,15 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./style/animate.css";
 import "./style/style.css";
 
+import { firebase } from "./secrets/firebase";
+import { login, logout } from "./actions/auth";
+
+import { history } from "./components/Router";
 import configureStore from "./store/configureStore";
 import MainRouter from "./components/Router";
 import registerServiceWorker from "./registerServiceWorker";
+import LoadingPage from "./components/LoadingPage";
+
 import { startSetExistingDueFromServer } from "./actions/sells/prevDue-actions";
 import { startSetExpenses } from "./actions/expenses/expenses-actions";
 import { startSetStock } from "./actions/stock/stock-action";
@@ -36,11 +42,22 @@ const jsx = (
   </Provider>
 );
 
+let hasRendered = false;
+const renderApp = () => {
+  if (!hasRendered) {
+    ReactDOM.render(jsx, document.getElementById("root"));
+    hasRendered = true;
+  }
+};
+
+ReactDOM.render(<LoadingPage />, document.getElementById("root"));
+
 store.subscribe(() => {
   console.log(store.getState());
 });
 
-// Uncomment this line to work with Database
+/*
+// Uncomment those lines to work with Database
 
 store
   .dispatch(startSetExpenses())
@@ -71,11 +88,55 @@ store
   .then(() => {
     ReactDOM.render(jsx, document.getElementById("root"));
   });
+// End
 
-// store.dispatch(startSetReadyCash()).then(() => {
-//   ReactDOM.render(jsx, document.getElementById("root"));
-// });
+store.dispatch(startSetReadyCash()).then(() => {
+  ReactDOM.render(jsx, document.getElementById("root"));
+});
 
-// ReactDOM.render(jsx, document.getElementById("root"));
+ReactDOM.render(jsx, document.getElementById("root"));*/
+
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    store.dispatch(login(user.uid));
+
+    store
+      .dispatch(startSetExpenses())
+      .then(() => {
+        return store.dispatch(startSetStock());
+      })
+      .then(() => {
+        return store.dispatch(startSetExistingDueFromServer());
+      })
+      .then(() => {
+        return store.dispatch(startSetAddSellUnderCustomerHistory());
+      })
+      .then(() => {
+        return store.dispatch(startSetMemoNumber());
+      })
+      .then(() => {
+        return store.dispatch(startSetReadyCash());
+      })
+      .then(() => {
+        return store.dispatch(startSetReadyCashAmount());
+      })
+      .then(() => {
+        return store.dispatch(startSetIncomes());
+      })
+      .then(() => {
+        return store.dispatch(startSetStoreInfo());
+      })
+      .then(() => {
+        renderApp();
+        if (history.location.pathname === "/") {
+          history.push("/home");
+        }
+      });
+  } else {
+    store.dispatch(logout());
+    renderApp();
+    history.push("/");
+  }
+});
 
 registerServiceWorker();

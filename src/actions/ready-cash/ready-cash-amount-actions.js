@@ -16,12 +16,13 @@ export const overrideReadyCash = (id, amount) => {
 };
 
 export const startOverrideReadyCash = amount => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     let currentValue;
     let currentValueId;
     let allValue = [];
     database
-      .ref("ready-cash-amount")
+      .ref(`users/${uid}/ready-cash-amount`)
       .once("value")
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
@@ -41,7 +42,7 @@ export const startOverrideReadyCash = amount => {
             amount: value
           };
           return database
-            .ref(`ready-cash-amount/${currentValueId}`)
+            .ref(`users/${uid}/ready-cash-amount/${currentValueId}`)
             .update(data)
             .then(() => {
               dispatch(overrideReadyCash(currentValueId, value));
@@ -51,7 +52,7 @@ export const startOverrideReadyCash = amount => {
             amount: parseFloat(amount).toFixed(2)
           };
           return database
-            .ref("ready-cash-amount")
+            .ref(`users/${uid}/ready-cash-amount`)
             .push(data)
             .then(ref => {
               dispatch(overrideReadyCash(ref.key, data.amount));
@@ -72,12 +73,13 @@ export const updateReadyCash = (id, amount) => {
 };
 
 export const startUpdateReadyCash = amount => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     let currentValue;
     let currentValueId;
     let allValue = [];
     database
-      .ref("ready-cash-amount")
+      .ref(`users/${uid}/ready-cash-amount`)
       .once("value")
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
@@ -99,7 +101,7 @@ export const startUpdateReadyCash = amount => {
             amount: value
           };
           return database
-            .ref(`ready-cash-amount/${currentValueId}`)
+            .ref(`users/${uid}/ready-cash-amount/${currentValueId}`)
             .update(data)
             .then(() => {
               dispatch(updateReadyCash(currentValueId, value));
@@ -109,7 +111,7 @@ export const startUpdateReadyCash = amount => {
             amount: parseFloat(amount).toFixed(2)
           };
           return database
-            .ref("ready-cash-amount")
+            .ref(`users/${uid}/ready-cash-amount`)
             .push(data)
             .then(ref => {
               dispatch(updateReadyCash(ref.key, data.amount));
@@ -125,9 +127,10 @@ export const setReadyCashAmount = data => ({
 });
 
 export const startSetReadyCashAmount = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref("ready-cash-amount")
+      .ref(`users/${uid}/ready-cash-amount`)
       .once("value")
       .then(snapshot => {
         let readyCashAmoumt = { id: "", amount: 0 };

@@ -13,17 +13,18 @@ export const addAnEntryToReadyCash = data => {
 };
 
 export const startAddAnEntryToReadyCash = data => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     if (data.type === "income") {
       return database
-        .ref(`ready-cash/income`)
+        .ref(`users/${uid}/ready-cash/income`)
         .push(data)
         .then(ref => {
           dispatch(addAnEntryToReadyCash({ id: ref.key, ...data }));
         });
     } else {
       return database
-        .ref(`ready-cash/expenses`)
+        .ref(`users/${uid}/ready-cash/expenses`)
         .push(data)
         .then(ref => {
           dispatch(addAnEntryToReadyCash({ id: ref.key, ...data }));
@@ -35,9 +36,10 @@ export const startAddAnEntryToReadyCash = data => {
 export const resetReadyCash = () => ({ type: RESET_READY_CASH });
 
 export const startResetReadyCash = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref(`ready-cash`)
+      .ref(`users/${uid}/ready-cash`)
       .remove()
       .then(() => {
         dispatch(resetReadyCash());
@@ -51,9 +53,10 @@ export const setReadyCash = data => ({
 });
 
 export const startSetReadyCash = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref("ready-cash")
+      .ref(`users/${uid}/ready-cash`)
       .once("value")
       .then(snapshot => {
         const readyCash = {};

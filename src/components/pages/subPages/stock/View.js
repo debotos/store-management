@@ -126,35 +126,44 @@ class View extends Component {
     let ssTotal = 0;
     let othersTotal = 0;
 
-    this.props.stock.aluminium.forEach(singleItem => {
-      aluminiumTotal =
-        parseFloat(aluminiumTotal) +
-        parseFloat(
-          parseFloat(singleItem.quantity) * parseFloat(singleItem.rate)
-        );
-    });
+    if (this.props.stock.aluminium) {
+      this.props.stock.aluminium.forEach(singleItem => {
+        aluminiumTotal =
+          parseFloat(aluminiumTotal) +
+          parseFloat(
+            parseFloat(singleItem.quantity) * parseFloat(singleItem.rate)
+          );
+      });
+    }
 
-    this.props.stock.glass.forEach(singleItem => {
-      glassTotal =
-        parseFloat(glassTotal) +
-        parseFloat(parseFloat(singleItem.sft) * parseFloat(singleItem.rate));
-    });
+    if (this.props.stock.glass) {
+      this.props.stock.glass.forEach(singleItem => {
+        glassTotal =
+          parseFloat(glassTotal) +
+          parseFloat(parseFloat(singleItem.sft) * parseFloat(singleItem.rate));
+      });
+    }
 
-    this.props.stock.ss.forEach(singleItem => {
-      ssTotal =
-        parseFloat(ssTotal) +
-        parseFloat(
-          parseFloat(singleItem.quantity) * parseFloat(singleItem.rate)
-        );
-    });
+    if (this.props.stock.ss) {
+      this.props.stock.ss.forEach(singleItem => {
+        ssTotal =
+          parseFloat(ssTotal) +
+          parseFloat(
+            parseFloat(singleItem.quantity) * parseFloat(singleItem.rate)
+          );
+      });
+    }
 
-    this.props.stock.others.forEach(singleItem => {
-      othersTotal =
-        parseFloat(othersTotal) +
-        parseFloat(
-          parseFloat(singleItem.quantity) * parseFloat(singleItem.rate)
-        );
-    });
+    if (this.props.stock.others) {
+      this.props.stock.others.forEach(singleItem => {
+        othersTotal =
+          parseFloat(othersTotal) +
+          parseFloat(
+            parseFloat(singleItem.quantity) * parseFloat(singleItem.rate)
+          );
+      });
+    }
+
     console.log("====================================");
     console.log("Aluminium", aluminiumTotal);
     console.log("Glass", glassTotal);

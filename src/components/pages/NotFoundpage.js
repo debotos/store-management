@@ -10,13 +10,14 @@ class NotFoundpage extends Component {
       <div>
         <AppBarMain />
         <div style={{ textAlign: "center" }}>
-          <h1>SORRY !!</h1>
-          <h2 style={{ color: "red" }}>Page Not Found !</h2>
-          <h3>
+          <h2>SORRY !!</h2>
+          <h3 style={{ color: "red" }}>Page Not Found !</h3>
+          <h4>
             Please Check your <strong>URL</strong> !
-          </h3>
+          </h4>
           <img
-            style={{ marginTop: 10 }}
+            className="animated infinite bounce"
+            style={{ marginTop: 10, width: "300px" }}
             src={NotFoundPageImage}
             alt="Not found page logo"
           />

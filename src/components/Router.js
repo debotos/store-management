@@ -18,6 +18,10 @@ import Sell from "./pages/Sells";
 import Stock from "./pages/Stock";
 import NotFoundpage from "./pages/NotFoundpage";
 import Home from "./Home";
+import LoginPage from "./LoginPage";
+
+import PublicRoute from "./PublicRoute";
+import PrivateRoute from "./PrivateRoute";
 
 export const history = createHistory();
 
@@ -27,24 +31,37 @@ class MainRouter extends Component {
       <Router history={history}>
         <div>
           <Switch>
-            <Route path="/" component={Home} exact={true} />
-            <Route path="/readycash" component={ReadyCash} exact={true} />
-            <Route path="/sell" component={Sell} exact={true} />
-            <Route path="/fabrication" component={Fabrication} exact={true} />
-            <Route
+            <PublicRoute path="/" component={LoginPage} exact={true} />
+            <PrivateRoute path="/home" component={Home} exact={true} />
+            <PrivateRoute
+              path="/readycash"
+              component={ReadyCash}
+              exact={true}
+            />
+            <PrivateRoute path="/sell" component={Sell} exact={true} />
+            <PrivateRoute
+              path="/fabrication"
+              component={Fabrication}
+              exact={true}
+            />
+            <PrivateRoute
               path="/others-income"
               component={OthersIncome}
               exact={true}
             />
 
-            <Route path="/expenses" component={Expenses} exact={true} />
+            <PrivateRoute path="/expenses" component={Expenses} exact={true} />
             {/* <Route path="/bank" component={Bank} exact={true} /> */}
-            <Route path="/due" component={Due} exact={true} />
+            <PrivateRoute path="/due" component={Due} exact={true} />
             {/* <Route path="/employee" component={Employee} exact={true} /> */}
-            <Route path="/moneyreceipt" component={MoneyReceipt} exact={true} />
-            <Route path="/pad" component={Pad} exact={true} />
+            <PrivateRoute
+              path="/moneyreceipt"
+              component={MoneyReceipt}
+              exact={true}
+            />
+            <PrivateRoute path="/pad" component={Pad} exact={true} />
             {/* <Route path="/salary" component={Salary} exact={true} /> */}
-            <Route path="/stock" component={Stock} exact={true} />
+            <PrivateRoute path="/stock" component={Stock} exact={true} />
 
             <Route component={NotFoundpage} exact={true} />
           </Switch>

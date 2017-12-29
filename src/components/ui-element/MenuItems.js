@@ -14,10 +14,10 @@ export default props => (
     <MenuItem
       onClick={() => {
         props.handleClose();
-        history.push("/");
+        history.push("/home");
       }}
     >
-      <Link style={styles.link} to="/">
+      <Link style={styles.link} to="/home">
         Home
       </Link>
     </MenuItem>

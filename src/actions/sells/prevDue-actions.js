@@ -19,12 +19,13 @@ export const addPrevDue = (id, number, amount) => {
 
 // Server Side Code for adding a due [Firebase :)]
 export const startAddPrevDue = (number, amount, id = "") => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     const due = { number, amount };
     let dueInDatabase = [];
     // Putting all id in an array
     database
-      .ref("due")
+      .ref(`users/${uid}/due`)
       .once("value")
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
@@ -47,7 +48,7 @@ export const startAddPrevDue = (number, amount, id = "") => {
           if (dueItemAlreadyExists) {
             // Overide the value that exists
             return database
-              .ref(`due/${dueItemIdThatAlreadyExists}`)
+              .ref(`users/${uid}/due/${dueItemIdThatAlreadyExists}`)
               .update(due)
               .then(() => {
                 dispatch(
@@ -64,7 +65,7 @@ export const startAddPrevDue = (number, amount, id = "") => {
           }
         } else {
           return database
-            .ref("due")
+            .ref(`users/${uid}/due`)
             .push(due)
             .then(ref => {
               dispatch(addPrevDue((id = ref.key), number, amount));
@@ -90,13 +91,14 @@ const updatePrevDue = (id, number, amount) => {
 };
 
 export const startUpdatePrevDue = (id, number, amount) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     const dueUpdates = {
       number,
       amount
     };
     return database
-      .ref(`due/${id}`)
+      .ref(`users/${uid}/due/${id}`)
       .update(dueUpdates)
       .then(() => {
         dispatch(updatePrevDue(id, number, amount));
@@ -113,9 +115,10 @@ const removePrevDue = id => {
 };
 
 export const startRemovePrevDue = id => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref(`due/${id}`)
+      .ref(`users/${uid}/due/${id}`)
       .remove()
       .then(() => {
         dispatch(removePrevDue(id));
@@ -129,9 +132,10 @@ export const setDue = data => ({
 });
 
 export const startSetExistingDueFromServer = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref("due")
+      .ref(`users/${uid}/due`)
       .once("value")
       .then(snapshot => {
         const due = [];

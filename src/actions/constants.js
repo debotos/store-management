@@ -58,3 +58,8 @@ export const OVERRIDE_READY_CASH_AMOUNT = "OVERRIDE_READY_CASH_AMOUNT";
 // Store Infomation
 export const UPDATE_STORE_INFO = "UPDATE_STORE_INFO";
 export const SET_STORE_INFO = "SET_STORE_INFO";
+
+// auth.js
+
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';

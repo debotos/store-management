@@ -13,12 +13,13 @@ const updateStoreInfo = (id, data) => {
 
 export const startUpdateStoreInfo = storeInfo => {
   // console.log("startUpdateStoreInfo got a call");
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     let currentValue;
     let currentValueId;
     let allValue = [];
     database
-      .ref("store-info")
+      .ref(`users/${uid}/store-info`)
       .once("value")
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
@@ -36,7 +37,7 @@ export const startUpdateStoreInfo = storeInfo => {
             info: storeInfo
           };
           return database
-            .ref(`store-info/${currentValueId}`)
+            .ref(`users/${uid}/store-info/${currentValueId}`)
             .update(data)
             .then(() => {
               dispatch(updateStoreInfo(currentValueId, storeInfo));
@@ -47,7 +48,7 @@ export const startUpdateStoreInfo = storeInfo => {
             info: storeInfo
           };
           return database
-            .ref("store-info")
+            .ref(`users/${uid}/store-info`)
             .push(data)
             .then(ref => {
               dispatch(updateStoreInfo(ref.key, storeInfo));
@@ -63,9 +64,10 @@ export const setStoreInfo = data => ({
 });
 
 export const startSetStoreInfo = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     return database
-      .ref("store-info")
+      .ref(`users/${uid}/store-info`)
       .once("value")
       .then(snapshot => {
         let storeInfo = {
@@ -78,10 +80,6 @@ export const startSetStoreInfo = () => {
         };
 
         snapshot.forEach(childSnapshot => {
-          console.log("====================================");
-          console.log("childSnapshot Key:", childSnapshot.key);
-          console.log("childSnapshot Value:", childSnapshot.val());
-          console.log("====================================");
           storeInfo = {
             id: childSnapshot.key,
             ...childSnapshot.val().info
