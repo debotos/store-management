@@ -279,8 +279,8 @@ class CustomerDetailsForm extends Component {
       <div>
         <div className="container" style={{ marginTop: 10, marginBottom: 10 }}>
           <Card style={{ padding: 40 }}>
-            <h4>
-              <b>Input Customer Details</b>
+            <h4 style={{textAlign: 'center'}}>
+              <b>Input Customer Details :</b>
             </h4>
             {/* All Fields */}
 

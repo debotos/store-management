@@ -6,4 +6,3 @@ export const COMPANY_PHONE_NUMBER = [
   " 01711-368003",
   " 01843-340444"
 ];
-export const COMPANY_OWENER = "Sourov Das";

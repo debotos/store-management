@@ -27,14 +27,8 @@ function GENERATE_PDF(data, date = null) {
       { text: COMPANY_NAME, style: "header", alignment: "center" },
 
       {
-        text:
-          COMPANY_ADDRESS +
-          " | " +
-          COMPANY_OWENER +
-          "(" +
-          COMPANY_PHONE_NUMBER +
-          ")",
-        style: "subheader",
+        text: COMPANY_ADDRESS + " | " + " " + COMPANY_PHONE_NUMBER + " ",
+
         alignment: "center"
       },
       { text: "\n" },

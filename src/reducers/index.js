@@ -8,6 +8,8 @@ import incomeFiltersReducer from "./others-income/incomes-filters-reducer";
 import expensesReducer from "./expenses/expenses-reducer";
 import filtersReducer from "./expenses/expenses-filters-reducer";
 
+import { storeInfoReducer } from "./storeInfo/store-info-reducer";
+
 import { sellsReducer } from "./sells/sells-reducer";
 import { stockReducer } from "./stock/stock-reducer";
 import { sellsHistoryReducer } from "./sells/sells-history-reducer";
@@ -32,7 +34,8 @@ const RootReducer = combineReducers({
   memoNumber: memoNoReducer,
   sellsTable: tableReducer,
   readyCash: readyCashReducer,
-  readyCashAmount: readyCashAmountReducer
+  readyCashAmount: readyCashAmountReducer,
+  storeInfo: storeInfoReducer
 });
 
 export default RootReducer;
