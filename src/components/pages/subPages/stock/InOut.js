@@ -132,7 +132,7 @@ class InOut extends Component {
           className="container"
           style={{ textAlign: "center", marginTop: 5, marginBottom: 5 }}
         >
-          <Card>
+          <Card style={{ backgroundColor: "#90A4AE" }}>
             {/* Select Category */}
             <SelectField
               style={{ marginTop: 5 }}
@@ -153,7 +153,10 @@ class InOut extends Component {
                 {this.renderItemsBasedOnSelectedCategory()}
               </SelectField>
             ) : (
-              <div style={{ color: "red", padding: 10 }}>
+              <div
+                className="animated infinite tada"
+                style={{ color: "red", padding: 10 }}
+              >
                 First Add Item to Stock then Select Category !
               </div>
             )}

@@ -88,7 +88,7 @@ class SS extends Component {
       rate: this.state.rate
     };
     //Dispatch the function to add the details to the store
-    
+
     let quantity = this.state.quantity;
     if (parseFloat(quantity) <= parseFloat(this.props.values.quantity)) {
       this.props.startUpdateStockItem(this.props.values.id, Data);
@@ -101,10 +101,12 @@ class SS extends Component {
   render() {
     return (
       <Card
+        className="animated bounceInUp"
         style={{
           marginTop: 10,
           padding: 13,
-          paddingBottom: 20
+          paddingBottom: 20,
+          backgroundColor: "#CFD8DC"
         }}
       >
         {/* All Fields */}

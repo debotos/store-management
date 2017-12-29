@@ -3,12 +3,14 @@ import React, { Component } from "react";
 import "../style/style.css";
 import { Link } from "react-router-dom";
 import AppBarMain from "./ui-element/AppBarMain";
-import { Card } from "material-ui/Card";
+import { Card, CardActions } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
+import Toggle from "material-ui/Toggle";
 
 import { startUpdateStoreInfo } from "../actions/storeInfo/store-info-actions";
+import SnackBar from "./ui-element/SnackBar";
 
 const styles = {
   button: {
@@ -30,6 +32,29 @@ const styles = {
 };
 
 class Home extends Component {
+  // SnackBar Functions
+  handleActionTouchTap = () => {
+    this.setState({
+      snackBar: false
+    });
+  };
+
+  handleRequestClose = () => {
+    this.handleActionTouchTap();
+  };
+
+  showSnackBar = message => {
+    this.setState({
+      snackBar: true,
+      snackBarMessage: message
+    });
+  };
+  // End
+  handleToggle = (event, toggled) => {
+    this.setState({
+      toggle: toggled
+    });
+  };
   handleReset = () => {
     this.setState({ name: "" });
     this.setState({ number1: "" });
@@ -66,6 +91,9 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      toggle: false,
+      snackBar: false,
+      snackBarMessage: "",
       name: this.props.storeInfo.name,
       number1: this.props.storeInfo.number1,
       number2: this.props.storeInfo.number2,
@@ -81,8 +109,9 @@ class Home extends Component {
       number3: this.state.number3,
       address: this.state.address
     };
-    console.log("Sending Call for update store info..");
+    // console.log("Sending Call for update store info..");
     this.props.startUpdateStoreInfo(StoreInformation);
+    this.showSnackBar("Info Successfully Updated.");
   };
   render() {
     return (
@@ -186,80 +215,100 @@ class Home extends Component {
             </div>
           </Card>
         </div>
-        {/* Form Section */}
-        <div className="container">
-          <Card style={{ padding: 10, marginTop: 10, marginBottom: 10 }}>
-            <h4 style={{ textAlign: "center" }}>
-              <strong>Place The Details for PDF :</strong>
-            </h4>
-            <div style={{ marginLeft: 20 }}>
-              <TextField
-                value={this.state.name}
-                onChange={this.handleName}
-                hintText="COMPANY NAME"
-                floatingLabelText="COMPANY NAME"
-              />
-
-              <TextField
-                type="number"
-                value={this.state.number1}
-                onChange={this.handleNumber1}
-                hintText="Phone Number One"
-                floatingLabelText="Phone 1 (Unique) "
-              />
-
-              <TextField
-                type="number"
-                value={this.state.number2}
-                onChange={this.handleNumber2}
-                hintText="Phone Number Two"
-                floatingLabelText="Phone 2 (Unique) "
-              />
-
-              <TextField
-                type="number"
-                value={this.state.number3}
-                onChange={this.handleNumber3}
-                hintText="Phone Number Three"
-                floatingLabelText="Phone 3 (Unique) "
-              />
-
-              <TextField
-                value={this.state.address}
-                onChange={this.handleAddress}
-                hintText="COMPANY ADDRESS"
-                floatingLabelText="COMPANY ADDRESS "
-              />
-              <FlatButton
-                disabled={
-                  this.state.name ||
-                  this.state.number1 ||
-                  this.state.number2 ||
-                  this.state.number3 ||
-                  this.state.address
-                    ? false
-                    : true
-                }
-                secondary={true}
-                label="Reset"
-                onClick={this.handleReset}
-              />
-              <FlatButton
-                disabled={
-                  this.state.name &&
-                  this.state.number1 &&
-                  this.state.number2 &&
-                  this.state.address
-                    ? false
-                    : true
-                }
-                primary={true}
-                label="Save For PDF"
-                onClick={() => this.handleUpdateStoreInfo()}
-              />
-            </div>
-          </Card>
+        {/* Toggle Section */}
+        <div
+          style={{ marginLeft: "47%", marginRight: "47%", marginTop: "10px" }}
+        >
+          <Toggle
+            onToggle={this.handleToggle}
+            defaultToggled={this.state.toggle}
+          />
         </div>
+        {/* Form Section */}
+        {this.state.toggle && (
+          <div className="container">
+            <Card style={{ padding: 10, marginTop: 10, marginBottom: 10 }}>
+              <h4 style={{ textAlign: "center" }}>
+                <strong>Place The Details for PDF :</strong>
+              </h4>
+              <div style={{ marginLeft: 20 }}>
+                <TextField
+                  value={this.state.name}
+                  onChange={this.handleName}
+                  hintText="COMPANY NAME"
+                  floatingLabelText="COMPANY NAME"
+                />
+
+                <TextField
+                  type="number"
+                  value={this.state.number1}
+                  onChange={this.handleNumber1}
+                  hintText="Phone Number One"
+                  floatingLabelText="Phone 1 (Unique) "
+                />
+
+                <TextField
+                  type="number"
+                  value={this.state.number2}
+                  onChange={this.handleNumber2}
+                  hintText="Phone Number Two"
+                  floatingLabelText="Phone 2 (Unique) "
+                />
+
+                <TextField
+                  type="number"
+                  value={this.state.number3}
+                  onChange={this.handleNumber3}
+                  hintText="Phone Number Three"
+                  floatingLabelText="Phone 3 (Unique) "
+                />
+
+                <TextField
+                  value={this.state.address}
+                  onChange={this.handleAddress}
+                  hintText="COMPANY ADDRESS"
+                  floatingLabelText="COMPANY ADDRESS "
+                  fullWidth={true}
+                />
+              </div>
+              <CardActions>
+                <FlatButton
+                  disabled={
+                    this.state.name ||
+                    this.state.number1 ||
+                    this.state.number2 ||
+                    this.state.number3 ||
+                    this.state.address
+                      ? false
+                      : true
+                  }
+                  secondary={true}
+                  label="Reset"
+                  onClick={this.handleReset}
+                />
+                <FlatButton
+                  disabled={
+                    this.state.name &&
+                    this.state.number1 &&
+                    this.state.number2 &&
+                    this.state.address
+                      ? false
+                      : true
+                  }
+                  primary={true}
+                  label="Save For PDF"
+                  onClick={() => this.handleUpdateStoreInfo()}
+                />
+              </CardActions>
+            </Card>
+          </div>
+        )}
+        <SnackBar
+          snackBar={this.state.snackBar}
+          snackBarMessage={this.state.snackBarMessage}
+          handleActionTouchTap={this.handleActionTouchTap}
+          handleRequestClose={this.handleRequestClose}
+        />
       </div>
     );
   }

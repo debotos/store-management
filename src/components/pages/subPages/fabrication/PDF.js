@@ -10,24 +10,32 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import numeral from "numeral";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+const getCompanyPhoneNo = storeInfo => {
+  let phone = [];
+  phone.push(" " + storeInfo.number1);
+  phone.push(" " + storeInfo.number2);
+  phone.push(" " + storeInfo.number3);
+  return phone;
+};
+
 function GENERATE_PDF(data, date = null) {
-  let { details, customer, memoNumber } = data;
+  let { details, customer, memoNumber, storeInfo } = data;
   console.log("====================================");
   console.log("GENERATE_PDF got Date ", date);
   console.log("====================================");
   var docDefinition = {
     watermark: {
-      text: COMPANY_NAME,
+      text: storeInfo.name,
       color: "blue",
       opacity: 0.2,
       bold: true,
       italics: false
     },
     content: [
-      { text: COMPANY_NAME, style: "header", alignment: "center" },
+      { text: storeInfo.name, style: "header", alignment: "center" },
 
       {
-        text: COMPANY_ADDRESS + " | " + " " + COMPANY_PHONE_NUMBER + " ",
+        text: storeInfo.address + " |" + getCompanyPhoneNo(storeInfo),
 
         alignment: "center"
       },
@@ -124,7 +132,7 @@ function GENERATE_PDF(data, date = null) {
                 text: "----------------------------------------",
                 alignment: "right"
               },
-              { text: "For " + COMPANY_NAME, alignment: "right" }
+              { text: "For " + storeInfo.name, alignment: "right" }
             ]
           }
         ]

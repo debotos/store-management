@@ -3,6 +3,12 @@ import { Link } from "react-router-dom";
 import MenuItem from "material-ui/MenuItem";
 import { history } from "../Router";
 
+const styles = {
+  link: {
+    textDecoration: "none"
+  }
+};
+
 export default props => (
   <div>
     <MenuItem
@@ -11,7 +17,9 @@ export default props => (
         history.push("/");
       }}
     >
-      <Link to="/">Home</Link>
+      <Link style={styles.link} to="/">
+        Home
+      </Link>
     </MenuItem>
     <MenuItem
       onClick={() => {
@@ -19,7 +27,9 @@ export default props => (
         history.push("/readycash");
       }}
     >
-      <Link to="/readycash">Ready Cash</Link>
+      <Link style={styles.link} to="/readycash">
+        Ready Cash
+      </Link>
     </MenuItem>
     <MenuItem
       onClick={() => {
@@ -27,7 +37,9 @@ export default props => (
         history.push("/sell");
       }}
     >
-      <Link to="/sell">Sells</Link>
+      <Link style={styles.link} to="/sell">
+        Sells
+      </Link>
     </MenuItem>
     <MenuItem
       onClick={() => {
@@ -35,7 +47,9 @@ export default props => (
         history.push("/fabrication");
       }}
     >
-      <Link to="/fabrication">Fabrication</Link>
+      <Link style={styles.link} to="/fabrication">
+        Fabrication
+      </Link>
     </MenuItem>
     <MenuItem
       onClick={() => {
@@ -43,7 +57,9 @@ export default props => (
         history.push("/others-income");
       }}
     >
-      <Link to="/others-income">Others Income</Link>
+      <Link style={styles.link} to="/others-income">
+        Others Income
+      </Link>
     </MenuItem>
     {/* <MenuItem
       onClick={() => {
@@ -59,7 +75,9 @@ export default props => (
         history.push("/expenses");
       }}
     >
-      <Link to="/expenses">Expenses</Link>
+      <Link style={styles.link} to="/expenses">
+        Expenses
+      </Link>
     </MenuItem>
     <MenuItem
       onClick={() => {
@@ -67,7 +85,9 @@ export default props => (
         history.push("/due");
       }}
     >
-      <Link to="/due">Due</Link>
+      <Link style={styles.link} to="/due">
+        Due
+      </Link>
     </MenuItem>
     {/* <MenuItem
       onClick={() => {
@@ -84,7 +104,9 @@ export default props => (
         history.push("/moneyreceipt");
       }}
     >
-      <Link to="/moneyreceipt">Money Receipt</Link>
+      <Link style={styles.link} to="/moneyreceipt">
+        Money Receipt
+      </Link>
     </MenuItem>
     <MenuItem
       onClick={() => {
@@ -92,7 +114,9 @@ export default props => (
         history.push("/pad");
       }}
     >
-      <Link to="/pad">Pad</Link>
+      <Link style={styles.link} to="/pad">
+        Pad
+      </Link>
     </MenuItem>
 
     {/* <MenuItem
@@ -110,7 +134,9 @@ export default props => (
         history.push("/stock");
       }}
     >
-      <Link to="/stock">Stock</Link>
+      <Link style={styles.link} to="/stock">
+        Stock
+      </Link>
     </MenuItem>
   </div>
 );

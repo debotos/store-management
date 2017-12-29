@@ -129,7 +129,10 @@ class SellsHistory extends Component {
         >
           {Object.keys(this.props.sellsHistory).length > 0 ? (
             <div>
-              <Card>
+              <Card
+                className="animated bounceIn"
+                style={{ backgroundColor: "#90A4AE" }}
+              >
                 <SelectField
                   style={{ marginTop: 5 }}
                   hintText="Select Customer"

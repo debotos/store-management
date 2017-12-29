@@ -91,6 +91,7 @@ class ReadyCashMain extends Component {
   handlePDFGenerate = () => {
     let dataForPDF = {
       entries: this.props.readyCash,
+      storeInfo: this.props.storeInfo,
       previousReadyCash: this.props.readyCashAmount.amount,
       expensesTotal: this.calculateExpensesTotal(),
       incomeTotal: this.calculateIncomeTotal(),
@@ -241,6 +242,7 @@ class ReadyCashMain extends Component {
             </div>
             <div className="container" style={{ textAlign: "center" }}>
               <RaisedButton
+                class="animated infinite tada"
                 onClick={this.handlePDFGenerate}
                 label="Save As PDF"
                 primary={true}
@@ -296,7 +298,8 @@ class ReadyCashMain extends Component {
 const mapStateToProps = state => {
   return {
     readyCash: state.readyCash,
-    readyCashAmount: state.readyCashAmount
+    readyCashAmount: state.readyCashAmount,
+    storeInfo: state.storeInfo
   };
 };
 

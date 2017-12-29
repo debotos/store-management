@@ -764,12 +764,15 @@ class TableGenerator extends Component {
       <div>
         {/* Aluminium Table div start */}
         {this.haveAluminiumType() && (
-          <Card style={{ margin: "10px", backgroundColor: "#e5e5e5" }}>
+          <Card
+            class="animated rollIn"
+            style={{ margin: "10px", backgroundColor: "#CFD8DC" }}
+          >
             <div>
               <Table
                 bodyStyle={{ overflow: "visible", width: "-fit-content" }}
                 height="400px"
-                style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
+                style={{ tableLayout: "auto", backgroundColor: "#CFD8DC" }}
                 fixedHeader={false}
                 fixedFooter={true}
                 onCellClick={this.handleAluminiumRowClick}
@@ -908,12 +911,15 @@ class TableGenerator extends Component {
         {/* Aluminium Table div stop */}
         {/* Glass Table Row Start*/}
         {this.haveGlassType() && (
-          <Card style={{ margin: "10px", backgroundColor: "#e5e5e5" }}>
+          <Card
+            class="animated rollIn"
+            style={{ margin: "10px", backgroundColor: "#CFD8DC" }}
+          >
             <div>
               <Table
                 bodyStyle={{ overflow: "visible", width: "-fit-content" }}
                 height="400px"
-                style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
+                style={{ tableLayout: "auto", backgroundColor: "#CFD8DC" }}
                 fixedHeader={false}
                 fixedFooter={true}
                 onCellClick={this.handleGlassRowClick}
@@ -1041,12 +1047,15 @@ class TableGenerator extends Component {
         {/* Glass Table Row Stop */}
         {/* SS Table Row Start */}
         {this.haveSSType() && (
-          <Card style={{ margin: "10px", backgroundColor: "#e5e5e5" }}>
+          <Card
+            class="animated rollIn"
+            style={{ margin: "10px", backgroundColor: "#CFD8DC" }}
+          >
             <div>
               <Table
                 bodyStyle={{ overflow: "visible", width: "-fit-content" }}
                 height="400px"
-                style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
+                style={{ tableLayout: "auto", backgroundColor: "#CFD8DC" }}
                 fixedHeader={false}
                 fixedFooter={true}
                 onCellClick={this.handleSSRowClick}
@@ -1182,12 +1191,15 @@ class TableGenerator extends Component {
         {/* SS Table Row Stop */}
         {/* Others Table Row Start */}
         {this.haveOthersType() && (
-          <Card style={{ margin: "10px", backgroundColor: "#e5e5e5" }}>
+          <Card
+            class="animated rollIn"
+            style={{ margin: "10px", backgroundColor: "#CFD8DC" }}
+          >
             <div>
               <Table
                 bodyStyle={{ overflow: "visible", width: "-fit-content" }}
                 height="400px"
-                style={{ tableLayout: "auto", backgroundColor: "#e5e5e5" }}
+                style={{ tableLayout: "auto", backgroundColor: "#CFD8DC" }}
                 fixedHeader={false}
                 fixedFooter={true}
                 onCellClick={this.handleOthersRowClick}
@@ -1330,7 +1342,7 @@ class TableGenerator extends Component {
                   textAlign: "center",
                   padding: 5,
                   marginBottom: 5,
-                  backgroundColor: "#b2b2b2"
+                  backgroundColor: "#CFD8DC"
                 }}
               >
                 <span style={{ fontSize: "20px" }}>Table Hidden: </span>
@@ -1357,7 +1369,7 @@ class TableGenerator extends Component {
                 style={{
                   textAlign: "center",
                   justifyContent: "center",
-                  backgroundColor: "#999999"
+                  backgroundColor: "#CFD8DC"
                 }}
               >
                 <span

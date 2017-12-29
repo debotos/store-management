@@ -12,7 +12,7 @@ const updateStoreInfo = (id, data) => {
 };
 
 export const startUpdateStoreInfo = storeInfo => {
-  console.log("startUpdateStoreInfo got a call");
+  // console.log("startUpdateStoreInfo got a call");
   return dispatch => {
     let currentValue;
     let currentValueId;
@@ -23,9 +23,9 @@ export const startUpdateStoreInfo = storeInfo => {
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
           currentValue = childSnapshot.val().info;
-          console.log("current INFO. ", currentValue);
+          // console.log("current INFO. ", currentValue);
           currentValueId = childSnapshot.key;
-          console.log("current info ID ", currentValueId);
+          // console.log("current info ID ", currentValueId);
           allValue.push(childSnapshot.val().info);
         });
       })

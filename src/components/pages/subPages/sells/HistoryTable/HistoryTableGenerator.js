@@ -492,8 +492,13 @@ class HistoryTableGenerator extends Component {
       }
 
       return (
-        <div key={index} style={{ margin: "2px" }}>
-          <Card>
+        <div key={index} style={{ margin: "5px" }}>
+          <Card
+            class="animated bounceIn"
+            style={{
+              backgroundColor: "#CFD8DC"
+            }}
+          >
             <CardHeader
               title={`${this.toTitleCase(singleSell.customer.name)} ${
                 singleSell.customer.number
@@ -564,7 +569,8 @@ class HistoryTableGenerator extends Component {
         depositNow: singleSell.customer.deposit,
         newDue: singleSell.customer.newDue
       },
-      memoNumber: singleSell.memoNumber
+      memoNumber: singleSell.memoNumber,
+      storeInfo: this.props.storeInfo
     };
     console.log("====================================");
     console.log("History PDF generator sending Date ", date);
@@ -640,6 +646,12 @@ class HistoryTableGenerator extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    storeInfo: state.storeInfo
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     startDeleteSellUnderCustomerHistory: (id, number) => {
@@ -648,4 +660,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(HistoryTableGenerator);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  HistoryTableGenerator
+);

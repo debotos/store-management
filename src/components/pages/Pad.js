@@ -3,11 +3,7 @@ import AppBarMain from "../ui-element/AppBarMain";
 import "../../style/pad/pad.css";
 import RaisedButton from "material-ui/RaisedButton";
 import { Card } from "material-ui/Card";
-import {
-  COMPANY_NAME,
-  COMPANY_ADDRESS,
-  COMPANY_PHONE_NUMBER
-} from "../global/global";
+import { connect } from "react-redux";
 // import Navigation from "../Navigation";
 var PrintTemplate = require("react-print");
 
@@ -21,6 +17,7 @@ class Pad extends Component {
       note: ""
     };
   }
+
   onNoteChange = event => {
     const note = event.target.value;
     this.setState({ note });
@@ -86,7 +83,9 @@ class Pad extends Component {
         <div id="print-mount">
           <PrintTemplate>
             <div>
-              <h1 style={{ textAlign: "center" }}>{COMPANY_NAME}</h1>
+              <h1 style={{ textAlign: "center" }}>
+                {this.props.storeInfo.name}
+              </h1>
               <h3 style={{ textAlign: "center" }}>PAD</h3>
               <div className="header">
                 <div>
@@ -104,17 +103,15 @@ class Pad extends Component {
                 <div>
                   <strong>show Room & Sales Center</strong>
                   <br />
-                  {COMPANY_ADDRESS.substr(0, 28)}
+                  {this.props.storeInfo.address.substr(0, 29)}
                   <br />
-                  {COMPANY_ADDRESS.substr(29, 36)}
+                  {this.props.storeInfo.address.substr(29, 36)}
                   <br />
-                  phone numbers:<br />
-                  {COMPANY_PHONE_NUMBER.map((singleNumber, index) => (
-                    <span key={index}>
-                      {singleNumber}
-                      <br />
-                    </span>
-                  ))}
+                  phone numbers:{" " + this.props.storeInfo.number1 + ","}
+                  <br />
+                  {this.props.storeInfo.number2 +
+                    ", " +
+                    this.props.storeInfo.number3}
                 </div>
               </div>
               <hr />
@@ -130,4 +127,10 @@ class Pad extends Component {
   }
 }
 
-export default Pad;
+const mapStateToProps = state => {
+  return {
+    storeInfo: state.storeInfo
+  };
+};
+
+export default connect(mapStateToProps, null)(Pad);

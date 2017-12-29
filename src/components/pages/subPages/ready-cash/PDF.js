@@ -1,10 +1,3 @@
-import {
-  COMPANY_NAME,
-  COMPANY_ADDRESS,
-  COMPANY_PHONE_NUMBER,
-  COMPANY_OWENER
-} from "../../../global/global";
-
 import moment from "moment";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
@@ -24,7 +17,8 @@ const renderIncomeTable = DataIncomming => {
     previousReadyCash,
     expensesTotal,
     incomeTotal,
-    fromNowReadyCash
+    fromNowReadyCash,
+    storeInfo
   } = DataIncomming;
 
   let TableHeader = [
@@ -127,7 +121,8 @@ const renderExpensesTable = DataIncomming => {
     previousReadyCash,
     expensesTotal,
     incomeTotal,
-    fromNowReadyCash
+    fromNowReadyCash,
+    storeInfo
   } = DataIncomming;
 
   let TableHeader = [
@@ -195,25 +190,41 @@ const renderExpensesTable = DataIncomming => {
   return Content;
 };
 
+const getCompanyPhoneNo = storeInfo => {
+  let phone = [];
+  phone.push(" " + storeInfo.number1);
+  phone.push(" " + storeInfo.number2);
+  phone.push(" " + storeInfo.number3);
+  return phone;
+};
+
 const GENERATE_PDF = DataIncomming => {
+  let {
+    entries,
+    previousReadyCash,
+    expensesTotal,
+    incomeTotal,
+    fromNowReadyCash,
+    storeInfo
+  } = DataIncomming;
+
   console.log("====================================");
   console.log("Generating PDF with...", DataIncomming);
   console.log("====================================");
 
   var docDefinition = {
     watermark: {
-      text: COMPANY_NAME,
+      text: storeInfo.name,
       color: "blue",
       opacity: 0.2,
       bold: true,
       italics: false
     },
     content: [
-      { text: COMPANY_NAME, style: "header", alignment: "center" },
+      { text: storeInfo.name, style: "header", alignment: "center" },
 
       {
-        text: COMPANY_ADDRESS + " | " + " " + COMPANY_PHONE_NUMBER + " ",
-
+        text: storeInfo.address + " |" + getCompanyPhoneNo(storeInfo),
         alignment: "center"
       },
       {
@@ -320,7 +331,7 @@ const GENERATE_PDF = DataIncomming => {
                 text: "----------------------------------------",
                 alignment: "right"
               },
-              { text: "For " + COMPANY_NAME, alignment: "right" }
+              { text: "For " + storeInfo.name, alignment: "right" }
             ]
           }
         ]

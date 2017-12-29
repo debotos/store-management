@@ -76,10 +76,12 @@ class Glass extends Component {
   render() {
     return (
       <Card
+        className="animated bounceInLeft"
         style={{
           marginTop: 10,
           padding: 13,
-          paddingBottom: 20
+          paddingBottom: 20,
+          backgroundColor: "#CFD8DC"
         }}
       >
         {/* All Fields */}

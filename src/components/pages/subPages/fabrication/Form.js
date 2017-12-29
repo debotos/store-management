@@ -160,6 +160,7 @@ class Form extends Component {
       this.handleDialogOpen();
 
       const dataForPDF = {
+        storeInfo: this.props.storeInfo,
         details: this.state.details,
         customer: {
           name: this.state.name,
@@ -206,7 +207,12 @@ class Form extends Component {
       <div>
         <Card
           className="animated zoomInUp"
-          style={{ marginTop: 10, padding: 15, borderRadius: 20 }}
+          style={{
+            marginTop: 10,
+            padding: 15,
+            borderRadius: 20,
+            backgroundColor: "#CFD8DC"
+          }}
         >
           <b>Input Fabrication & Customer Details:</b>
           <br />
@@ -218,7 +224,8 @@ class Form extends Component {
               width: "100%",
               marginTop: 5,
               marginBottom: 5,
-              whiteSpace: "pre-wrap"
+              whiteSpace: "pre-wrap",
+              backgroundColor: "#CFD8DC"
             }}
             value={this.state.details}
             placeholder="Full Fabrication Details Write Here"
@@ -334,7 +341,8 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     due: state.due,
-    memoNumber: state.memoNumber.memoNumber
+    memoNumber: state.memoNumber.memoNumber,
+    storeInfo: state.storeInfo
   };
 };
 

@@ -46,7 +46,12 @@ class Glass extends Component {
     ];
     return (
       <div>
-        <Card>
+        <Card
+          className="animated bounceInLeft"
+          style={{
+            backgroundColor: "#CFD8DC"
+          }}
+        >
           <CardHeader
             title={this.state.glass.productCode}
             subtitle="Glass Category"

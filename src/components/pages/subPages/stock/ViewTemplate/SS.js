@@ -44,7 +44,12 @@ class SS extends Component {
     ];
     return (
       <div>
-        <Card>
+        <Card
+          className="animated bounceInUp"
+          style={{
+            backgroundColor: "#CFD8DC"
+          }}
+        >
           <CardHeader
             title={this.state.ss.productCode}
             subtitle="SS Category"

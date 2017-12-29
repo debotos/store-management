@@ -148,7 +148,8 @@ class CustomerDetailsForm extends Component {
               depositNow: deposit,
               newDue
             },
-            memoNumber: this.props.memoNumber
+            memoNumber: this.props.memoNumber,
+            storeInfo: this.props.storeInfo
           };
           GENERATE_PDF(dataForPDF);
 
@@ -203,7 +204,8 @@ class CustomerDetailsForm extends Component {
             depositNow: deposit,
             newDue
           },
-          memoNumber: this.props.memoNumber
+          memoNumber: this.props.memoNumber,
+          storeInfo: this.props.storeInfo
         };
         console.log("====================================");
         console.log("Data for PDF sending", dataForPDF);
@@ -278,8 +280,13 @@ class CustomerDetailsForm extends Component {
     return (
       <div>
         <div className="container" style={{ marginTop: 10, marginBottom: 10 }}>
-          <Card style={{ padding: 40 }}>
-            <h4 style={{textAlign: 'center'}}>
+          <Card
+            style={{
+              padding: 40,
+              backgroundColor: "#CFD8DC"
+            }}
+          >
+            <h4 style={{ textAlign: "center" }}>
               <b>Input Customer Details :</b>
             </h4>
             {/* All Fields */}
@@ -336,6 +343,7 @@ class CustomerDetailsForm extends Component {
               onClick={this.handleReset}
             />
             <FlatButton
+              class="animated infinite tada"
               disabled={
                 this.state.name &&
                 this.state.number &&
@@ -396,7 +404,8 @@ const mapStateToProps = state => {
     sellsTables: state.sellsTable,
     sellsHistory: state.sellsHistory,
     due: state.due,
-    memoNumber: state.memoNumber.memoNumber
+    memoNumber: state.memoNumber.memoNumber,
+    storeInfo: state.storeInfo
   };
 };
 

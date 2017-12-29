@@ -52,7 +52,7 @@ class OthersIncome extends Component {
     return (
       <div>
         <AppBarMain title={"Others Income"} />
-        <h1 className="animated infinite jello" style={{ textAlign: "center" }}>
+        <h1 className="animated flip" style={{ textAlign: "center" }}>
           {" "}
           INCOME RECORD
         </h1>

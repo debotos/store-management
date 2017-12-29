@@ -8,6 +8,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 //End Theme configuration
 //CSS Style
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "./style/animate.css";
 import "./style/style.css";
 
 import configureStore from "./store/configureStore";

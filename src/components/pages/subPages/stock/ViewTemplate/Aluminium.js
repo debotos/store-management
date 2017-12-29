@@ -46,7 +46,12 @@ class Aluminium extends Component {
     ];
     return (
       <div>
-        <Card>
+        <Card
+          className="animated bounceInRight"
+          style={{
+            backgroundColor: "#CFD8DC"
+          }}
+        >
           <CardHeader
             title={this.state.aluminium.productCode}
             subtitle="Aluminium Category"

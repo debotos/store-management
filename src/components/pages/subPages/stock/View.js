@@ -193,7 +193,10 @@ class View extends Component {
         >
           <Card
             className="animated rollIn"
-            style={{ padding: 10, backgroundColor: "#d3d3d3" }}
+            style={{
+              padding: 10,
+              backgroundColor: "#CFD8DC"
+            }}
           >
             <h1>Stock Have {this.calculateStockTotal()[0]} &#x9f3;</h1>
             <div style={{}}>
@@ -225,7 +228,7 @@ class View extends Component {
               </Card>
             </div>
           </Card>
-          <Card style={{ marginTop: 10 }}>
+          <Card style={{ marginTop: 10, backgroundColor: "#90A4AE" }}>
             {/* Select Category */}
             <SelectField
               style={{ marginTop: 5 }}
@@ -246,7 +249,10 @@ class View extends Component {
                 {this.renderItemsBasedOnSelectedCategory()}
               </SelectField>
             ) : (
-              <div style={{ color: "red", padding: 10 }}>
+              <div
+                style={{ color: "red", padding: 5 }}
+                className="animated infinite flash"
+              >
                 First Add Item to Stock then Select Category !
               </div>
             )}

@@ -46,7 +46,12 @@ class Others extends Component {
     ];
     return (
       <div>
-        <Card>
+        <Card
+          className="animated bounceInDown"
+          style={{
+            backgroundColor: "#CFD8DC"
+          }}
+        >
           <CardHeader
             title={this.state.others.productCode}
             subtitle="Others Category"
