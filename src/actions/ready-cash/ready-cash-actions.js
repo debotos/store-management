@@ -1,9 +1,39 @@
 import {
   ADD_AN_ENTRY_TO_READY_CASH,
   SET_READY_CASH,
-  RESET_READY_CASH
+  RESET_READY_CASH,
+  REMOVE_AN_ENTRY_FROM_READY_CASH
 } from "../constants";
 import database from "../../secrets/firebase";
+
+export const removeAnEntryToReadyCash = (id, type_of) => {
+  return {
+    type: REMOVE_AN_ENTRY_FROM_READY_CASH,
+    id,
+    type_of
+  };
+};
+
+export const startRemoveAnEntryToReadyCash = (id, type) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
+    if (type === "income") {
+      return database
+        .ref(`users/${uid}/ready-cash/income/${id}`)
+        .remove()
+        .then(ref => {
+          dispatch(removeAnEntryToReadyCash(id, type));
+        });
+    } else {
+      return database
+        .ref(`users/${uid}/ready-cash/expenses/${id}`)
+        .remove()
+        .then(ref => {
+          dispatch(removeAnEntryToReadyCash(id, type));
+        });
+    }
+  };
+};
 
 export const addAnEntryToReadyCash = data => {
   return {

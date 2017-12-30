@@ -1,7 +1,8 @@
 import {
   ADD_AN_ENTRY_TO_READY_CASH,
   SET_READY_CASH,
-  RESET_READY_CASH
+  RESET_READY_CASH,
+  REMOVE_AN_ENTRY_FROM_READY_CASH
 } from "../../actions/constants";
 
 let readyCashDefaultReducer = {
@@ -11,6 +12,21 @@ let readyCashDefaultReducer = {
 
 export const readyCashReducer = (state = readyCashDefaultReducer, action) => {
   switch (action.type) {
+    case REMOVE_AN_ENTRY_FROM_READY_CASH:
+      if (action.type_of === "income") {
+        return {
+          ...state,
+          income: state.income.filter(singleItem => singleItem.id !== action.id)
+        };
+      }
+      if (action.type_of === "expenses") {
+        return {
+          ...state,
+          expenses: state.expenses.filter(
+            singleItem => singleItem.id !== action.id
+          )
+        };
+      }
     case ADD_AN_ENTRY_TO_READY_CASH:
       if (action.data.type === "income") {
         return {

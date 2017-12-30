@@ -48,6 +48,8 @@ export const REMOVE_A_PREV_DUE = "REMOVE_A_PREV_DUE";
 export const UPDATE_A_PREV_DUE = "UPDATE_A_PREV_DUE";
 // Ready-Cash.js
 export const ADD_AN_ENTRY_TO_READY_CASH = "ADD_AN_ENTRY_TO_READY_CASH";
+export const REMOVE_AN_ENTRY_FROM_READY_CASH =
+  "REMOVE_AN_ENTRY_FROM_READY_CASH";
 export const SET_READY_CASH = "SET_READY_CASH";
 export const RESET_READY_CASH = "RESET_READY_CASH";
 
@@ -61,5 +63,5 @@ export const SET_STORE_INFO = "SET_STORE_INFO";
 
 // auth.js
 
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
+export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
