@@ -3,8 +3,9 @@ import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 import moment from "moment";
-import { SingleDatePicker } from "react-dates";
+// import { SingleDatePicker } from "react-dates";
 import { Card, CardActions } from "material-ui/Card";
+import DatePicker from "material-ui/DatePicker";
 
 import { startAddExpense } from "../../../../actions/expenses/expenses-actions";
 import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
@@ -16,6 +17,7 @@ class AddExpensesForm extends Component {
     this.setState({ expensesDetails: "" });
     this.setState({ showAddExpensesModel: false });
     this.setState({ expensesDate: moment() });
+    this.setState({ materialDate: null });
   };
   handleSubmit = event => {
     const expense = {
@@ -39,14 +41,14 @@ class AddExpensesForm extends Component {
     };
     this.props.startAddAnEntryToReadyCash(dataForReadyCash);
   };
-  onFocusChange = ({ focused }) => {
-    this.setState(() => ({ calendarFocused: focused }));
-  };
-  onDateChange = createdAt => {
-    if (createdAt) {
-      this.setState(() => ({ expensesDate: createdAt }));
-    }
-  };
+  // onFocusChange = ({ focused }) => {
+  //   this.setState(() => ({ calendarFocused: focused }));
+  // };
+  // onDateChange = createdAt => {
+  //   if (createdAt) {
+  //     this.setState(() => ({ expensesDate: createdAt }));
+  //   }
+  // };
   handleExpensesTitleChange = event => {
     const title = event.target.value;
     this.setState({ expensesTitle: title });
@@ -61,6 +63,14 @@ class AddExpensesForm extends Component {
     const details = event.target.value;
     this.setState({ expensesDetails: details });
   };
+  handleMaterialDateChange = (event, date) => {
+    console.log("====================================");
+    console.log("Expenses Date: ", moment(date).valueOf());
+    console.log("====================================");
+    this.setState({ materialDate: date });
+    this.setState(() => ({ expensesDate: moment(date) }));
+    console.log("Date", date);
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -70,13 +80,14 @@ class AddExpensesForm extends Component {
       expensesTitle: "",
       expensesAmount: "",
       expensesDate: moment(),
-      expensesDetails: ""
+      expensesDetails: "",
+      materialDate: null
     };
   }
   render() {
     return (
       <div>
-        <Card className="container" style={{ textAlign: "center" }}>
+        <div className="container" style={{ textAlign: "center" }}>
           <TextField
             autoFocus
             onChange={this.handleExpensesTitleChange}
@@ -107,18 +118,23 @@ class AddExpensesForm extends Component {
           />
           <br />
           <div className="single-date-picker">
-            <label className="animated lightSpeedIn">
+            {/* <label className="animated lightSpeedIn">
               Select Data [Default: <b>Today</b>]
             </label>
             <br />
             <SingleDatePicker
-              className="animated lightSpeedIn"
               date={this.state.expensesDate}
               numberOfMonths={1}
               onDateChange={this.onDateChange}
               isOutsideRange={() => false}
               focused={this.state.calendarFocused}
               onFocusChange={this.onFocusChange}
+            /> */}
+            <DatePicker
+              autoOk={true}
+              hintText="Select Date"
+              value={this.state.materialDate}
+              onChange={this.handleMaterialDateChange}
             />
           </div>
           <CardActions>
@@ -147,7 +163,7 @@ class AddExpensesForm extends Component {
               onClick={this.handleSubmit}
             />
           </CardActions>
-        </Card>
+        </div>
       </div>
     );
   }

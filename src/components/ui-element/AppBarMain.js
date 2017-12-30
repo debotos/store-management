@@ -21,7 +21,6 @@ class AppBarMain extends React.Component {
   handleToggle = () => this.setState({ showDrawer: !this.state.showDrawer });
 
   handleClose = () => this.setState({ showDrawer: false });
-  handleTitleClick = () => {};
   handleLogOut = () => {
     this.props.startLogout();
   };
@@ -38,7 +37,6 @@ class AppBarMain extends React.Component {
               onClick={this.handleLogOut}
             />
           }
-          onTitleClick={this.handleTitleClick}
         />
         <Drawer
           docked={false}

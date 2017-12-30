@@ -3,8 +3,9 @@ import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 import moment from "moment";
-import { SingleDatePicker } from "react-dates";
+// import { SingleDatePicker } from "react-dates";
 import { Card, CardActions } from "material-ui/Card";
+import DatePicker from "material-ui/DatePicker";
 
 import { startAddIncome } from "../../../../actions/others-income/income-actions";
 import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
@@ -16,7 +17,9 @@ class AddIncomeForm extends Component {
     this.setState({ incomeDetails: "" });
     this.setState({ showAddIncomeModel: false });
     this.setState({ incomeDate: moment() });
+    this.setState({ materialDate: null });
   };
+
   handleSubmit = event => {
     const income = {
       note: this.state.incomeTitle,
@@ -40,14 +43,10 @@ class AddIncomeForm extends Component {
     };
     this.props.startAddAnEntryToReadyCash(dataForReadyCash);
   };
-  onFocusChange = ({ focused }) => {
-    this.setState(() => ({ calendarFocused: focused }));
-  };
-  onDateChange = createdAt => {
-    if (createdAt) {
-      this.setState(() => ({ incomeDate: createdAt }));
-    }
-  };
+  // onFocusChange = ({ focused }) => {
+  //   this.setState(() => ({ calendarFocused: focused }));
+  // };
+
   handleIncomeTitleChange = event => {
     const title = event.target.value;
     this.setState({ incomeTitle: title });
@@ -62,6 +61,20 @@ class AddIncomeForm extends Component {
     const details = event.target.value;
     this.setState({ incomeDetails: details });
   };
+  // onDateChange = createdAt => {
+  //   if (createdAt) {
+  //     console.log(createdAt.valueOf());
+  //     this.setState(() => ({ incomeDate: createdAt }));
+  //   }
+  // };
+  handleMaterialDateChange = (event, date) => {
+    console.log("====================================");
+    console.log("Income Date: ", moment(date).valueOf());
+    console.log("====================================");
+    this.setState({ materialDate: date });
+    this.setState(() => ({ incomeDate: moment(date) }));
+    console.log("Date", date);
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -71,13 +84,14 @@ class AddIncomeForm extends Component {
       incomeTitle: "",
       incomeAmount: "",
       incomeDate: moment(),
-      incomeDetails: ""
+      incomeDetails: "",
+      materialDate: null
     };
   }
   render() {
     return (
       <div>
-        <Card
+        <div
           className="container"
           style={{ textAlign: "center", marginTop: 10 }}
         >
@@ -111,18 +125,23 @@ class AddIncomeForm extends Component {
           />
           <br />
           <div className="single-date-picker">
-            <label className="animated lightSpeedIn">
+            {/* <label className="animated lightSpeedIn">
               Select Data [Default: <b>Today</b>]
             </label>
             <br />
             <SingleDatePicker
-              className="animated lightSpeedIn"
               date={this.state.incomeDate}
               numberOfMonths={1}
               onDateChange={this.onDateChange}
               isOutsideRange={() => false}
               focused={this.state.calendarFocused}
               onFocusChange={this.onFocusChange}
+            /> */}
+            <DatePicker
+              autoOk={true}
+              hintText="Select Date"
+              value={this.state.materialDate}
+              onChange={this.handleMaterialDateChange}
             />
           </div>
           <CardActions>
@@ -151,7 +170,7 @@ class AddIncomeForm extends Component {
               onClick={this.handleSubmit}
             />
           </CardActions>
-        </Card>
+        </div>
       </div>
     );
   }

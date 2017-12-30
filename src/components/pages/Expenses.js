@@ -8,12 +8,6 @@ import AppBarMain from "../ui-element/AppBarMain";
 import AddExpensesForm from "./subPages/expenses/AddExpensesForm";
 import ExpenseDashboardPage from "./subPages/expenses/ExpensesDashboardPage";
 
-const tabStyles = {
-  slide: {
-    padding: 10
-  }
-};
-
 class Expenses extends Component {
   // SnackBar Functions
   handleActionTouchTap = () => {
@@ -73,7 +67,7 @@ class Expenses extends Component {
               <div>
                 <ExpenseDashboardPage showSnackBar={this.showSnackBar} />
               </div>
-              <div style={tabStyles.slide}>
+              <div>
                 <AddExpensesForm showSnackBar={this.showSnackBar} />
               </div>
             </SwipeableViews>

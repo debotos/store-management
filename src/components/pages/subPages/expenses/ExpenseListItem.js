@@ -4,10 +4,11 @@ import numeral from "numeral";
 import { Card } from "material-ui/Card";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
-import { orange500, blue500 } from "material-ui/styles/colors";
+import { blue500 } from "material-ui/styles/colors";
 import { connect } from "react-redux";
-import { SingleDatePicker } from "react-dates";
+// import { SingleDatePicker } from "react-dates";
 import TextField from "material-ui/TextField";
+import DatePicker from "material-ui/DatePicker";
 
 import {
   startEditExpense,
@@ -21,15 +22,15 @@ const customDialogContentStyle = {
 };
 
 class ExpenseListItem extends React.Component {
-  onFocusChange = ({ focused }) => {
-    this.setState(() => ({ calendarFocused: focused }));
-  };
-  onDateChange = createdAt => {
-    if (createdAt) {
-      console.log("created At", createdAt);
-      this.setState(() => ({ expensesDate: createdAt }));
-    }
-  };
+  // onFocusChange = ({ focused }) => {
+  //   this.setState(() => ({ calendarFocused: focused }));
+  // };
+  // onDateChange = createdAt => {
+  //   if (createdAt) {
+  //     console.log("created At", createdAt);
+  //     this.setState(() => ({ expensesDate: createdAt }));
+  //   }
+  // };
   closeEditExpensesModel = () => {
     this.setState({ showEditExpensesModel: false });
   };
@@ -50,6 +51,14 @@ class ExpenseListItem extends React.Component {
     const details = event.target.value;
     this.setState({ expensesDetails: details });
   };
+  handleMaterialDateChange = (event, date) => {
+    console.log("====================================");
+    console.log("Expenses Date: ", moment(date).valueOf());
+    console.log("====================================");
+    this.setState({ materialDate: date });
+    this.setState(() => ({ expensesDate: moment(date) }));
+    console.log("Date", date);
+  };
   constructor(props) {
     super(props);
     let { id, description, amount, createdAt, note } = props;
@@ -61,7 +70,8 @@ class ExpenseListItem extends React.Component {
       expensesTitle: note ? note : "",
       expensesAmount: amount ? amount.toString() : "",
       expensesDate: createdAt ? moment(createdAt) : moment(),
-      expensesDetails: description ? description : ""
+      expensesDetails: description ? description : "",
+      materialDate: null
     };
   }
 
@@ -91,8 +101,8 @@ class ExpenseListItem extends React.Component {
         secondary={true}
         disabled={
           !this.state.expensesAmount ||
-            !this.state.expensesTitle ||
-            !this.state.expensesDate
+          !this.state.expensesTitle ||
+          !this.state.expensesDate
             ? true
             : false
         }
@@ -103,8 +113,8 @@ class ExpenseListItem extends React.Component {
         primary={true}
         disabled={
           !this.state.expensesAmount ||
-            !this.state.expensesTitle ||
-            !this.state.expensesDate
+          !this.state.expensesTitle ||
+          !this.state.expensesDate
             ? true
             : false
         }
@@ -146,7 +156,7 @@ class ExpenseListItem extends React.Component {
               value={this.state.expensesTitle}
               hintText="Expenses Title"
               floatingLabelText="Expenses Title Here"
-              floatingLabelStyle={{ color: orange500 }}
+              floatingLabelStyle={{ color: blue500 }}
               floatingLabelFocusStyle={{ color: blue500 }}
             />
 
@@ -156,7 +166,7 @@ class ExpenseListItem extends React.Component {
               type="number"
               hintText="Money / Amount"
               floatingLabelText="Expenses Amount Here"
-              floatingLabelStyle={{ color: orange500 }}
+              floatingLabelStyle={{ color: blue500 }}
               floatingLabelFocusStyle={{ color: blue500 }}
             />
             <br />
@@ -165,13 +175,13 @@ class ExpenseListItem extends React.Component {
               value={this.state.expensesDetails}
               hintText="Expenses Details(optional)"
               floatingLabelText="Expenses Details Here"
-              floatingLabelStyle={{ color: orange500 }}
+              floatingLabelStyle={{ color: blue500 }}
               floatingLabelFocusStyle={{ color: blue500 }}
               multiLine={true}
             />
 
             <div className="single-date-picker">
-              <label style={{ color: "orange" }}>Select Data</label>
+              {/* <label style={{ color: "orange" }}>Select Data</label>
               <br />
               <SingleDatePicker
                 date={this.state.expensesDate}
@@ -180,6 +190,12 @@ class ExpenseListItem extends React.Component {
                 isOutsideRange={() => false}
                 focused={this.state.calendarFocused}
                 onFocusChange={this.onFocusChange}
+              /> */}
+              <DatePicker
+                autoOk={true}
+                hintText={moment(this.props.createdAt).format("l")}
+                value={this.state.materialDate}
+                onChange={this.handleMaterialDateChange}
               />
             </div>
           </div>

@@ -14,7 +14,10 @@ const ExpenseDashboardPage = props => (
       <ExpenseListFilters />
     </Card>
 
-    <Card className="container" style={{ marginTop: 10, padding: 5 }}>
+    <Card
+      className="container"
+      style={{ marginTop: 10, padding: 5, marginBottom: 230 }}
+    >
       <div className="list-header">
         <div>
           <strong>Expenses</strong>

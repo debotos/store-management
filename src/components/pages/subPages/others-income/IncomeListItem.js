@@ -4,10 +4,11 @@ import numeral from "numeral";
 import { Card } from "material-ui/Card";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
-import { orange500, blue500 } from "material-ui/styles/colors";
+import { blue500 } from "material-ui/styles/colors";
 import { connect } from "react-redux";
 import { SingleDatePicker } from "react-dates";
 import TextField from "material-ui/TextField";
+import DatePicker from "material-ui/DatePicker";
 
 import {
   startEditIncome,
@@ -21,15 +22,15 @@ const customDialogContentStyle = {
 };
 
 class IncomeListItem extends React.Component {
-  onFocusChange = ({ focused }) => {
-    this.setState(() => ({ calendarFocused: focused }));
-  };
-  onDateChange = createdAt => {
-    if (createdAt) {
-      console.log("created At", createdAt);
-      this.setState(() => ({ incomeDate: createdAt }));
-    }
-  };
+  // onFocusChange = ({ focused }) => {
+  //   this.setState(() => ({ calendarFocused: focused }));
+  // };
+  // onDateChange = createdAt => {
+  //   if (createdAt) {
+  //     console.log("created At", createdAt);
+  //     this.setState(() => ({ incomeDate: createdAt }));
+  //   }
+  // };
   closeEditIncomeModel = () => {
     this.setState({ showEditIncomeModel: false });
   };
@@ -50,6 +51,14 @@ class IncomeListItem extends React.Component {
     const details = event.target.value;
     this.setState({ incomeDetails: details });
   };
+  handleMaterialDateChange = (event, date) => {
+    console.log("====================================");
+    console.log("Income Date: ", moment(date).valueOf());
+    console.log("====================================");
+    this.setState({ materialDate: date });
+    this.setState(() => ({ incomeDate: moment(date) }));
+    console.log("Date", date);
+  };
   constructor(props) {
     super(props);
     let { id, description, amount, createdAt, note } = props;
@@ -61,7 +70,8 @@ class IncomeListItem extends React.Component {
       incomeTitle: note ? note : "",
       incomeAmount: amount ? amount.toString() : "",
       incomeDate: createdAt ? moment(createdAt) : moment(),
-      incomeDetails: description ? description : ""
+      incomeDetails: description ? description : "",
+      materialDate: null
     };
   }
 
@@ -146,7 +156,7 @@ class IncomeListItem extends React.Component {
               value={this.state.incomeTitle}
               hintText="Income Title"
               floatingLabelText="Income Title Here"
-              floatingLabelStyle={{ color: orange500 }}
+              floatingLabelStyle={{ color: blue500 }}
               floatingLabelFocusStyle={{ color: blue500 }}
             />
 
@@ -156,7 +166,7 @@ class IncomeListItem extends React.Component {
               type="number"
               hintText="Money / Amount"
               floatingLabelText="Income Amount Here"
-              floatingLabelStyle={{ color: orange500 }}
+              floatingLabelStyle={{ color: blue500 }}
               floatingLabelFocusStyle={{ color: blue500 }}
             />
             <br />
@@ -165,13 +175,13 @@ class IncomeListItem extends React.Component {
               value={this.state.incomeDetails}
               hintText="Income Details(optional)"
               floatingLabelText="Income Details Here"
-              floatingLabelStyle={{ color: orange500 }}
+              floatingLabelStyle={{ color: blue500 }}
               floatingLabelFocusStyle={{ color: blue500 }}
               multiLine={true}
             />
 
             <div className="single-date-picker">
-              <label style={{ color: "orange" }}>Select Data</label>
+              {/* <label style={{ color: "orange" }}>Select Data</label>
               <br />
               <SingleDatePicker
                 date={this.state.incomeDate}
@@ -180,6 +190,12 @@ class IncomeListItem extends React.Component {
                 isOutsideRange={() => false}
                 focused={this.state.calendarFocused}
                 onFocusChange={this.onFocusChange}
+              /> */}
+              <DatePicker
+                autoOk={true}
+                hintText={moment(this.props.createdAt).format("l")}
+                value={this.state.materialDate}
+                onChange={this.handleMaterialDateChange}
               />
             </div>
           </div>
