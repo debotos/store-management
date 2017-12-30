@@ -14,11 +14,11 @@ const extractDate = data => {
 const renderIncomeTable = DataIncomming => {
   let {
     entries,
-    previousReadyCash,
-    expensesTotal,
+    // previousReadyCash,
+    // expensesTotal,
     incomeTotal,
-    fromNowReadyCash,
-    storeInfo
+    // fromNowReadyCash,
+    // storeInfo
   } = DataIncomming;
 
   let TableHeader = [
@@ -118,11 +118,11 @@ const renderIncomeTable = DataIncomming => {
 const renderExpensesTable = DataIncomming => {
   let {
     entries,
-    previousReadyCash,
+    // previousReadyCash,
     expensesTotal,
-    incomeTotal,
-    fromNowReadyCash,
-    storeInfo
+    // incomeTotal,
+    // fromNowReadyCash,
+    // storeInfo
   } = DataIncomming;
 
   let TableHeader = [
@@ -200,11 +200,11 @@ const getCompanyPhoneNo = storeInfo => {
 
 const GENERATE_PDF = DataIncomming => {
   let {
-    entries,
-    previousReadyCash,
-    expensesTotal,
-    incomeTotal,
-    fromNowReadyCash,
+    // entries,
+    // previousReadyCash,
+    // expensesTotal,
+    // incomeTotal,
+    // fromNowReadyCash,
     storeInfo
   } = DataIncomming;
 

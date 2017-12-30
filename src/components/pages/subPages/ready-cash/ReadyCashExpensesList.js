@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { List, ListItem } from "material-ui/List";
-import Divider from "material-ui/Divider";
+// import Divider from "material-ui/Divider";
 import numeral from "numeral";
-import SvgIcon from "material-ui/SvgIcon";
+// import SvgIcon from "material-ui/SvgIcon";
 import moment from "moment";
 
 class ReadyCashExpensesList extends Component {

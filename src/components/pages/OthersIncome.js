@@ -7,12 +7,6 @@ import AppBarMain from "../ui-element/AppBarMain";
 import AddIncomeForm from "./subPages/others-income/AddIncomeForm";
 import IncomeDashboardPage from "./subPages/others-income/IncomeDashboardPage";
 
-const tabStyles = {
-  slide: {
-    padding: 10
-  }
-};
-
 class OthersIncome extends Component {
   // SnackBar Functions
   handleActionTouchTap = () => {

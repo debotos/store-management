@@ -297,7 +297,7 @@ class Home extends Component {
                   }
                   primary={true}
                   label="Save For PDF"
-                  onClick={() => this.handleUpdateStoreInfo()}
+                  onClick={this.handleUpdateStoreInfo}
                 />
               </CardActions>
             </Card>

@@ -29,7 +29,7 @@ class Pad extends Component {
           <AppBarMain title={"Your Pad"} />
           <div className="container">
             <Card
-              class="animated infinite swing"
+              className="animated infinite swing"
               style={{
                 borderRadius: "20px",
                 marginTop: 10,

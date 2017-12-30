@@ -7,7 +7,7 @@ import NavigationClose from "material-ui/svg-icons/navigation/close";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { startLogout } from "../../actions/auth";
-import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
 
 import { APP_NAME } from "../global/global";
 import MenuItems from "./MenuItems";
@@ -32,7 +32,11 @@ class AppBarMain extends React.Component {
           title={this.props.title ? `${this.props.title} Page` : APP_NAME}
           onLeftIconButtonTouchTap={this.handleToggle}
           iconElementRight={
-            <FlatButton label="LOGOUT" onClick={this.handleLogOut} />
+            <RaisedButton
+              primary={true}
+              label="Logout"
+              onClick={this.handleLogOut}
+            />
           }
           onTitleClick={this.handleTitleClick}
         />

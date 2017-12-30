@@ -15,7 +15,7 @@ export const startUpdateStoreInfo = storeInfo => {
   // console.log("startUpdateStoreInfo got a call");
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
-    let currentValue;
+    // let currentValue;
     let currentValueId;
     let allValue = [];
     database
@@ -23,7 +23,7 @@ export const startUpdateStoreInfo = storeInfo => {
       .once("value")
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
-          currentValue = childSnapshot.val().info;
+          // currentValue = childSnapshot.val().info;
           // console.log("current INFO. ", currentValue);
           currentValueId = childSnapshot.key;
           // console.log("current info ID ", currentValueId);

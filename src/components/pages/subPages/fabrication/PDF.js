@@ -1,10 +1,3 @@
-import {
-  COMPANY_NAME,
-  COMPANY_ADDRESS,
-  COMPANY_PHONE_NUMBER,
-  COMPANY_OWENER
-} from "../../../global/global";
-
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import numeral from "numeral";
