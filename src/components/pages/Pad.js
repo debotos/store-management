@@ -72,7 +72,7 @@ class Pad extends Component {
           </div>
           <div style={{ textAlign: "center", marginTop: 10 }}>
             <RaisedButton
-              class="animated infinite tada"
+              className="animated infinite tada"
               primary={true}
               onClick={this.print}
               label="print"

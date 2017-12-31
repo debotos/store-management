@@ -160,9 +160,8 @@ class MoneyReceipt extends Component {
               this.props.allDue.map((singleDue, index) => {
                 return (
                   parseFloat(singleDue.amount) > 0 && (
-                    <div className="animated rollIn">
+                    <div key={index} className="animated rollIn">
                       <Card
-                        key={index}
                         className="due-list-item"
                         onClick={() => {
                           this.setState({ showEditDueModel: true });

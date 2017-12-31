@@ -912,7 +912,7 @@ class TableGenerator extends Component {
         {/* Glass Table Row Start*/}
         {this.haveGlassType() && (
           <Card
-            class="animated rollIn"
+            className="animated rollIn"
             style={{ margin: "10px", backgroundColor: "#CFD8DC" }}
           >
             <div>

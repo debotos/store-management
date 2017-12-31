@@ -14,8 +14,6 @@ import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready
 import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
 import GENERATE_PDF from "./PDF";
 
-const isOnline = require("is-online");
-
 class Form extends Component {
   // Model
   handleDialogOpen = () => {
@@ -191,12 +189,6 @@ class Form extends Component {
         memoNumber: this.props.memoNumber
       };
 
-      isOnline().then(online => {
-        console.log(online);
-        if (!online) {
-          this.props.showSnackBar("Error ! No Internet Connection !");
-        }
-      });
       this.props.startAddAnEntryToReadyCash(dataForReadyCash);
       this.handleReset();
       this.props.startIncrementMemoNumber();
