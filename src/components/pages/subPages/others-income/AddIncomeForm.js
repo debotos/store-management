@@ -10,6 +10,8 @@ import DatePicker from "material-ui/DatePicker";
 import { startAddIncome } from "../../../../actions/others-income/income-actions";
 import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
 
+const isOnline = require("is-online");
+
 class AddIncomeForm extends Component {
   handleReset = () => {
     this.setState({ incomeTitle: "" });
@@ -21,6 +23,12 @@ class AddIncomeForm extends Component {
   };
 
   handleSubmit = event => {
+    isOnline().then(online => {
+      console.log(online);
+      if (!online) {
+        this.props.showSnackBar("Error ! No Internet Connection !");
+      }
+    });
     const income = {
       note: this.state.incomeTitle,
       description: this.state.incomeDetails,
@@ -139,7 +147,7 @@ class AddIncomeForm extends Component {
             /> */}
             <DatePicker
               autoOk={true}
-              hintText="Select Date"
+              hintText="Select Date [Default: Today]"
               value={this.state.materialDate}
               onChange={this.handleMaterialDateChange}
             />

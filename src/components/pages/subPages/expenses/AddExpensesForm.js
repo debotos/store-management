@@ -10,6 +10,8 @@ import DatePicker from "material-ui/DatePicker";
 import { startAddExpense } from "../../../../actions/expenses/expenses-actions";
 import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
 
+const isOnline = require("is-online");
+
 class AddExpensesForm extends Component {
   handleReset = () => {
     this.setState({ expensesTitle: "" });
@@ -20,6 +22,12 @@ class AddExpensesForm extends Component {
     this.setState({ materialDate: null });
   };
   handleSubmit = event => {
+    isOnline().then(online => {
+      console.log(online);
+      if (!online) {
+        this.props.showSnackBar("Error ! No Internet Connection !");
+      }
+    });
     const expense = {
       note: this.state.expensesTitle,
       description: this.state.expensesDetails,
@@ -132,7 +140,7 @@ class AddExpensesForm extends Component {
             /> */}
             <DatePicker
               autoOk={true}
-              hintText="Select Date"
+              hintText="Select Date [Default: Today]"
               value={this.state.materialDate}
               onChange={this.handleMaterialDateChange}
             />

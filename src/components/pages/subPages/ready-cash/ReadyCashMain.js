@@ -23,6 +23,7 @@ import {
 } from "../../../../actions/ready-cash/ready-cash-amount-actions";
 import GENERATE_PDF from "./PDF";
 // import Navigation from "../Navigation";
+const isOnline = require("is-online");
 
 class ReadyCashMain extends Component {
   // SnackBar Functions
@@ -65,6 +66,12 @@ class ReadyCashMain extends Component {
   }
 
   handleResetAllData = () => {
+    isOnline().then(online => {
+      console.log(online);
+      if (!online) {
+        this.props.showSnackBar("Error ! No Internet Connection !");
+      }
+    });
     this.handleClose();
     this.props.startResetReadyCash();
     this.props.startUpdateReadyCash(

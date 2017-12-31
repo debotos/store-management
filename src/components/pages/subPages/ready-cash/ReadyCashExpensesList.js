@@ -26,9 +26,7 @@ class ReadyCashExpensesList extends Component {
     );
   };
   extractDate = data => {
-    var now = moment(data).format("dddd, MMMM Do YYYY, h:mm:ss a");
-    now = now.substr(30, 41);
-    // console.log(now);
+    var now = moment(data).format("LTS");
     return now;
   };
   renderIncomeListItem = () => {

@@ -14,6 +14,8 @@ import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready
 import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
 import GENERATE_PDF from "./PDF";
 
+const isOnline = require("is-online");
+
 class Form extends Component {
   // Model
   handleDialogOpen = () => {
@@ -188,6 +190,13 @@ class Form extends Component {
         mail: this.state.mail,
         memoNumber: this.props.memoNumber
       };
+
+      isOnline().then(online => {
+        console.log(online);
+        if (!online) {
+          this.props.showSnackBar("Error ! No Internet Connection !");
+        }
+      });
       this.props.startAddAnEntryToReadyCash(dataForReadyCash);
       this.handleReset();
       this.props.startIncrementMemoNumber();
@@ -195,6 +204,7 @@ class Form extends Component {
       this.props.showSnackBar("Error! Valid Deposit Please!");
     }
   };
+
   render() {
     const dialogActions = [
       <FlatButton
@@ -211,7 +221,7 @@ class Form extends Component {
             marginTop: 10,
             padding: 15,
             borderRadius: 20,
-            backgroundColor: "#CFD8DC"
+            backgroundColor: "#EEEEEE"
           }}
         >
           <b>Input Fabrication & Customer Details:</b>
@@ -225,7 +235,7 @@ class Form extends Component {
               marginTop: 5,
               marginBottom: 5,
               whiteSpace: "pre-wrap",
-              backgroundColor: "#CFD8DC"
+              backgroundColor: "#EEEEEE"
             }}
             value={this.state.details}
             placeholder="Full Fabrication Details Write Here"
@@ -275,7 +285,7 @@ class Form extends Component {
           <br />
           <div style={{ textAlign: "center" }}>
             <FlatButton
-              class="animated infinite tada"
+              className="animated infinite tada"
               disabled={
                 this.state.name &&
                 this.state.number &&

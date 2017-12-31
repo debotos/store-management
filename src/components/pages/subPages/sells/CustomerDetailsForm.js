@@ -18,6 +18,7 @@ import { removeAllTable } from "../../../../actions/sells/table-actions";
 import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
 
 const uuidv4 = require("uuid/v4");
+const isOnline = require("is-online");
 
 class CustomerDetailsForm extends Component {
   handleDialogOpen = () => {
@@ -116,6 +117,12 @@ class CustomerDetailsForm extends Component {
   });
 
   handleSaveAndGeneratePDF = () => {
+    isOnline().then(online => {
+      console.log(online);
+      if (!online) {
+        this.props.showSnackBar("Error ! No Internet Connection !");
+      }
+    });
     let allTotalWithPrevDue =
       parseFloat(this.props.allTotal.finalTotal) +
       parseFloat(this.userAlreadyExists()[1]);
