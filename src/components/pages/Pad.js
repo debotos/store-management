@@ -41,7 +41,7 @@ class Pad extends Component {
                 <strong>PAD</strong>
                 <br />
                 <iframe
-                  src="http://free.timeanddate.com/clock/i61ddbap/n942/fn3/fs28/tcadd8e6/pcadd8e6/tt0/tw0/tm3/ts1/tb2"
+                  src="https://free.timeanddate.com/clock/i61ddbap/n942/fn3/fs28/tcadd8e6/pcadd8e6/tt0/tw0/tm3/ts1/tb2"
                   frameBorder="0"
                   width="320"
                   height="34"

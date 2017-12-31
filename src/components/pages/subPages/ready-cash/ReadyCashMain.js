@@ -196,7 +196,7 @@ class ReadyCashMain extends Component {
             </div>
             <div>
               <iframe
-                src="http://free.timeanddate.com/clock/i61f8k1p/n942/fn14/ftb/tt0/tw1/tm3/tb2"
+                src="https://free.timeanddate.com/clock/i61f8k1p/n942/fn14/ftb/tt0/tw1/tm3/tb2"
                 frameBorder="0"
                 width="192"
                 height="18"
