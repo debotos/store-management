@@ -6,7 +6,6 @@ import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import { blue500 } from "material-ui/styles/colors";
 import { connect } from "react-redux";
-import { SingleDatePicker } from "react-dates";
 import TextField from "material-ui/TextField";
 import DatePicker from "material-ui/DatePicker";
 

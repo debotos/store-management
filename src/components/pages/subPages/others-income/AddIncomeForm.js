@@ -4,7 +4,7 @@ import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 import moment from "moment";
 // import { SingleDatePicker } from "react-dates";
-import { Card, CardActions } from "material-ui/Card";
+// import { Card, CardActions } from "material-ui/Card";
 import DatePicker from "material-ui/DatePicker";
 
 import { startAddIncome } from "../../../../actions/others-income/income-actions";
@@ -144,32 +144,26 @@ class AddIncomeForm extends Component {
               onChange={this.handleMaterialDateChange}
             />
           </div>
-          <CardActions>
-            <FlatButton
-              label="Reset"
-              secondary={true}
-              disabled={
-                !this.state.incomeAmount &&
-                !this.state.incomeTitle &&
-                !this.state.incomeDate
-                  ? true
-                  : false
-              }
-              onClick={this.handleReset}
-            />,
-            <FlatButton
-              label="Add Income"
-              primary={true}
-              disabled={
-                !this.state.incomeAmount ||
-                !this.state.incomeTitle ||
-                !this.state.incomeDate
-                  ? true
-                  : false
-              }
-              onClick={this.handleSubmit}
-            />
-          </CardActions>
+          <FlatButton
+            label="Reset"
+            secondary={true}
+            disabled={
+              !this.state.incomeAmount && !this.state.incomeTitle ? true : false
+            }
+            onClick={this.handleReset}
+          />
+          <FlatButton
+            label="Add Income"
+            primary={true}
+            disabled={
+              !this.state.incomeAmount ||
+              !this.state.incomeTitle ||
+              !this.state.incomeDate
+                ? true
+                : false
+            }
+            onClick={this.handleSubmit}
+          />
         </div>
       </div>
     );

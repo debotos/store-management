@@ -3,8 +3,6 @@ import AppBar from "material-ui/AppBar";
 import Drawer from "material-ui/Drawer";
 import IconButton from "material-ui/IconButton";
 import NavigationClose from "material-ui/svg-icons/navigation/close";
-
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { startLogout } from "../../actions/auth";
 import RaisedButton from "material-ui/RaisedButton";

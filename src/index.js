@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import noInternet from "no-internet";
+// import noInternet from "no-internet";
 //Theme configuration
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 // import darkBaseTheme from "./components/ui-element/myDarkTheme";

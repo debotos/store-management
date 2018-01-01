@@ -5,15 +5,15 @@ import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 
 import OthersIncome from "./pages/OthersIncome";
-import Bank from "./pages/Bank";
+// import Bank from "./pages/Bank";
 import Due from "./pages/Due";
-import Employee from "./pages/Employee";
+// import Employee from "./pages/Employee";
 import Expenses from "./pages/Expenses";
 import Fabrication from "./pages/Fabrication";
 import MoneyReceipt from "./pages/MoneyReceipt";
 import Pad from "./pages/Pad";
 import ReadyCash from "./pages/ReadyCash";
-import Salary from "./pages/Salary";
+// import Salary from "./pages/Salary";
 import Sell from "./pages/Sells";
 import Stock from "./pages/Stock";
 import NotFoundpage from "./pages/NotFoundpage";

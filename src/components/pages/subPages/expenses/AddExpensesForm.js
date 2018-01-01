@@ -4,7 +4,7 @@ import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 import moment from "moment";
 // import { SingleDatePicker } from "react-dates";
-import { Card, CardActions } from "material-ui/Card";
+// import { Card, CardActions } from "material-ui/Card";
 import DatePicker from "material-ui/DatePicker";
 
 import { startAddExpense } from "../../../../actions/expenses/expenses-actions";
@@ -137,32 +137,29 @@ class AddExpensesForm extends Component {
               onChange={this.handleMaterialDateChange}
             />
           </div>
-          <CardActions>
-            <FlatButton
-              label="Reset"
-              secondary={true}
-              disabled={
-                !this.state.expensesAmount &&
-                !this.state.expensesTitle &&
-                !this.state.expensesDate
-                  ? true
-                  : false
-              }
-              onClick={this.handleReset}
-            />,
-            <FlatButton
-              label="Add Expense"
-              primary={true}
-              disabled={
-                !this.state.expensesAmount ||
-                !this.state.expensesTitle ||
-                !this.state.expensesDate
-                  ? true
-                  : false
-              }
-              onClick={this.handleSubmit}
-            />
-          </CardActions>
+
+          <FlatButton
+            label="Reset"
+            secondary={true}
+            disabled={
+              !this.state.expensesAmount && !this.state.expensesTitle
+                ? true
+                : false
+            }
+            onClick={this.handleReset}
+          />
+          <FlatButton
+            label="Add Expense"
+            primary={true}
+            disabled={
+              !this.state.expensesAmount ||
+              !this.state.expensesTitle ||
+              !this.state.expensesDate
+                ? true
+                : false
+            }
+            onClick={this.handleSubmit}
+          />
         </div>
       </div>
     );
