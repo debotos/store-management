@@ -90,9 +90,3 @@
 .login-page-content {
   position: absolute;
 }
-
-#no-internet-message {
-  color: red;
-  opacity: 0.8;
-  opacity: 1;
-}

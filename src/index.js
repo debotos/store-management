@@ -51,28 +51,7 @@ const renderApp = () => {
   }
 };
 
-noInternet().then(offline => {
-  let result;
-  if (offline) {
-    // no internet
-    result = (
-      <h4 className="animated infinite pulse" id="no-internet-message">
-        No Internet Connection Found !
-      </h4>
-    );
-    ReactDOM.render(
-      <LoadingPage result={result} />,
-      document.getElementById("root")
-    );
-  } else {
-    // internet have
-    result = "";
-    ReactDOM.render(
-      <LoadingPage result={result} />,
-      document.getElementById("root")
-    );
-  }
-});
+ReactDOM.render(<LoadingPage />, document.getElementById("root"));
 
 store.subscribe(() => {
   console.log(store.getState());
