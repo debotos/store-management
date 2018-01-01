@@ -8,6 +8,7 @@ import numeral from "numeral";
 import Dialog from "material-ui/Dialog";
 import moment from "moment";
 import SvgIcon from "material-ui/SvgIcon";
+import noInternet from "no-internet";
 
 import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
 import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
@@ -117,13 +118,28 @@ class Form extends Component {
   handleSaveAndGeneratePDF = () => {
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
-        this.finalWork();
+        noInternet().then(offline => {
+          if (offline) {
+            // no internet
+            this.props.showSnackBar("Failed ! No Internet Connection !");
+          } else {
+            // internet have
+            this.finalWork();
+          }
+        });
       } else {
         this.props.showSnackBar("Error ! Invalid Email !");
       }
     } else {
       // No email provided
-      this.finalWork();
+      noInternet().then(offline => {
+        if (offline) {
+          // no internet
+          this.props.showSnackBar("Failed ! No Internet Connection !");
+        } else {
+          this.finalWork();
+        }
+      });
     }
   };
   constructor(props) {

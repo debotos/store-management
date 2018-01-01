@@ -8,6 +8,7 @@ import Dialog from "material-ui/Dialog";
 import numeral from "numeral";
 import moment from "moment";
 import SvgIcon from "material-ui/SvgIcon";
+import noInternet from "no-internet";
 
 import GENERATE_PDF from "./PDF";
 import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
@@ -116,124 +117,143 @@ class CustomerDetailsForm extends Component {
   });
 
   handleSaveAndGeneratePDF = () => {
-    let allTotalWithPrevDue =
-      parseFloat(this.props.allTotal.finalTotal) +
-      parseFloat(this.userAlreadyExists()[1]);
-    if (this.state.mail) {
-      if (isEmail(this.state.mail)) {
-        if (parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)) {
-          let deposit = parseFloat(this.state.deposit).toFixed(2);
-          let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
-          this.props.startAddPrevDue(this.state.number, newDue);
-          this.props.startAddSellUnderCustomerHistory(this.collectSellsData());
-          const modelData = {
-            allTotal: this.props.allTotal.finalTotal,
-            prevDue: this.userAlreadyExists()[1],
-            totalWithDue: allTotalWithPrevDue,
-            depositNow: deposit,
-            newDue
-          };
-          this.setState({ modelData });
-          this.handleDialogOpen();
-          const dataForPDF = {
-            tables: this.props.sellsTables,
-            customer: {
-              name: this.state.name,
-              number: this.state.number,
-              mail: this.state.mail,
-              address: this.state.address,
-              allTotal: this.props.allTotal,
+    noInternet().then(offline => {
+      if (offline) {
+        // no internet
+        this.props.showSnackBar("Failed ! No Internet Connection !");
+      } else {
+        // internet have
+
+        let allTotalWithPrevDue =
+          parseFloat(this.props.allTotal.finalTotal) +
+          parseFloat(this.userAlreadyExists()[1]);
+        if (this.state.mail) {
+          if (isEmail(this.state.mail)) {
+            if (
+              parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)
+            ) {
+              let deposit = parseFloat(this.state.deposit).toFixed(2);
+              let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(
+                2
+              );
+              this.props.startAddPrevDue(this.state.number, newDue);
+              this.props.startAddSellUnderCustomerHistory(
+                this.collectSellsData()
+              );
+              const modelData = {
+                allTotal: this.props.allTotal.finalTotal,
+                prevDue: this.userAlreadyExists()[1],
+                totalWithDue: allTotalWithPrevDue,
+                depositNow: deposit,
+                newDue
+              };
+              this.setState({ modelData });
+              this.handleDialogOpen();
+              const dataForPDF = {
+                tables: this.props.sellsTables,
+                customer: {
+                  name: this.state.name,
+                  number: this.state.number,
+                  mail: this.state.mail,
+                  address: this.state.address,
+                  allTotal: this.props.allTotal,
+                  prevDue: this.userAlreadyExists()[1],
+                  totalWithDue: allTotalWithPrevDue,
+                  depositNow: deposit,
+                  newDue
+                },
+                memoNumber: this.props.memoNumber,
+                storeInfo: this.props.storeInfo
+              };
+              GENERATE_PDF(dataForPDF);
+
+              const dataForReadyCash = {
+                type: "income",
+                moment: moment().valueOf(),
+                amount: deposit,
+                category: "sell",
+                number: this.state.number,
+                address: this.state.address,
+                name: this.state.name,
+                mail: this.state.mail,
+                memoNumber: this.props.memoNumber
+              };
+              this.props.startAddAnEntryToReadyCash(dataForReadyCash);
+
+              this.handleReset();
+              this.props.startIncrementMemoNumber();
+            } else {
+              this.props.showSnackBar("Error! Valid Deposit Please!");
+            }
+          } else {
+            this.props.showSnackBar("Error ! Invalid Email !");
+          }
+        } else {
+          if (
+            parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)
+          ) {
+            let deposit = parseFloat(this.state.deposit).toFixed(2);
+            let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
+            this.props.startAddPrevDue(this.state.number, newDue);
+            // Saving for history
+            this.props.startAddSellUnderCustomerHistory(
+              this.collectSellsData()
+            );
+            const modelData = {
+              allTotal: this.props.allTotal.finalTotal,
               prevDue: this.userAlreadyExists()[1],
               totalWithDue: allTotalWithPrevDue,
               depositNow: deposit,
               newDue
-            },
-            memoNumber: this.props.memoNumber,
-            storeInfo: this.props.storeInfo
-          };
-          GENERATE_PDF(dataForPDF);
+            };
+            this.setState({ modelData });
+            this.handleDialogOpen();
+            console.log("sending for pdf ", this.props.sellsTables);
+            const dataForPDF = {
+              tables: this.props.sellsTables,
+              customer: {
+                name: this.state.name,
+                number: this.state.number,
+                mail: this.state.mail,
+                address: this.state.address,
+                allTotal: this.props.allTotal,
+                prevDue: this.userAlreadyExists()[1],
+                totalWithDue: allTotalWithPrevDue,
+                depositNow: deposit,
+                newDue
+              },
+              memoNumber: this.props.memoNumber,
+              storeInfo: this.props.storeInfo
+            };
+            console.log("====================================");
+            console.log("Data for PDF sending", dataForPDF);
+            console.log("====================================");
+            GENERATE_PDF(dataForPDF);
 
-          const dataForReadyCash = {
-            type: "income",
-            moment: moment().valueOf(),
-            amount: deposit,
-            category: "sell",
-            number: this.state.number,
-            address: this.state.address,
-            name: this.state.name,
-            mail: this.state.mail,
-            memoNumber: this.props.memoNumber
-          };
-          this.props.startAddAnEntryToReadyCash(dataForReadyCash);
+            const dataForReadyCash = {
+              type: "income",
+              moment: moment().valueOf(),
+              amount: deposit,
+              category: "sell",
+              number: this.state.number,
+              address: this.state.address,
+              name: this.state.name,
+              mail: this.state.mail,
+              memoNumber: this.props.memoNumber
+            };
 
-          this.handleReset();
-          this.props.startIncrementMemoNumber();
-        } else {
-          this.props.showSnackBar("Error! Valid Deposit Please!");
+            console.log("====================================");
+            console.log("data for ready cash", dataForReadyCash);
+            console.log("====================================");
+            this.props.startAddAnEntryToReadyCash(dataForReadyCash);
+            this.handleReset();
+            this.props.startIncrementMemoNumber();
+          } else {
+            this.props.showSnackBar("Error! Valid Deposit Please!");
+          }
         }
-      } else {
-        this.props.showSnackBar("Error ! Invalid Email !");
       }
-    } else {
-      if (parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)) {
-        let deposit = parseFloat(this.state.deposit).toFixed(2);
-        let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
-        this.props.startAddPrevDue(this.state.number, newDue);
-        // Saving for history
-        this.props.startAddSellUnderCustomerHistory(this.collectSellsData());
-        const modelData = {
-          allTotal: this.props.allTotal.finalTotal,
-          prevDue: this.userAlreadyExists()[1],
-          totalWithDue: allTotalWithPrevDue,
-          depositNow: deposit,
-          newDue
-        };
-        this.setState({ modelData });
-        this.handleDialogOpen();
-        console.log("sending for pdf ", this.props.sellsTables);
-        const dataForPDF = {
-          tables: this.props.sellsTables,
-          customer: {
-            name: this.state.name,
-            number: this.state.number,
-            mail: this.state.mail,
-            address: this.state.address,
-            allTotal: this.props.allTotal,
-            prevDue: this.userAlreadyExists()[1],
-            totalWithDue: allTotalWithPrevDue,
-            depositNow: deposit,
-            newDue
-          },
-          memoNumber: this.props.memoNumber,
-          storeInfo: this.props.storeInfo
-        };
-        console.log("====================================");
-        console.log("Data for PDF sending", dataForPDF);
-        console.log("====================================");
-        GENERATE_PDF(dataForPDF);
-
-        const dataForReadyCash = {
-          type: "income",
-          moment: moment().valueOf(),
-          amount: deposit,
-          category: "sell",
-          number: this.state.number,
-          address: this.state.address,
-          name: this.state.name,
-          mail: this.state.mail,
-          memoNumber: this.props.memoNumber
-        };
-
-        console.log("====================================");
-        console.log("data for ready cash", dataForReadyCash);
-        console.log("====================================");
-        this.props.startAddAnEntryToReadyCash(dataForReadyCash);
-        this.handleReset();
-        this.props.startIncrementMemoNumber();
-      } else {
-        this.props.showSnackBar("Error! Valid Deposit Please!");
-      }
-    }
+    });
   };
   showModelData = modelData => {
     const {
