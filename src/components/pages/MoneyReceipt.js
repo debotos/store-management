@@ -6,6 +6,7 @@ import SnackBar from "../ui-element/SnackBar";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import numeral from "numeral";
+import noInternet from "no-internet";
 
 import AppBarMain from "../ui-element/AppBarMain";
 import "../../style/due/due.css";
@@ -164,15 +165,26 @@ class MoneyReceipt extends Component {
                       <Card
                         className="due-list-item"
                         onClick={() => {
-                          this.setState({ showEditDueModel: true });
-                          this.setState({
-                            currentlySelectedDue: parseFloat(
-                              singleDue.amount
-                            ).toFixed(2)
-                          });
-                          this.setState({ dueIdToRemove: singleDue.id });
-                          this.setState({
-                            dueNumberToUpdate: singleDue.number
+                          noInternet().then(offline => {
+                            if (offline) {
+                              // no internet
+
+                              this.showSnackBar(
+                                "Failed ! No Internet Connection !"
+                              );
+                            } else {
+                              // internet have
+                              this.setState({ showEditDueModel: true });
+                              this.setState({
+                                currentlySelectedDue: parseFloat(
+                                  singleDue.amount
+                                ).toFixed(2)
+                              });
+                              this.setState({ dueIdToRemove: singleDue.id });
+                              this.setState({
+                                dueNumberToUpdate: singleDue.number
+                              });
+                            }
                           });
                         }}
                       >

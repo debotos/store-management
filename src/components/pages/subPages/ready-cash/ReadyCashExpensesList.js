@@ -7,6 +7,7 @@ import moment from "moment";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import SvgIcon from "material-ui/SvgIcon";
 import { connect } from "react-redux";
+import noInternet from "no-internet";
 
 import { startRemoveAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
 
@@ -60,7 +61,16 @@ class ReadyCashExpensesList extends Component {
     });
   };
   handleListItemDelete = (id, type) => {
-    this.props.startRemoveAnEntryToReadyCash(id, type);
+    noInternet().then(offline => {
+      if (offline) {
+        // no internet
+        this.props.showSnackBar("Failed ! No Internet Connection !");
+      } else {
+        // internet have
+        this.props.startRemoveAnEntryToReadyCash(id, type);
+        this.props.showSnackBar("Successfully Deleted !");
+      }
+    });
   };
   render() {
     return (

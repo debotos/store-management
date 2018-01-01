@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import noInternet from "no-internet";
 //Theme configuration
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 // import darkBaseTheme from "./components/ui-element/myDarkTheme";
@@ -50,7 +51,28 @@ const renderApp = () => {
   }
 };
 
-ReactDOM.render(<LoadingPage />, document.getElementById("root"));
+noInternet().then(offline => {
+  let result;
+  if (offline) {
+    // no internet
+    result = (
+      <h4 className="animated infinite pulse" id="no-internet-message">
+        No Internet Connection Found !
+      </h4>
+    );
+    ReactDOM.render(
+      <LoadingPage result={result} />,
+      document.getElementById("root")
+    );
+  } else {
+    // internet have
+    result = "";
+    ReactDOM.render(
+      <LoadingPage result={result} />,
+      document.getElementById("root")
+    );
+  }
+});
 
 store.subscribe(() => {
   console.log(store.getState());

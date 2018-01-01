@@ -20,6 +20,7 @@
   background-size: cover;
   align-items: center;
   display: flex;
+  flex-direction: column;
   height: 100vh;
   justify-content: center;
   width: 100vw;
@@ -88,4 +89,10 @@
 
 .login-page-content {
   position: absolute;
+}
+
+#no-internet-message {
+  color: red;
+  opacity: 0.8;
+  opacity: 1;
 }

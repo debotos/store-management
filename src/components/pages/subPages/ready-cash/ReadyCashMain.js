@@ -10,6 +10,7 @@ import FlatButton from "material-ui/FlatButton";
 import Toggle from "material-ui/Toggle";
 import TextField from "material-ui/TextField";
 import SnackBar from "../../../ui-element/SnackBar";
+import noInternet from "no-internet";
 
 import AppBarMain from "../../../ui-element/AppBarMain";
 import ReadyCashIncomeList from "./ReadyCashIncomeList";
@@ -44,7 +45,15 @@ class ReadyCashMain extends Component {
   };
   // End
   handleOpen = () => {
-    this.setState({ open: true });
+    noInternet().then(offline => {
+      if (offline) {
+        // no internet
+        this.showSnackBar("Failed ! No Internet Connection !");
+      } else {
+        // internet have
+        this.setState({ open: true });
+      }
+    });
   };
 
   handleClose = () => {
@@ -73,6 +82,7 @@ class ReadyCashMain extends Component {
           parseFloat(this.calculateExpensesTotal())
       )
     );
+    this.showSnackBar("Reset Data Successfull !");
   };
   calculateExpensesTotal = () => {
     let expensesTotal = 0;
@@ -218,7 +228,10 @@ class ReadyCashMain extends Component {
                       title="Income Section"
                       subtitle="Get all the list of today's Income"
                     />
-                    <ReadyCashIncomeList income={this.props.readyCash.income} />
+                    <ReadyCashIncomeList
+                      income={this.props.readyCash.income}
+                      showSnackBar={this.showSnackBar}
+                    />
                   </Card>
                 </div>
                 <div className="col-sm-6">
@@ -229,6 +242,7 @@ class ReadyCashMain extends Component {
                     />
                     <ReadyCashExpensesList
                       expenses={this.props.readyCash.expenses}
+                      showSnackBar={this.showSnackBar}
                     />
                   </Card>
                 </div>
