@@ -57,7 +57,7 @@ export const startAddPrevDue = (number, amount, id = "") => {
               });
           } else {
             return database
-              .ref("due")
+              .ref(`users/${uid}/due`)
               .push(due)
               .then(ref => {
                 dispatch(addPrevDue((id = ref.key), number, amount));
