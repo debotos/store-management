@@ -110,7 +110,7 @@ class InOut extends Component {
         });
       }
     }
-    console.log("sending values from in.js", values);
+
     //This will check if the object is empty
     if (JSON.stringify(values) === "{}") {
       return null;

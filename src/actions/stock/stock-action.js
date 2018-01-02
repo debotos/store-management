@@ -80,7 +80,12 @@ export const startSetStock = () => {
       .ref(`users/${uid}/stock`)
       .once("value")
       .then(snapshot => {
-        const stock = {};
+        const stock = {
+          aluminium: [],
+          glass: [],
+          ss: [],
+          others: []
+        };
         snapshot.forEach(childSnapshot => {
           let values = [];
           childSnapshot.forEach(singleSnapshot => {
