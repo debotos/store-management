@@ -108,7 +108,6 @@ class SS extends Component {
             floatingLabelText="Place the Length "
           />
           <TextField
-            type="number"
             value={this.state.thickness}
             onChange={this.handleThicknessChange}
             hintText="Thickness"

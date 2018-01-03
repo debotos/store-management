@@ -494,7 +494,7 @@ class HistoryTableGenerator extends Component {
       return (
         <div key={index} style={{ margin: "5px" }}>
           <Card
-            class="animated bounceIn"
+            className="animated bounceIn"
             style={{
               backgroundColor: "#CFD8DC"
             }}

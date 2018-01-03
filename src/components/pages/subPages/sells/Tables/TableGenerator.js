@@ -765,7 +765,7 @@ class TableGenerator extends Component {
         {/* Aluminium Table div start */}
         {this.haveAluminiumType() && (
           <Card
-            class="animated rollIn"
+            className="animated rollIn"
             style={{ margin: "10px", backgroundColor: "#CFD8DC" }}
           >
             <div>
@@ -1048,7 +1048,7 @@ class TableGenerator extends Component {
         {/* SS Table Row Start */}
         {this.haveSSType() && (
           <Card
-            class="animated rollIn"
+            className="animated rollIn"
             style={{ margin: "10px", backgroundColor: "#CFD8DC" }}
           >
             <div>
@@ -1192,7 +1192,7 @@ class TableGenerator extends Component {
         {/* Others Table Row Start */}
         {this.haveOthersType() && (
           <Card
-            class="animated rollIn"
+            className="animated rollIn"
             style={{ margin: "10px", backgroundColor: "#CFD8DC" }}
           >
             <div>

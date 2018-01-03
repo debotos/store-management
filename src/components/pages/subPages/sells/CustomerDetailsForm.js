@@ -363,7 +363,7 @@ class CustomerDetailsForm extends Component {
               onClick={this.handleReset}
             />
             <FlatButton
-              class="animated infinite tada"
+              className="animated infinite tada"
               disabled={
                 this.state.name &&
                 this.state.number &&

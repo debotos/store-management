@@ -9,6 +9,7 @@ import Dialog from "material-ui/Dialog";
 import moment from "moment";
 import SvgIcon from "material-ui/SvgIcon";
 import noInternet from "no-internet";
+import AutoComplete from "material-ui/AutoComplete";
 
 import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
 import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
@@ -142,6 +143,11 @@ class Form extends Component {
       });
     }
   };
+  handleUpdateInput = value => {
+    // this.setState({
+    //   dataSource: [value, value + value, value + value + value]
+    // });
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -153,7 +159,10 @@ class Form extends Component {
       address: "",
       deposit: "",
       details: "",
-      bill: ""
+      bill: "",
+      dataSource: this.props.due.map(singleItem => {
+        return singleItem.number;
+      })
     };
   }
   finalWork = () => {
@@ -256,8 +265,10 @@ class Form extends Component {
             hintText="Name here"
             floatingLabelText="Place the Customer Name "
           />
-          <TextField
+          <AutoComplete
             type="number"
+            onUpdateInput={this.handleUpdateInput}
+            dataSource={this.state.dataSource}
             value={this.state.number}
             onChange={this.handleNumber}
             hintText="Phone Number"

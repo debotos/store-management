@@ -18,7 +18,7 @@ const renderTables = tables => {
         aluminiumTables.push({
           style: "tableDesign",
           table: {
-            widths: [17, "*", "*", 40, 40, 45, 45, 40, "*"],
+            widths: [17, "*", "*", 40, 38, 45, 45, 53, "*"],
             headerRows: 2,
             dontBreakRows: true,
             keepWithHeaderRows: 1,
@@ -50,7 +50,7 @@ const renderTables = tables => {
         ssTables.push({
           style: "tableDesign",
           table: {
-            widths: [17, "*", "*", 55, 40, 45, 40, "*"],
+            widths: [17, "*", "*", 55, 40, 45, 53, "*"],
             headerRows: 2,
             dontBreakRows: true,
             keepWithHeaderRows: 1,
@@ -87,16 +87,13 @@ const getCompanyPhoneNo = storeInfo => {
 };
 const friendlyDiscountRender = customer => {
   if (parseFloat(customer.allTotal.finalFriendlyDiscount, 10) > 0) {
-    return [
-      "- " +
-        numeral(parseFloat(customer.allTotal.finalFriendlyDiscount)).format(
-          "0,0.00"
-        ),
-      "---------------------------------",
-      "= " + numeral(parseFloat(customer.allTotal.finalTotal)).format("0,0.00")
-    ];
+    return ` - ${numeral(
+      parseFloat(customer.allTotal.finalFriendlyDiscount)
+    ).format("0,0.00")} Taka = ${numeral(
+      parseFloat(customer.allTotal.finalTotal)
+    ).format("0,0.00")} Taka`;
   } else {
-    return {};
+    return "";
   }
 };
 function GENERATE_PDF(data, date = null) {
@@ -116,31 +113,47 @@ function GENERATE_PDF(data, date = null) {
     },
     content: [
       { text: storeInfo.name, style: "header", alignment: "center" },
-
+      {
+        text:
+          "For All kinds of - Glass, SS, Pipe, Thai Aluminium, False Celling, Accessories",
+        alignment: "center",
+        fontSize: 8,
+        bold: true,
+        margin: [0, -4, 0, 0]
+      },
       {
         text: storeInfo.address + " |" + getCompanyPhoneNo(storeInfo),
-        alignment: "center"
+        alignment: "center",
+        bold: true,
+        fontSize: 10
       },
       { text: "\n" },
 
-      { text: "Customer Details:\n", bold: true },
       {
+        text: "Customer Details:\n",
+        bold: true,
+        fontSize: 10,
+        margin: [0, -5, 0, 0]
+      },
+      {
+        fontSize: 10,
         columns: [
           {
             ul: [
-              "Name: " + customer.name,
-              "Phone Number: " + customer.number,
-              "E-mail: " + customer.mail,
+              "Name: " + customer.name + ", Phone: " + customer.number,
+              customer.mail && "E-mail: " + customer.mail,
               "Address: " + customer.address
             ]
           },
           {
+            fontSize: 10,
+            margin: [0, -5, 0, 0],
             type: "none",
             ul: [
               {
                 text: "Memo No. " + memoNumber,
                 italics: true,
-                fontSize: 16,
+                fontSize: 12,
                 bold: true,
                 alignment: "right"
               },
@@ -152,51 +165,53 @@ function GENERATE_PDF(data, date = null) {
           }
         ]
       },
-
-      { text: "\n\n" },
       // I have to create a function that will render tables
       renderTables(tables)[0], // Aluminium
       renderTables(tables)[1], // Glass
       renderTables(tables)[2], //SS
       renderTables(tables)[3], //Other
-      { text: "\n" },
       {
         alignment: "right",
+        fontSize: 10,
         type: "none",
         ul: [
           "All Tables Total = " +
-            numeral(parseFloat(customer.allTotal.total)).format("0,0.00"),
-          friendlyDiscountRender(customer),
+            numeral(parseFloat(customer.allTotal.total)).format("0,0.00") +
+            " Taka" +
+            friendlyDiscountRender(customer),
+
           {
             text:
               "Previous Due = " +
-              numeral(parseFloat(customer.prevDue)).format("0,0.00"),
+              numeral(parseFloat(customer.prevDue)).format("0,0.00") +
+              " Taka" +
+              " | " +
+              "All Tables Total With Previous Due = " +
+              numeral(parseFloat(customer.totalWithDue)).format("0,0.00") +
+              " Taka",
             italics: true,
             bold: true,
             color: "red"
           },
-          "All Tables Total With Previous Due = " +
-            numeral(parseFloat(customer.totalWithDue)).format("0,0.00"),
+
           {
             text:
               "Deposit Now = " +
-              numeral(parseFloat(customer.depositNow)).format("0,0.00"),
+              numeral(parseFloat(customer.depositNow)).format("0,0.00") +
+              " Taka" +
+              " | " +
+              "New Due From Now = " +
+              numeral(parseFloat(customer.newDue)).format("0,0.00") +
+              " Taka",
             italics: true,
             bold: true,
             color: "green"
-          },
-          {
-            text:
-              "New Due From Now = " +
-              numeral(parseFloat(customer.newDue)).format("0,0.00"),
-            italics: true,
-            bold: true,
-            color: "red"
           }
         ]
       },
-      { text: "\n\n" },
+      { text: "\n" },
       {
+        fontSize: 10,
         columns: [
           {
             type: "none",
@@ -223,9 +238,9 @@ function GENERATE_PDF(data, date = null) {
     ],
     styles: {
       header: {
-        fontSize: 30,
+        fontSize: 25,
         bold: true,
-        margin: [0, 0, 0, 10]
+        margin: [0, -20, 0, 3] // [Left, Top, Right, Bottom]
       },
       subheader: {
         fontSize: 16,
@@ -233,11 +248,12 @@ function GENERATE_PDF(data, date = null) {
         margin: [0, 10, 0, 5]
       },
       tableDesign: {
-        margin: [0, 5, 0, 15]
+        fontSize: 8,
+        margin: [0, 5, 0, 5]
       },
       tableHeader: {
         bold: true,
-        fontSize: 13,
+        fontSize: 10,
         color: "black"
       }
     },
@@ -320,28 +336,15 @@ const renderAluminiumContent = sellingItems => {
     ];
     Content.push(item);
   });
-  Content.push([
-    {
-      text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
-        "0,0.00"
-      ),
-      bold: true,
-      colSpan: 9,
-      alignment: "right"
-    },
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {}
-  ]);
-  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+  if (
+    parseFloat(sellingItems.attribute.atLastTotalAll) !==
+    parseFloat(sellingItems.attribute.allCellTotal)
+  ) {
     Content.push([
       {
-        text: "No Discount in (%)",
+        text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
+          "0,0.00"
+        ),
         bold: true,
         colSpan: 9,
         alignment: "right"
@@ -355,6 +358,10 @@ const renderAluminiumContent = sellingItems => {
       {},
       {}
     ]);
+  }
+
+  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+    // Do Nothing
   } else {
     Content.push([
       {
@@ -406,7 +413,7 @@ const renderAluminiumContent = sellingItems => {
     {
       text: `Final Amount = ${numeral(
         parseFloat(sellingItems.attribute.atLastTotalAll)
-      ).format("0,0.00")}`,
+      ).format("0,0.00")} Taka`,
       bold: true,
       color: "#006A4E",
       colSpan: 9,
@@ -452,24 +459,15 @@ const renderGlassContent = sellingItems => {
     ];
     Content.push(item);
   });
-  Content.push([
-    {
-      text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
-        "0,0.00"
-      ),
-      bold: true,
-      colSpan: 5,
-      alignment: "right"
-    },
-    {},
-    {},
-    {},
-    {}
-  ]);
-  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+  if (
+    parseFloat(sellingItems.attribute.atLastTotalAll) !==
+    parseFloat(sellingItems.attribute.allCellTotal)
+  ) {
     Content.push([
       {
-        text: "No Discount in (%)",
+        text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
+          "0,0.00"
+        ),
         bold: true,
         colSpan: 5,
         alignment: "right"
@@ -479,6 +477,10 @@ const renderGlassContent = sellingItems => {
       {},
       {}
     ]);
+  }
+
+  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+    // Do Nothing
   } else {
     Content.push([
       {
@@ -521,7 +523,7 @@ const renderGlassContent = sellingItems => {
     {
       text: `Final Amount = ${numeral(
         parseFloat(sellingItems.attribute.atLastTotalAll)
-      ).format("0,0.00")}`,
+      ).format("0,0.00")} Taka`,
       bold: true,
       color: "#006A4E",
       colSpan: 5,
@@ -577,27 +579,15 @@ const renderSSContent = sellingItems => {
     ];
     Content.push(item);
   });
-  Content.push([
-    {
-      text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
-        "0,0.00"
-      ),
-      bold: true,
-      colSpan: 8,
-      alignment: "right"
-    },
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {}
-  ]);
-  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+  if (
+    parseFloat(sellingItems.attribute.atLastTotalAll) !==
+    parseFloat(sellingItems.attribute.allCellTotal)
+  ) {
     Content.push([
       {
-        text: "No Discount in (%)",
+        text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
+          "0,0.00"
+        ),
         bold: true,
         colSpan: 8,
         alignment: "right"
@@ -610,6 +600,10 @@ const renderSSContent = sellingItems => {
       {},
       {}
     ]);
+  }
+
+  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+    // Do Nothing
   } else {
     Content.push([
       {
@@ -658,7 +652,7 @@ const renderSSContent = sellingItems => {
     {
       text: `Final Amount = ${numeral(
         parseFloat(sellingItems.attribute.atLastTotalAll)
-      ).format("0,0.00")}`,
+      ).format("0,0.00")} Taka`,
       bold: true,
       color: "#006A4E",
       colSpan: 8,
@@ -676,7 +670,7 @@ const renderSSContent = sellingItems => {
 };
 
 const renderOthersContent = sellingItems => {
-  let TableHeader = ["ID", "Item", "SFT", "Rate", "Total"];
+  let TableHeader = ["ID", "Item", "pc./ft/pkt", "Rate", "Total"];
   let Content = [
     [
       {
@@ -702,24 +696,15 @@ const renderOthersContent = sellingItems => {
     ];
     Content.push(item);
   });
-  Content.push([
-    {
-      text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
-        "0,0.00"
-      ),
-      bold: true,
-      colSpan: 5,
-      alignment: "right"
-    },
-    {},
-    {},
-    {},
-    {}
-  ]);
-  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+  if (
+    parseFloat(sellingItems.attribute.atLastTotalAll) !==
+    parseFloat(sellingItems.attribute.allCellTotal)
+  ) {
     Content.push([
       {
-        text: "No Discount in (%)",
+        text: numeral(parseFloat(sellingItems.attribute.allCellTotal)).format(
+          "0,0.00"
+        ),
         bold: true,
         colSpan: 5,
         alignment: "right"
@@ -729,6 +714,10 @@ const renderOthersContent = sellingItems => {
       {},
       {}
     ]);
+  }
+
+  if (parseInt(sellingItems.attribute.discount, 10) === 0) {
+    // Do nothing
   } else {
     Content.push([
       {
@@ -771,7 +760,7 @@ const renderOthersContent = sellingItems => {
     {
       text: `Final Amount = ${numeral(
         parseFloat(sellingItems.attribute.atLastTotalAll)
-      ).format("0,0.00")}`,
+      ).format("0,0.00")} Taka`,
       bold: true,
       color: "#006A4E",
       colSpan: 5,
