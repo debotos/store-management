@@ -26,16 +26,30 @@ function GENERATE_PDF(data, date = null) {
     },
     content: [
       { text: storeInfo.name, style: "header", alignment: "center" },
-
+      {
+        text:
+          "For All kinds of - Glass, SS, Pipe, Thai Aluminium, False Celling, Accessories",
+        alignment: "center",
+        fontSize: 8,
+        bold: true,
+        margin: [0, -4, 0, 0]
+      },
       {
         text: storeInfo.address + " |" + getCompanyPhoneNo(storeInfo),
-
+        fontSize: 10,
+        bold: true,
         alignment: "center"
       },
       { text: "\n" },
 
-      { text: "Customer Details:\n", bold: true },
       {
+        text: "Customer Details:\n",
+        bold: true,
+        fontSize: 10,
+        margin: [0, -5, 0, 0]
+      },
+      {
+        fontSize: 10,
         columns: [
           {
             ul: [
@@ -47,11 +61,13 @@ function GENERATE_PDF(data, date = null) {
           },
           {
             type: "none",
+            fontSize: 10,
+            margin: [0, -5, 0, 0],
             ul: [
               {
                 text: "Memo No. " + memoNumber,
                 italics: true,
-                fontSize: 16,
+                fontSize: 12,
                 bold: true,
                 alignment: "right"
               },
@@ -133,9 +149,9 @@ function GENERATE_PDF(data, date = null) {
     ],
     styles: {
       header: {
-        fontSize: 30,
+        fontSize: 25,
         bold: true,
-        margin: [0, 0, 0, 10]
+        margin: [0, -20, 0, 3] // [Left, Top, Right, Bottom]
       },
       subheader: {
         fontSize: 16,
@@ -143,11 +159,12 @@ function GENERATE_PDF(data, date = null) {
         margin: [0, 10, 0, 5]
       },
       tableDesign: {
-        margin: [0, 5, 0, 15]
+        fontSize: 8,
+        margin: [0, 5, 0, 5]
       },
       tableHeader: {
         bold: true,
-        fontSize: 13,
+        fontSize: 10,
         color: "black"
       }
     },

@@ -59,12 +59,12 @@ class Form extends Component {
       this.setState({ deposit });
     }
   };
-  handleNumber = event => {
-    const number = event.target.value;
-    if (!number || number.match(/^\d{1,}(\.\d{0})?$/)) {
-      this.setState({ number });
-    }
-  };
+  // handleNumber = event => {
+  //   const number = event.target.value;
+  //   if (!number || number.match(/^\d{1,}?$/)) {
+  //     this.setState({ number });
+  //   }
+  // };
   handleDetails = event => {
     const details = event.target.value;
     this.setState({ details });
@@ -144,9 +144,21 @@ class Form extends Component {
     }
   };
   handleUpdateInput = value => {
-    // this.setState({
-    //   dataSource: [value, value + value, value + value + value]
-    // });
+    this.setState({ number: value });
+  };
+  setOthersField = () => {
+    let info;
+    this.props.due.forEach(singleItem => {
+      if (singleItem.number == this.state.number) {
+        info = singleItem.info;
+      }
+    });
+    if (info) {
+      this.setState({ name: info.name });
+      this.setState({ number: info.number });
+      this.setState({ mail: info.mail });
+      this.setState({ address: info.address });
+    }
   };
   constructor(props) {
     super(props);
@@ -171,7 +183,12 @@ class Form extends Component {
     if (parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)) {
       let deposit = parseFloat(this.state.deposit).toFixed(2);
       let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
-      this.props.startAddPrevDue(this.state.number, newDue);
+      this.props.startAddPrevDue(this.state.number, newDue, {
+        name: this.state.name,
+        number: this.state.number,
+        mail: this.state.mail,
+        address: this.state.address
+      });
 
       const modelData = {
         allTotal: this.state.bill,
@@ -259,20 +276,20 @@ class Form extends Component {
             onChange={this.handleDetails}
           />
           <br />
+          <AutoComplete
+            type="number"
+            value={this.state.number}
+            hintText="Phone Number"
+            floatingLabelText="Phone (Unique) "
+            dataSource={this.state.dataSource}
+            onUpdateInput={this.handleUpdateInput}
+            onNewRequest={this.setOthersField}
+          />
           <TextField
             value={this.state.name}
             onChange={this.handleName}
             hintText="Name here"
             floatingLabelText="Place the Customer Name "
-          />
-          <AutoComplete
-            type="number"
-            onUpdateInput={this.handleUpdateInput}
-            dataSource={this.state.dataSource}
-            value={this.state.number}
-            onChange={this.handleNumber}
-            hintText="Phone Number"
-            floatingLabelText="Phone (Unique) "
           />
           <TextField
             type="number"
@@ -358,8 +375,8 @@ const mapDispatchToProps = dispatch => {
     startIncrementMemoNumber: () => {
       dispatch(startIncrementMemoNumber());
     },
-    startAddPrevDue: (number, amount) => {
-      dispatch(startAddPrevDue(number, amount));
+    startAddPrevDue: (number, amount, info) => {
+      dispatch(startAddPrevDue(number, amount, info));
     },
     startAddAnEntryToReadyCash: data => {
       dispatch(startAddAnEntryToReadyCash(data));

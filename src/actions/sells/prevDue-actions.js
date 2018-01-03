@@ -6,22 +6,23 @@ import {
   REMOVE_A_PREV_DUE
 } from "../constants";
 
-export const addPrevDue = (id, number, amount) => {
+export const addPrevDue = (id, number, amount, info) => {
   return {
     type: ADD_A_PREV_DUE,
     data: {
       id,
       number,
-      amount
+      amount,
+      info
     }
   };
 };
 
 // Server Side Code for adding a due [Firebase :)]
-export const startAddPrevDue = (number, amount, id = "") => {
+export const startAddPrevDue = (number, amount, info, id = "") => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
-    const due = { number, amount };
+    const due = { number, amount, info };
     let dueInDatabase = [];
     // Putting all id in an array
     database
@@ -52,7 +53,12 @@ export const startAddPrevDue = (number, amount, id = "") => {
               .update(due)
               .then(() => {
                 dispatch(
-                  addPrevDue((id = dueItemIdThatAlreadyExists), number, amount)
+                  addPrevDue(
+                    (id = dueItemIdThatAlreadyExists),
+                    number,
+                    amount,
+                    info
+                  )
                 );
               });
           } else {
@@ -60,7 +66,7 @@ export const startAddPrevDue = (number, amount, id = "") => {
               .ref(`users/${uid}/due`)
               .push(due)
               .then(ref => {
-                dispatch(addPrevDue((id = ref.key), number, amount));
+                dispatch(addPrevDue((id = ref.key), number, amount, info));
               });
           }
         } else {
@@ -68,7 +74,7 @@ export const startAddPrevDue = (number, amount, id = "") => {
             .ref(`users/${uid}/due`)
             .push(due)
             .then(ref => {
-              dispatch(addPrevDue((id = ref.key), number, amount));
+              dispatch(addPrevDue((id = ref.key), number, amount, info));
             });
         }
       });
@@ -76,7 +82,7 @@ export const startAddPrevDue = (number, amount, id = "") => {
 };
 
 // Update Due
-const updatePrevDue = (id, number, amount) => {
+const updatePrevDue = (id, number, amount, info) => {
   return {
     type: UPDATE_A_PREV_DUE,
     id,
@@ -85,23 +91,25 @@ const updatePrevDue = (id, number, amount) => {
     data: {
       id,
       amount,
-      number
+      number,
+      info
     }
   };
 };
 
-export const startUpdatePrevDue = (id, number, amount) => {
+export const startUpdatePrevDue = (id, number, amount, info) => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     const dueUpdates = {
       number,
-      amount
+      amount,
+      info
     };
     return database
       .ref(`users/${uid}/due/${id}`)
       .update(dueUpdates)
       .then(() => {
-        dispatch(updatePrevDue(id, number, amount));
+        dispatch(updatePrevDue(id, number, amount, info));
       });
   };
 };

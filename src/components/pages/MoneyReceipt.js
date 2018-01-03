@@ -88,7 +88,8 @@ class MoneyReceipt extends Component {
       this.props.startUpdatePrevDue(
         this.state.dueIdToRemove,
         this.state.dueNumberToUpdate,
-        this.state.newDewFromNow
+        this.state.newDewFromNow,
+        this.state.dueInfo
       );
       this.showSnackBar("Due Updated Successfully !");
     }
@@ -104,7 +105,8 @@ class MoneyReceipt extends Component {
       currentlySelectedDue: 0,
       dueIdToRemove: "",
       dueNumberToUpdate: "",
-      newDewFromNow: ""
+      newDewFromNow: "",
+      dueInfo: ""
     };
   }
 
@@ -174,6 +176,7 @@ class MoneyReceipt extends Component {
                               );
                             } else {
                               // internet have
+                              this.setState({ dueInfo: singleDue.info });
                               this.setState({ showEditDueModel: true });
                               this.setState({
                                 currentlySelectedDue: parseFloat(
@@ -274,8 +277,8 @@ const mapDispatchToProps = dispatch => {
     startRemovePrevDue: id => {
       dispatch(startRemovePrevDue(id));
     },
-    startUpdatePrevDue: (id, number, amount) => {
-      dispatch(startUpdatePrevDue(id, number, amount));
+    startUpdatePrevDue: (id, number, amount, info) => {
+      dispatch(startUpdatePrevDue(id, number, amount, info));
     }
   };
 };

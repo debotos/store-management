@@ -9,6 +9,7 @@ import numeral from "numeral";
 import moment from "moment";
 import SvgIcon from "material-ui/SvgIcon";
 import noInternet from "no-internet";
+import AutoComplete from "material-ui/AutoComplete";
 
 import GENERATE_PDF from "./PDF";
 import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
@@ -55,12 +56,12 @@ class CustomerDetailsForm extends Component {
       this.setState({ deposit });
     }
   };
-  handleNumber = event => {
-    const number = event.target.value;
-    if (!number || number.match(/^\d{1,}(\.\d{0})?$/)) {
-      this.setState({ number });
-    }
-  };
+  // handleNumber = event => {
+  //   const number = event.target.value;
+  //   if (!number || number.match(/^\d{1,}(\.\d{0})?$/)) {
+  //     this.setState({ number });
+  //   }
+  // };
   userAlreadyExists = () => {
     const searchingFor = this.state.number;
     let flag = false;
@@ -74,7 +75,23 @@ class CustomerDetailsForm extends Component {
     });
     return [flag, prevDue];
   };
-
+  handleUpdateInput = value => {
+    this.setState({ number: value });
+  };
+  setOthersField = () => {
+    let info;
+    this.props.due.forEach(singleItem => {
+      if (singleItem.number == this.state.number) {
+        info = singleItem.info;
+      }
+    });
+    if (info) {
+      this.setState({ name: info.name });
+      this.setState({ number: info.number });
+      this.setState({ mail: info.mail });
+      this.setState({ address: info.address });
+    }
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -85,7 +102,10 @@ class CustomerDetailsForm extends Component {
       address: "",
       deposit: "",
       allTotal: this.props.allTotal,
-      modelData: ""
+      modelData: "",
+      dataSource: this.props.due.map(singleItem => {
+        return singleItem.number;
+      })
     };
   }
   collectSellsData = () => ({
@@ -136,7 +156,12 @@ class CustomerDetailsForm extends Component {
               let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(
                 2
               );
-              this.props.startAddPrevDue(this.state.number, newDue);
+              this.props.startAddPrevDue(this.state.number, newDue, {
+                name: this.state.name,
+                number: this.state.number,
+                mail: this.state.mail,
+                address: this.state.address
+              });
               this.props.startAddSellUnderCustomerHistory(
                 this.collectSellsData()
               );
@@ -194,7 +219,12 @@ class CustomerDetailsForm extends Component {
           ) {
             let deposit = parseFloat(this.state.deposit).toFixed(2);
             let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
-            this.props.startAddPrevDue(this.state.number, newDue);
+            this.props.startAddPrevDue(this.state.number, newDue, {
+              name: this.state.name,
+              number: this.state.number,
+              mail: this.state.mail,
+              address: this.state.address
+            });
             // Saving for history
             this.props.startAddSellUnderCustomerHistory(
               this.collectSellsData()
@@ -310,20 +340,20 @@ class CustomerDetailsForm extends Component {
               <b>Input Customer Details :</b>
             </h4>
             {/* All Fields */}
-
+            <AutoComplete
+              type="number"
+              value={this.state.number}
+              hintText="Phone Number"
+              floatingLabelText="Phone (Unique) "
+              dataSource={this.state.dataSource}
+              onUpdateInput={this.handleUpdateInput}
+              onNewRequest={this.setOthersField}
+            />
             <TextField
               value={this.state.name}
               onChange={this.handleName}
               hintText="Name here"
               floatingLabelText="Place the Customer Name "
-            />
-
-            <TextField
-              type="number"
-              value={this.state.number}
-              onChange={this.handleNumber}
-              hintText="Phone Number"
-              floatingLabelText="Phone (Unique) "
             />
 
             <TextField
@@ -401,8 +431,8 @@ const mapDispatchToProps = dispatch => {
     startAddSellUnderCustomerHistory: data => {
       dispatch(startAddSellUnderCustomerHistory(data));
     },
-    startAddPrevDue: (number, amount) => {
-      dispatch(startAddPrevDue(number, amount));
+    startAddPrevDue: (number, amount, info) => {
+      dispatch(startAddPrevDue(number, amount, info));
     },
     startIncrementMemoNumber: () => {
       dispatch(startIncrementMemoNumber());
