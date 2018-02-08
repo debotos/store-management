@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
+import TextField from "material-ui/TextField";
 import RaisedButton from "material-ui/RaisedButton";
 import { connect } from "react-redux";
 import numeral from "numeral";
@@ -15,6 +16,8 @@ class Glass extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
+    this.setState({ confirmButton: true });
+    this.setState({ password: "" });
   };
   componentDidUpdate = () => {
     if (
@@ -27,6 +30,8 @@ class Glass extends Component {
     super(props);
     this.state = {
       open: false,
+      confirmButton: true,
+      password: "",
       glass: this.props.values
     };
   }
@@ -38,11 +43,24 @@ class Glass extends Component {
     );
     this.props.showSnackBar("Successfully Deleted !");
   };
-
+  handleConfirmPassword = event => {
+    let password = event.target.value;
+    this.setState({ password });
+    if (String(password) === String(this.props.storeInfo.password)) {
+      this.setState({ confirmButton: false });
+    } else {
+      this.setState({ confirmButton: true });
+    }
+  };
   render() {
     const actions = [
       <FlatButton label="No" primary={true} onClick={this.handleClose} />,
-      <FlatButton label="Yes" primary={true} onClick={this.handleDelete} />
+      <FlatButton
+        label="Yes"
+        secondary={true}
+        disabled={this.state.confirmButton}
+        onClick={this.handleDelete}
+      />
     ];
     return (
       <div>
@@ -95,14 +113,26 @@ class Glass extends Component {
           actions={actions}
           modal={false}
           open={this.state.open}
+          title="Warning! You want to Delete?"
           onRequestClose={this.handleClose}
         >
-          Warning! You want to Delete?
+          <TextField
+            type="password"
+            floatingLabelText="Comfirm The Password"
+            value={this.state.password}
+            onChange={this.handleConfirmPassword}
+          />
         </Dialog>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    storeInfo: state.storeInfo
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -112,4 +142,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Glass);
+export default connect(mapStateToProps, mapDispatchToProps)(Glass);

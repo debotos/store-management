@@ -31,6 +31,20 @@ class ExpenseListItem extends React.Component {
   //     this.setState(() => ({ expensesDate: createdAt }));
   //   }
   // };
+  handleConfirmPassword = event => {
+    let password = event.target.value;
+    this.setState({ password });
+    if (String(password) === String(this.props.storeInfo.password)) {
+      this.setState({ confirmButton: false });
+    } else {
+      this.setState({ confirmButton: true });
+    }
+  };
+  handleClose = () => {
+    this.setState({ open: false });
+    this.setState({ confirmButton: true });
+    this.setState({ password: "" });
+  };
   closeEditExpensesModel = () => {
     this.setState({ showEditExpensesModel: false });
   };
@@ -71,7 +85,11 @@ class ExpenseListItem extends React.Component {
       expensesAmount: amount ? amount.toString() : "",
       expensesDate: createdAt ? moment(createdAt) : moment(),
       expensesDetails: description ? description : "",
-      materialDate: null
+      materialDate: null,
+      confirmButton: true,
+      password: "",
+      open: false,
+      singleItem: ""
     };
   }
 
@@ -92,8 +110,20 @@ class ExpenseListItem extends React.Component {
     this.props.startEditExpense(this.state.id, expense);
     this.props.showSnackBar("Update Successful !");
   };
-
+  handleMainEditModel = () => {
+    this.handleClose();
+    this.setState({ showEditExpensesModel: true });
+  };
   render() {
+    const actions = [
+      <FlatButton label="Cancel" secondary={true} onClick={this.handleClose} />,
+      <FlatButton
+        label="Enter"
+        disabled={this.state.confirmButton}
+        primary={true}
+        onClick={this.handleMainEditModel}
+      />
+    ];
     const DefaultActionsOfAddExpensesModel = [
       <FlatButton label="Cancel" onClick={this.closeEditExpensesModel} />,
       <FlatButton
@@ -125,7 +155,7 @@ class ExpenseListItem extends React.Component {
       <div>
         <Card
           className="expenses-list-item"
-          onClick={() => this.setState({ showEditExpensesModel: true })}
+          onClick={() => this.setState({ open: true })}
         >
           <div className="list-item">
             <div>
@@ -200,14 +230,34 @@ class ExpenseListItem extends React.Component {
             </div>
           </div>
         </Dialog>
+        <Dialog
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          title="Password Please !"
+          onRequestClose={this.handleClose}
+        >
+          <TextField
+            type="password"
+            floatingLabelText="Enter Password To Edit"
+            value={this.state.password}
+            onChange={this.handleConfirmPassword}
+          />
+        </Dialog>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    storeInfo: state.storeInfo
+  };
+};
 
 const mapDispatchToProps = (dispatch, props) => ({
   startEditExpense: (id, expense) => dispatch(startEditExpense(id, expense)),
   startRemoveExpense: data => dispatch(startRemoveExpense(data))
 });
 
-export default connect(null, mapDispatchToProps)(ExpenseListItem);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseListItem);

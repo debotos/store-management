@@ -81,7 +81,7 @@ class CustomerDetailsForm extends Component {
   setOthersField = () => {
     let info;
     this.props.due.forEach(singleItem => {
-      if (singleItem.number == this.state.number) {
+      if (singleItem.number === this.state.number) {
         info = singleItem.info;
       }
     });

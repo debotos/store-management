@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   Table,
   TableBody,
-  TableFooter,
   TableHeader,
   TableHeaderColumn,
   TableRow,
@@ -822,77 +821,77 @@ class TableGenerator extends Component {
                 <TableBody displayRowCheckbox={false} showRowHover={true}>
                   {this.renderAluminiumTableRow()}
                 </TableBody>
-                <TableFooter>
-                  <TableRow
-                    style={{
-                      padding: 5,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <TableRowColumn>
-                      <Toggle
-                        style={{ marginTop: 8 }}
-                        defaultToggled={this.state.aluminiumDiscountToggle}
-                        onToggle={this.handleAluminiumDiscountToggle}
-                      />
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      {this.state.aluminiumDiscountToggle && (
-                        <div>
-                          <TextField
-                            style={{ marginBottom: 10 }}
-                            type="number"
-                            value={this.state.aluminiumDiscount}
-                            onChange={this.handleAluminiumDiscountChange}
-                            hintText="Discount (%)"
-                          />
-                        </div>
-                      )}
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      {this.state.aluminiumDiscountToggle && (
-                        <h3 style={{ marginTop: 8 }}>
-                          Discount ={" "}
-                          {this.calculateAluminiumSUM()[0] && (
-                            <b>
-                              {numeral(
-                                parseFloat(this.calculateAluminiumSUM()[0])
-                              ).format("0,0.00")}
-                            </b>
-                          )}
-                        </h3>
-                      )}
-                    </TableRowColumn>
-
-                    <TableRowColumn>
-                      <h3 style={{ marginTop: 8 }}>
-                        Result ={" "}
-                        {this.calculateAluminiumSUM()[3] !== 0 &&
-                        this.calculateAluminiumSUM()[3] ? (
+              </Table>
+              <div>
+                <div
+                  style={{
+                    padding: 5,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center"
+                  }}
+                >
+                  <div>
+                    <Toggle
+                      style={{ marginTop: 8 }}
+                      defaultToggled={this.state.aluminiumDiscountToggle}
+                      onToggle={this.handleAluminiumDiscountToggle}
+                    />
+                  </div>
+                  <div>
+                    {this.state.aluminiumDiscountToggle && (
+                      <div>
+                        <TextField
+                          style={{ marginBottom: 10, marginLeft: 10 }}
+                          type="number"
+                          value={this.state.aluminiumDiscount}
+                          onChange={this.handleAluminiumDiscountChange}
+                          hintText="Discount (%)"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    {this.state.aluminiumDiscountToggle && (
+                      <h3 style={{ marginTop: 8, marginLeft: 10 }}>
+                        Discount ={" "}
+                        {this.calculateAluminiumSUM()[0] && (
                           <b>
                             {numeral(
-                              parseFloat(this.calculateAluminiumSUM()[3])
+                              parseFloat(this.calculateAluminiumSUM()[0])
                             ).format("0,0.00")}
                           </b>
-                        ) : (
-                          <b style={{ color: "red" }}>?</b>
                         )}
                       </h3>
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <TextField
-                        style={{ marginBottom: 10 }}
-                        type="number"
-                        value={this.state.overideTotalSumOfAluminium}
-                        onChange={this.handleoverideTotalSumOfAluminium}
-                        hintText="Friendly Discount"
-                      />
-                    </TableRowColumn>
-                  </TableRow>
-                </TableFooter>
-              </Table>
+                    )}
+                  </div>
+
+                  <div>
+                    <h3 style={{ marginTop: 8, marginLeft: 10 }}>
+                      Result ={" "}
+                      {this.calculateAluminiumSUM()[3] !== 0 &&
+                      this.calculateAluminiumSUM()[3] ? (
+                        <b>
+                          {numeral(
+                            parseFloat(this.calculateAluminiumSUM()[3])
+                          ).format("0,0.00")}
+                        </b>
+                      ) : (
+                        <b style={{ color: "red" }}>?</b>
+                      )}
+                    </h3>
+                  </div>
+                  <div>
+                    <TextField
+                      style={{ marginBottom: 10, marginLeft: 10 }}
+                      type="number"
+                      value={this.state.overideTotalSumOfAluminium}
+                      onChange={this.handleoverideTotalSumOfAluminium}
+                      hintText="Friendly Discount"
+                    />
+                  </div>
+                </div>
+              </div>
               <div
                 style={{
                   textAlign: "center"
@@ -957,78 +956,81 @@ class TableGenerator extends Component {
                 <TableBody displayRowCheckbox={false} showRowHover={true}>
                   {this.renderGlassTableRow()}
                 </TableBody>
-                <TableFooter>
-                  <TableRow
-                    style={{
-                      padding: 5,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <TableRowColumn>
-                      <Toggle
-                        style={{ marginTop: 8 }}
-                        defaultToggled={this.state.glassDiscountToggle}
-                        onToggle={this.handleGlassDiscountToggle}
-                      />
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      {this.state.glassDiscountToggle && (
-                        <div>
-                          <TextField
-                            style={{ marginBottom: 10 }}
-                            type="number"
-                            value={this.state.glassDiscount}
-                            onChange={this.handleGlassDiscountChange}
-                            hintText="Discount (%)"
-                            className="table-footer-discount"
-                          />
-                        </div>
-                      )}
-                    </TableRowColumn>
+              </Table>
+              <div>
+                <div
+                  style={{
+                    padding: 5,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center"
+                  }}
+                >
+                  <div>
+                    <Toggle
+                      style={{ marginTop: 8 }}
+                      defaultToggled={this.state.glassDiscountToggle}
+                      onToggle={this.handleGlassDiscountToggle}
+                    />
+                  </div>
+                  <div>
+                    {this.state.glassDiscountToggle && (
+                      <div>
+                        <TextField
+                          style={{
+                            marginBottom: 10,
+                            marginLeft: 10
+                          }}
+                          type="number"
+                          value={this.state.glassDiscount}
+                          onChange={this.handleGlassDiscountChange}
+                          hintText="Discount (%)"
+                          className="table-footer-discount"
+                        />
+                      </div>
+                    )}
+                  </div>
 
-                    <TableRowColumn>
-                      {this.state.glassDiscountToggle && (
-                        <h3 style={{ marginTop: 8 }}>
-                          Discount ={" "}
-                          {this.calculateGlassSUM()[0] && (
-                            <b>
-                              {numeral(
-                                parseFloat(this.calculateGlassSUM()[0])
-                              ).format("0,0.00")}
-                            </b>
-                          )}
-                        </h3>
-                      )}
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <h3 style={{ marginTop: 8 }}>
-                        Result ={" "}
-                        {this.calculateGlassSUM()[3] !== 0 &&
-                        this.calculateGlassSUM()[3] ? (
+                  <div>
+                    {this.state.glassDiscountToggle && (
+                      <h3 style={{ marginTop: 8, marginLeft: 10 }}>
+                        Discount ={" "}
+                        {this.calculateGlassSUM()[0] && (
                           <b>
                             {numeral(
-                              parseFloat(this.calculateGlassSUM()[3])
+                              parseFloat(this.calculateGlassSUM()[0])
                             ).format("0,0.00")}
                           </b>
-                        ) : (
-                          <b style={{ color: "red" }}>?</b>
                         )}
                       </h3>
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <TextField
-                        style={{ marginBottom: 10 }}
-                        type="number"
-                        value={this.state.overideTotalSumOfGlass}
-                        onChange={this.handleoverideTotalSumOfGlass}
-                        hintText="Friendly Discount"
-                      />
-                    </TableRowColumn>
-                  </TableRow>
-                </TableFooter>
-              </Table>
+                    )}
+                  </div>
+                  <div>
+                    <h3 style={{ marginTop: 8, marginLeft: 10 }}>
+                      Result ={" "}
+                      {this.calculateGlassSUM()[3] !== 0 &&
+                      this.calculateGlassSUM()[3] ? (
+                        <b>
+                          {numeral(
+                            parseFloat(this.calculateGlassSUM()[3])
+                          ).format("0,0.00")}
+                        </b>
+                      ) : (
+                        <b style={{ color: "red" }}>?</b>
+                      )}
+                    </h3>
+                  </div>
+                  <div>
+                    <TextField
+                      style={{ marginBottom: 10, marginLeft: 10 }}
+                      type="number"
+                      value={this.state.overideTotalSumOfGlass}
+                      onChange={this.handleoverideTotalSumOfGlass}
+                      hintText="Friendly Discount"
+                    />
+                  </div>
+                </div>
+              </div>
               <div
                 style={{
                   textAlign: "center"
@@ -1102,77 +1104,77 @@ class TableGenerator extends Component {
                 <TableBody displayRowCheckbox={false} showRowHover={true}>
                   {this.renderSSTableRow()}
                 </TableBody>
-                <TableFooter>
-                  <TableRow
-                    style={{
-                      padding: 5,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <TableRowColumn>
-                      <Toggle
-                        style={{ marginTop: 8 }}
-                        defaultToggled={this.state.ssDiscountToggle}
-                        onToggle={this.handleSSDiscountToggle}
-                      />
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      {this.state.ssDiscountToggle && (
-                        <div>
-                          <TextField
-                            style={{ marginBottom: 10 }}
-                            type="number"
-                            value={this.state.ssDiscount}
-                            onChange={this.handleSSDiscountChange}
-                            hintText="Discount (%)"
-                            className="table-footer-discount"
-                          />
-                        </div>
-                      )}
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      {this.state.ssDiscountToggle && (
-                        <h3 style={{ marginTop: 8 }}>
-                          Discount ={" "}
-                          {this.calculateSSSUM()[0] && (
-                            <b>
-                              {numeral(
-                                parseFloat(this.calculateSSSUM()[0])
-                              ).format("0,0.00")}
-                            </b>
-                          )}
-                        </h3>
-                      )}
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <h3 style={{ marginTop: 8 }}>
-                        Result ={" "}
-                        {this.calculateSSSUM()[3] !== 0 &&
-                        this.calculateSSSUM()[3] ? (
+              </Table>
+              <div>
+                <div
+                  style={{
+                    padding: 5,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center"
+                  }}
+                >
+                  <div>
+                    <Toggle
+                      style={{ marginTop: 8 }}
+                      defaultToggled={this.state.ssDiscountToggle}
+                      onToggle={this.handleSSDiscountToggle}
+                    />
+                  </div>
+                  <div>
+                    {this.state.ssDiscountToggle && (
+                      <div>
+                        <TextField
+                          style={{ marginBottom: 10, marginLeft: 10 }}
+                          type="number"
+                          value={this.state.ssDiscount}
+                          onChange={this.handleSSDiscountChange}
+                          hintText="Discount (%)"
+                          className="table-footer-discount"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    {this.state.ssDiscountToggle && (
+                      <h3 style={{ marginTop: 8, marginLeft: 10 }}>
+                        Discount ={" "}
+                        {this.calculateSSSUM()[0] && (
                           <b>
                             {numeral(
-                              parseFloat(this.calculateSSSUM()[3])
+                              parseFloat(this.calculateSSSUM()[0])
                             ).format("0,0.00")}
                           </b>
-                        ) : (
-                          <b style={{ color: "red" }}>?</b>
                         )}
                       </h3>
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <TextField
-                        style={{ marginBottom: 10 }}
-                        type="number"
-                        value={this.state.overideTotalSumOfSS}
-                        onChange={this.handleoverideTotalSumOfSS}
-                        hintText="Friendly Discount"
-                      />
-                    </TableRowColumn>
-                  </TableRow>
-                </TableFooter>
-              </Table>
+                    )}
+                  </div>
+                  <div>
+                    <h3 style={{ marginTop: 8, marginLeft: 10 }}>
+                      Result ={" "}
+                      {this.calculateSSSUM()[3] !== 0 &&
+                      this.calculateSSSUM()[3] ? (
+                        <b>
+                          {numeral(parseFloat(this.calculateSSSUM()[3])).format(
+                            "0,0.00"
+                          )}
+                        </b>
+                      ) : (
+                        <b style={{ color: "red" }}>?</b>
+                      )}
+                    </h3>
+                  </div>
+                  <div>
+                    <TextField
+                      style={{ marginBottom: 10, marginLeft: 10 }}
+                      type="number"
+                      value={this.state.overideTotalSumOfSS}
+                      onChange={this.handleoverideTotalSumOfSS}
+                      hintText="Friendly Discount"
+                    />
+                  </div>
+                </div>
+              </div>
               <div
                 style={{
                   textAlign: "center"
@@ -1237,77 +1239,78 @@ class TableGenerator extends Component {
                 <TableBody displayRowCheckbox={false} showRowHover={true}>
                   {this.renderOthersTableRow()}
                 </TableBody>
-                <TableFooter>
-                  <TableRow
-                    style={{
-                      padding: 5,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <TableRowColumn>
-                      <Toggle
-                        style={{ marginTop: 8 }}
-                        defaultToggled={this.state.othersDiscountToggle}
-                        onToggle={this.handleOthersDiscountToggle}
-                      />
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      {this.state.othersDiscountToggle && (
-                        <div>
-                          <TextField
-                            style={{ marginBottom: 10 }}
-                            type="number"
-                            value={this.state.othersDiscount}
-                            onChange={this.handleOthersDiscountChange}
-                            hintText="Discount (%)"
-                            className="table-footer-discount"
-                          />
-                        </div>
-                      )}
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      {this.state.othersDiscountToggle && (
-                        <h3 style={{ marginTop: 8 }}>
-                          Discount ={" "}
-                          {this.calculateOthersSUM()[0] && (
-                            <b>
-                              {numeral(
-                                parseFloat(this.calculateOthersSUM()[0])
-                              ).format("0,0.00")}
-                            </b>
-                          )}
-                        </h3>
-                      )}
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <h3 style={{ marginTop: 8 }}>
-                        Result ={" "}
-                        {this.calculateOthersSUM()[3] !== 0 &&
-                        this.calculateOthersSUM()[3] ? (
+              </Table>
+              {/* Footer of the table */}
+              <div>
+                <div
+                  style={{
+                    padding: 5,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center"
+                  }}
+                >
+                  <div>
+                    <Toggle
+                      style={{ marginTop: 8 }}
+                      defaultToggled={this.state.othersDiscountToggle}
+                      onToggle={this.handleOthersDiscountToggle}
+                    />
+                  </div>
+                  <div>
+                    {this.state.othersDiscountToggle && (
+                      <div>
+                        <TextField
+                          style={{ marginBottom: 10, marginLeft: 10 }}
+                          type="number"
+                          value={this.state.othersDiscount}
+                          onChange={this.handleOthersDiscountChange}
+                          hintText="Discount (%)"
+                          className="table-footer-discount"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    {this.state.othersDiscountToggle && (
+                      <h3 style={{ marginTop: 8, marginLeft: 10 }}>
+                        Discount ={" "}
+                        {this.calculateOthersSUM()[0] && (
                           <b>
                             {numeral(
-                              parseFloat(this.calculateOthersSUM()[3])
+                              parseFloat(this.calculateOthersSUM()[0])
                             ).format("0,0.00")}
                           </b>
-                        ) : (
-                          <b style={{ color: "red" }}>?</b>
                         )}
                       </h3>
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <TextField
-                        style={{ marginBottom: 10 }}
-                        type="number"
-                        value={this.state.overideTotalSumOfOthers}
-                        onChange={this.handleoverideTotalSumOfOthers}
-                        hintText="Friendly Discount"
-                      />
-                    </TableRowColumn>
-                  </TableRow>
-                </TableFooter>
-              </Table>
+                    )}
+                  </div>
+                  <div>
+                    <h3 style={{ marginTop: 8, marginLeft: 10 }}>
+                      Result ={" "}
+                      {this.calculateOthersSUM()[3] !== 0 &&
+                      this.calculateOthersSUM()[3] ? (
+                        <b>
+                          {numeral(
+                            parseFloat(this.calculateOthersSUM()[3])
+                          ).format("0,0.00")}
+                        </b>
+                      ) : (
+                        <b style={{ color: "red" }}>?</b>
+                      )}
+                    </h3>
+                  </div>
+                  <div>
+                    <TextField
+                      style={{ marginBottom: 10, marginLeft: 10 }}
+                      type="number"
+                      value={this.state.overideTotalSumOfOthers}
+                      onChange={this.handleoverideTotalSumOfOthers}
+                      hintText="Friendly Discount"
+                    />
+                  </div>
+                </div>
+              </div>
               <div
                 style={{
                   textAlign: "center"

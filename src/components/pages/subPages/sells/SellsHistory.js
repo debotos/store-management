@@ -5,6 +5,7 @@ import { Card } from "material-ui/Card";
 import { connect } from "react-redux";
 import RaisedButton from "material-ui/RaisedButton";
 import Dialog from "material-ui/Dialog";
+import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
 
 import HistoryTableGenerator from "./HistoryTable/HistoryTableGenerator";
@@ -36,11 +37,24 @@ class SellsHistory extends Component {
 
   handleFullHistoryDeleteConfirmDialogClose = () => {
     this.setState({ fullHistoryDeleteConfirm: false });
+    this.setState({ confirmButton: true });
+    this.setState({ password: "" });
+  };
+  handleConfirmPassword = event => {
+    let password = event.target.value;
+    this.setState({ password });
+    if (String(password) === String(this.props.storeInfo.password)) {
+      this.setState({ confirmButton: false });
+    } else {
+      this.setState({ confirmButton: true });
+    }
   };
   constructor(props) {
     super(props);
     this.state = {
       selectValue: null,
+      confirmButton: true,
+      password: "",
       fullHistoryDeleteConfirm: false,
       idOfTheVictiom: "",
       showDeleteButton: false
@@ -118,6 +132,7 @@ class SellsHistory extends Component {
       <FlatButton
         label="Delete"
         secondary={true}
+        disabled={this.state.confirmButton}
         onClick={this.handleAllDelete}
       />
     ];
@@ -156,14 +171,16 @@ class SellsHistory extends Component {
           <Dialog
             actions={fullHistoryDeleteConfirmModelActions}
             modal={false}
+            title="Are you Sure ? Removing All Sells History Of this Customer !!"
             open={this.state.fullHistoryDeleteConfirm}
             onRequestClose={this.handleFullHistoryDeleteConfirmDialogClose}
           >
-            <strong>
-              <span style={{ color: "red" }}>
-                Are you Sure ? Removing All Sells History Of this Customer !!
-              </span>
-            </strong>
+            <TextField
+              type="password"
+              floatingLabelText="Comfirm The Password"
+              value={this.state.password}
+              onChange={this.handleConfirmPassword}
+            />
           </Dialog>
         </div>
       </div>
@@ -173,7 +190,8 @@ class SellsHistory extends Component {
 
 const mapStateToProps = state => {
   return {
-    sellsHistory: state.sellsHistory
+    sellsHistory: state.sellsHistory,
+    storeInfo: state.storeInfo
   };
 };
 

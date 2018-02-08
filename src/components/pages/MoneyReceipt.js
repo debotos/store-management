@@ -25,12 +25,33 @@ const customDialogContentStyle = {
 };
 
 class MoneyReceipt extends Component {
-  // Dialog
-  closeEditDueModel = () => {
-    this.setState({ showEditDueModel: false });
-    this.setState({ dueDepositAmount: "" });
-    this.setState({ newDewFromNow: "" });
+  handleConfirmPassword = event => {
+    let password = event.target.value;
+    this.setState({ password });
+    if (String(password) === String(this.props.storeInfo.password)) {
+      this.setState({ confirmButton: false });
+    } else {
+      this.setState({ confirmButton: true });
+    }
   };
+  handleOpen = singleItem => {
+    noInternet().then(offline => {
+      if (offline) {
+        // no internet
+        this.showSnackBar("Failed ! No Internet Connection !");
+      } else {
+        // internet have
+        this.setState({ singleItem });
+        this.setState({ open: true });
+      }
+    });
+  };
+  handleClose = () => {
+    this.setState({ open: false });
+    this.setState({ confirmButton: true });
+    this.setState({ password: "" });
+  };
+  // Dialog
   showEditDueModel = () => {
     this.setState({ showEditDueModel: true });
   };
@@ -106,11 +127,54 @@ class MoneyReceipt extends Component {
       dueIdToRemove: "",
       dueNumberToUpdate: "",
       newDewFromNow: "",
-      dueInfo: ""
+      dueInfo: "",
+      confirmButton: true,
+      password: "",
+      open: false,
+      singleItem: ""
     };
   }
+  handleOpen = singleDue => {
+    noInternet().then(offline => {
+      if (offline) {
+        // no internet
+        this.showSnackBar("Failed ! No Internet Connection !");
+      } else {
+        // internet have
+        this.setState({ dueInfo: singleDue.info });
+        this.setState({
+          currentlySelectedDue: parseFloat(singleDue.amount).toFixed(2)
+        });
+        this.setState({ dueIdToRemove: singleDue.id });
+        this.setState({
+          dueNumberToUpdate: singleDue.number
+        });
+        this.setState({ open: true });
+      }
+    });
+  };
+
+  closeEditDueModel = () => {
+    this.setState({ showEditDueModel: false });
+    this.setState({ dueDepositAmount: "" });
+    this.setState({ newDewFromNow: "" });
+  };
+
+  handleMainEditModel = () => {
+    this.handleClose();
+    this.setState({ showEditDueModel: true });
+  };
 
   render() {
+    const actions = [
+      <FlatButton label="Cancel" secondary={true} onClick={this.handleClose} />,
+      <FlatButton
+        label="Enter"
+        disabled={this.state.confirmButton}
+        primary={true}
+        onClick={this.handleMainEditModel}
+      />
+    ];
     const DefaultActionsOfEditDueModel = [
       <FlatButton
         label="Delete"
@@ -166,30 +230,7 @@ class MoneyReceipt extends Component {
                     <div key={index} className="animated rollIn">
                       <Card
                         className="due-list-item"
-                        onClick={() => {
-                          noInternet().then(offline => {
-                            if (offline) {
-                              // no internet
-
-                              this.showSnackBar(
-                                "Failed ! No Internet Connection !"
-                              );
-                            } else {
-                              // internet have
-                              this.setState({ dueInfo: singleDue.info });
-                              this.setState({ showEditDueModel: true });
-                              this.setState({
-                                currentlySelectedDue: parseFloat(
-                                  singleDue.amount
-                                ).toFixed(2)
-                              });
-                              this.setState({ dueIdToRemove: singleDue.id });
-                              this.setState({
-                                dueNumberToUpdate: singleDue.number
-                              });
-                            }
-                          });
-                        }}
+                        onClick={() => this.handleOpen(singleDue)}
                       >
                         <div className="list-item">
                           <div>
@@ -252,6 +293,20 @@ class MoneyReceipt extends Component {
             />
           </div>
         </Dialog>
+        <Dialog
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          title="Password Please !"
+          onRequestClose={this.handleClose}
+        >
+          <TextField
+            type="password"
+            floatingLabelText="Enter Password To Edit"
+            value={this.state.password}
+            onChange={this.handleConfirmPassword}
+          />
+        </Dialog>
         <SnackBar
           snackBar={this.state.snackBar}
           snackBarMessage={this.state.snackBarMessage}
@@ -265,7 +320,8 @@ class MoneyReceipt extends Component {
 
 const mapStateToProps = state => {
   return {
-    allDue: dueFilter(state.due, state.dueFilter)
+    allDue: dueFilter(state.due, state.dueFilter),
+    storeInfo: state.storeInfo
   };
 };
 

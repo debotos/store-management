@@ -11,6 +11,22 @@ const getCompanyPhoneNo = storeInfo => {
   return phone;
 };
 
+const renderPrevDue = prevDue => {
+  if (parseInt(prevDue, 10) === 0) {
+    return " [paid]";
+  } else {
+    return numeral(parseFloat(prevDue)).format("0,0.00");
+  }
+};
+
+const renderNewDue = newDue => {
+  if (parseInt(newDue, 10) === 0) {
+    return " [paid]";
+  } else {
+    return numeral(parseFloat(newDue)).format("0,0.00");
+  }
+};
+
 function GENERATE_PDF(data, date = null) {
   let { details, customer, memoNumber, storeInfo } = data;
   console.log("====================================");
@@ -53,9 +69,8 @@ function GENERATE_PDF(data, date = null) {
         columns: [
           {
             ul: [
-              "Name: " + customer.name,
-              "Phone Number: " + customer.number,
-              "E-mail: " + customer.mail,
+              "Name: " + customer.name + ", Phone: " + customer.number,
+              customer.mail && "E-mail: " + customer.mail,
               "Address: " + customer.address
             ]
           },
@@ -94,9 +109,7 @@ function GENERATE_PDF(data, date = null) {
           "Bill = " + numeral(parseFloat(customer.bill)).format("0,0.00"),
 
           {
-            text:
-              "Previous Due = " +
-              numeral(parseFloat(customer.prevDue)).format("0,0.00"),
+            text: "Previous Due = " + renderPrevDue(customer.prevDue),
             italics: true,
             bold: true,
             color: "red"
@@ -112,9 +125,7 @@ function GENERATE_PDF(data, date = null) {
             color: "green"
           },
           {
-            text:
-              "New Due From Now = " +
-              numeral(parseFloat(customer.newDue)).format("0,0.00"),
+            text: "New Due From Now = " + renderNewDue(customer.newDue),
             italics: true,
             bold: true,
             color: "red"

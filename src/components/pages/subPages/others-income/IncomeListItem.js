@@ -30,6 +30,20 @@ class IncomeListItem extends React.Component {
   //     this.setState(() => ({ incomeDate: createdAt }));
   //   }
   // };
+  handleConfirmPassword = event => {
+    let password = event.target.value;
+    this.setState({ password });
+    if (String(password) === String(this.props.storeInfo.password)) {
+      this.setState({ confirmButton: false });
+    } else {
+      this.setState({ confirmButton: true });
+    }
+  };
+  handleClose = () => {
+    this.setState({ open: false });
+    this.setState({ confirmButton: true });
+    this.setState({ password: "" });
+  };
   closeEditIncomeModel = () => {
     this.setState({ showEditIncomeModel: false });
   };
@@ -70,7 +84,11 @@ class IncomeListItem extends React.Component {
       incomeAmount: amount ? amount.toString() : "",
       incomeDate: createdAt ? moment(createdAt) : moment(),
       incomeDetails: description ? description : "",
-      materialDate: null
+      materialDate: null,
+      confirmButton: true,
+      password: "",
+      open: false,
+      singleItem: ""
     };
   }
 
@@ -92,7 +110,21 @@ class IncomeListItem extends React.Component {
     this.props.showSnackBar("Update Successful !");
   };
 
+  handleMainEditModel = () => {
+    this.handleClose();
+    this.setState({ showEditIncomeModel: true });
+  };
+
   render() {
+    const actions = [
+      <FlatButton label="Cancel" secondary={true} onClick={this.handleClose} />,
+      <FlatButton
+        label="Enter"
+        disabled={this.state.confirmButton}
+        primary={true}
+        onClick={this.handleMainEditModel}
+      />
+    ];
     const DefaultActionsOfAddIncomeModel = [
       <FlatButton label="Cancel" onClick={this.closeEditIncomeModel} />,
       <FlatButton
@@ -124,7 +156,7 @@ class IncomeListItem extends React.Component {
       <div>
         <Card
           className="income-list-item"
-          onClick={() => this.setState({ showEditIncomeModel: true })}
+          onClick={() => this.setState({ open: true })}
         >
           <div className="list-item">
             <div>
@@ -199,14 +231,32 @@ class IncomeListItem extends React.Component {
             </div>
           </div>
         </Dialog>
+        <Dialog
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          title="Password Please !"
+          onRequestClose={this.handleClose}
+        >
+          <TextField
+            type="password"
+            floatingLabelText="Enter Password To Edit"
+            value={this.state.password}
+            onChange={this.handleConfirmPassword}
+          />
+        </Dialog>
       </div>
     );
   }
 }
-
+const mapStateToProps = state => {
+  return {
+    storeInfo: state.storeInfo
+  };
+};
 const mapDispatchToProps = (dispatch, props) => ({
   startEditIncome: (id, income) => dispatch(startEditIncome(id, income)),
   startRemoveIncome: data => dispatch(startRemoveIncome(data))
 });
 
-export default connect(null, mapDispatchToProps)(IncomeListItem);
+export default connect(mapStateToProps, mapDispatchToProps)(IncomeListItem);

@@ -58,6 +58,8 @@ class ReadyCashMain extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
+    this.setState({ confirmButton: true });
+    this.setState({ password: "" });
   };
 
   constructor(props) {
@@ -65,6 +67,8 @@ class ReadyCashMain extends Component {
     this.state = {
       snackBar: false,
       snackBarMessage: "",
+      confirmButton: true,
+      password: "",
       open: false,
       showEditReadyCash: false,
       overrideReadyCashAmount: this.props.readyCashAmount.amount
@@ -72,6 +76,16 @@ class ReadyCashMain extends Component {
         : 0
     };
   }
+
+  handleConfirmPassword = event => {
+    let password = event.target.value;
+    this.setState({ password });
+    if (String(password) === String(this.props.storeInfo.password)) {
+      this.setState({ confirmButton: false });
+    } else {
+      this.setState({ confirmButton: true });
+    }
+  };
 
   handleResetAllData = () => {
     this.handleClose();
@@ -146,6 +160,7 @@ class ReadyCashMain extends Component {
       <FlatButton label="Cancel" primary={true} onClick={this.handleClose} />,
       <FlatButton
         label="Reset"
+        disabled={this.state.confirmButton}
         secondary={true}
         onClick={this.handleResetAllData}
       />
@@ -294,11 +309,19 @@ class ReadyCashMain extends Component {
           actions={actions}
           modal={false}
           open={this.state.open}
+          title={
+            <div style={{ color: "red" }}>
+              Are You Sure? You Should Reset it Only After 24 Hour !
+            </div>
+          }
           onRequestClose={this.handleClose}
         >
-          <span style={{ color: "red", fontWeight: "bold" }}>
-            Are You Sure? You Should Reset it Only After 24 Hour !
-          </span>
+          <TextField
+            type="password"
+            floatingLabelText="Comfirm The Password"
+            value={this.state.password}
+            onChange={this.handleConfirmPassword}
+          />
         </Dialog>
         <SnackBar
           snackBar={this.state.snackBar}

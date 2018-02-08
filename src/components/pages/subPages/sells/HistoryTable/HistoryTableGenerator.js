@@ -14,6 +14,7 @@ import FlatButton from "material-ui/FlatButton";
 import { connect } from "react-redux";
 import numeral from "numeral";
 import SvgIcon from "material-ui/SvgIcon";
+import TextField from "material-ui/TextField";
 
 import { startDeleteSellUnderCustomerHistory } from "../../../../../actions/sells/sells-history-actions";
 import GENERATE_PDF from "../PDF";
@@ -43,6 +44,17 @@ class HistoryTableGenerator extends Component {
 
   handleSingleHistoryDeleteConfirmDialogClose = () => {
     this.setState({ singleHistoryDeleteConfirm: false });
+    this.setState({ confirmButton: true });
+    this.setState({ password: "" });
+  };
+  handleConfirmPassword = event => {
+    let password = event.target.value;
+    this.setState({ password });
+    if (String(password) === String(this.props.storeInfo.password)) {
+      this.setState({ confirmButton: false });
+    } else {
+      this.setState({ confirmButton: true });
+    }
   };
   constructor(props) {
     super(props);
@@ -53,6 +65,8 @@ class HistoryTableGenerator extends Component {
       finalModelData: "",
       date: "",
       customer: "",
+      confirmButton: true,
+      password: "",
       singleHistoryDeleteConfirm: false,
       singleHistoryDeleteId: "",
       singleHistoryDeleteNumber: ""
@@ -609,6 +623,7 @@ class HistoryTableGenerator extends Component {
       <FlatButton
         label="Delete"
         secondary={true}
+        disabled={this.state.confirmButton}
         onClick={this.handleSingleHistoryDelete}
       />
     ];
@@ -636,9 +651,15 @@ class HistoryTableGenerator extends Component {
             actions={singleHistoryDeleteConfirmModelActions}
             modal={false}
             open={this.state.singleHistoryDeleteConfirm}
+            title="Are you Sure ?"
             onRequestClose={this.handleSingleHistoryDeleteConfirmDialogClose}
           >
-            Are you Sure ?
+            <TextField
+              type="password"
+              floatingLabelText="Comfirm The Password"
+              value={this.state.password}
+              onChange={this.handleConfirmPassword}
+            />
           </Dialog>
         </div>
       </div>

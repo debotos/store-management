@@ -96,6 +96,20 @@ const friendlyDiscountRender = customer => {
     return "";
   }
 };
+const renderNewDue = newDue => {
+  if (parseInt(newDue, 10) === 0) {
+    return " [paid]";
+  } else {
+    return numeral(parseFloat(newDue)).format("0,0.00") + " Taka";
+  }
+};
+const renderPrevDue = prevDue => {
+  if (parseInt(prevDue, 10) === 0) {
+    return " [paid]";
+  } else {
+    return numeral(parseFloat(prevDue)).format("0,0.00") + " Taka";
+  }
+};
 function GENERATE_PDF(data, date = null) {
   let { tables, customer, memoNumber, storeInfo } = data;
 
@@ -183,8 +197,7 @@ function GENERATE_PDF(data, date = null) {
           {
             text:
               "Previous Due = " +
-              numeral(parseFloat(customer.prevDue)).format("0,0.00") +
-              " Taka" +
+              renderPrevDue(customer.prevDue) +
               " | " +
               "All Tables Total With Previous Due = " +
               numeral(parseFloat(customer.totalWithDue)).format("0,0.00") +
@@ -201,8 +214,7 @@ function GENERATE_PDF(data, date = null) {
               " Taka" +
               " | " +
               "New Due From Now = " +
-              numeral(parseFloat(customer.newDue)).format("0,0.00") +
-              " Taka",
+              renderNewDue(customer.newDue),
             italics: true,
             bold: true,
             color: "green"

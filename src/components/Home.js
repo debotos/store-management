@@ -61,6 +61,7 @@ class Home extends Component {
     this.setState({ number2: "" });
     this.setState({ number3: "" });
     this.setState({ address: "" });
+    this.setState({ password: "" });
   };
   handleNumber1 = event => {
     const number1 = event.target.value;
@@ -88,6 +89,10 @@ class Home extends Component {
     const address = event.target.value;
     this.setState({ address });
   };
+  handlePassword = event => {
+    const password = event.target.value;
+    this.setState({ password });
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -98,7 +103,8 @@ class Home extends Component {
       number1: this.props.storeInfo.number1,
       number2: this.props.storeInfo.number2,
       number3: this.props.storeInfo.number3,
-      address: this.props.storeInfo.address
+      address: this.props.storeInfo.address,
+      password: this.props.storeInfo.password
     };
   }
   handleUpdateStoreInfo = () => {
@@ -107,7 +113,8 @@ class Home extends Component {
       number1: this.state.number1,
       number2: this.state.number2,
       number3: this.state.number3,
-      address: this.state.address
+      address: this.state.address,
+      password: this.state.password
     };
     // console.log("Sending Call for update store info..");
     this.props.startUpdateStoreInfo(StoreInformation);
@@ -269,6 +276,13 @@ class Home extends Component {
                   hintText="COMPANY ADDRESS"
                   floatingLabelText="COMPANY ADDRESS "
                   fullWidth={true}
+                />
+                <TextField
+                  type="password"
+                  value={this.state.password}
+                  onChange={this.handlePassword}
+                  hintText="Store Password Here"
+                  floatingLabelText="Password Here"
                 />
               </div>
               <CardActions>
