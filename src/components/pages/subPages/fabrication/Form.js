@@ -16,10 +16,7 @@ import {
   startRemovePrevDue
 } from "../../../../actions/sells/prevDue-actions";
 import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
-import {
-  startEditAdvance,
-  startRemoveAdvance
-} from "../../../../actions/advance/advance-actions";
+import { startRemoveAdvance } from "../../../../actions/advance/advance-actions";
 import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
 import GENERATE_PDF from "./PDF";
 
@@ -83,25 +80,9 @@ class Form extends Component {
       prevDue,
       totalWithDue,
       depositNow,
-      allTotalWithPrevDue,
-      depositWithAdvance
+      newDue
     } = this.state.modelData;
-    let newDue = 0;
-    let newAdvance = 0;
-    if (parseFloat(allTotalWithPrevDue) > parseFloat(depositWithAdvance)) {
-      //Due have
-      newDue = parseFloat(allTotalWithPrevDue) - parseFloat(depositWithAdvance);
-    }
-    if (parseFloat(allTotalWithPrevDue) < parseFloat(depositWithAdvance)) {
-      //Due have
-      newAdvance =
-        parseFloat(depositWithAdvance) - parseFloat(allTotalWithPrevDue);
-    }
-    if (parseFloat(allTotalWithPrevDue) === parseFloat(depositWithAdvance)) {
-      //Due have
-      newAdvance = 0;
-      newDue = 0;
-    }
+
     return (
       <div>
         Bill: {numeral(parseFloat(allTotal)).format("0,0.00")}
@@ -126,20 +107,13 @@ class Form extends Component {
         Deposit Now: {numeral(parseFloat(depositNow)).format("0,0.00")}
         <br />
         Deposit Now + Previous Advance:{" "}
-        {numeral(parseFloat(depositWithAdvance)).format("0,0.00")}
+        {numeral(parseFloat(depositNow) + parseFloat(advance)).format("0,0.00")}
         <br />
         <strong>New Due From Now: </strong>
         <b style={{ color: "red" }}>
           {parseFloat(newDue).toFixed(2) === parseFloat(0).toFixed(2)
             ? "No Due"
             : numeral(parseFloat(newDue)).format("0,0.00")}
-        </b>
-        <br />
-        <strong>New Advance From Now: </strong>
-        <b style={{ color: "green" }}>
-          {parseFloat(newAdvance).toFixed(2) === parseFloat(0).toFixed(2)
-            ? "Nothing"
-            : numeral(parseFloat(newAdvance)).format("0,0.00")}
         </b>
         <br />
       </div>
@@ -245,89 +219,80 @@ class Form extends Component {
       parseFloat(this.state.bill) + parseFloat(this.userAlreadyExists()[1]);
     let depositWithAdvance =
       parseFloat(this.userHaveAdvance()[1]) + parseFloat(this.state.deposit);
-    if (parseFloat(allTotalWithPrevDue) >= depositWithAdvance) {
-      let deposit = parseFloat(this.state.deposit).toFixed(2);
-      let newDue = (allTotalWithPrevDue - depositWithAdvance).toFixed(2);
-      if (parseFloat(allTotalWithPrevDue) === parseFloat(depositWithAdvance)) {
-        //Remove both due and advance from database
-        this.props.startRemoveAdvance({ id: this.userHaveAdvance()[2] });
-        this.props.startRemovePrevDue(this.userAlreadyExists()[2]);
-      }
+    // if (parseFloat(allTotalWithPrevDue) >= depositWithAdvance) {
+    // This condition is not needed if i want to save deposit as new advance
+    let deposit = parseFloat(this.state.deposit).toFixed(2);
+    let newDue = (allTotalWithPrevDue - depositWithAdvance).toFixed(2);
 
-      if (parseFloat(allTotalWithPrevDue) > parseFloat(depositWithAdvance)) {
-        //Update the due database
-        //remove the advance entry
-        this.props.startAddPrevDue(this.state.number, newDue, {
-          name: this.state.name,
-          number: this.state.number,
-          mail: this.state.mail,
-          address: this.state.address
-        });
-        this.props.startRemoveAdvance({ id: this.userHaveAdvance()[2] });
-      }
-
-      if (parseFloat(allTotalWithPrevDue) < parseFloat(depositWithAdvance)) {
-        //update the advance database
-        //remove the due entry
-        let newAmount = (depositWithAdvance - allTotalWithPrevDue).toFixed(2);
-        this.props.startEditAdvance(this.userHaveAdvance()[2], {
-          amount: newAmount,
-          ...this.userHaveAdvance()[3]
-        });
-        this.props.startRemovePrevDue(this.userAlreadyExists()[2]);
-      }
-
-      const modelData = {
-        advance: this.userHaveAdvance()[1],
-        allTotal: this.state.bill,
-        prevDue: this.userAlreadyExists()[1],
-        totalWithDue: allTotalWithPrevDue,
-        depositNow: deposit,
-        allTotalWithPrevDue,
-        depositWithAdvance
-      };
-
-      this.setState({ modelData });
-      this.handleDialogOpen();
-
-      const dataForPDF = {
-        storeInfo: this.props.storeInfo,
-        details: this.state.details,
-        customer: {
-          name: this.state.name,
-          number: this.state.number,
-          mail: this.state.mail,
-          address: this.state.address,
-          bill: this.state.bill,
-          prevDue: this.userAlreadyExists()[1],
-          advance: this.userHaveAdvance()[1],
-          billWithDue: allTotalWithPrevDue,
-          depositWithAdvance,
-          depositNow: deposit,
-          allTotalWithPrevDue
-        },
-        memoNumber: this.props.memoNumber
-      };
-      // Generating PDF
-      GENERATE_PDF(dataForPDF);
-      const dataForReadyCash = {
-        type: "income",
-        moment: moment().valueOf(),
-        amount: deposit,
-        category: "fabrication",
-        number: this.state.number,
-        address: this.state.address,
-        name: this.state.name,
-        mail: this.state.mail,
-        memoNumber: this.props.memoNumber
-      };
-
-      this.props.startAddAnEntryToReadyCash(dataForReadyCash);
-      this.handleReset();
-      this.props.startIncrementMemoNumber();
+    if (parseFloat(allTotalWithPrevDue) === parseFloat(depositWithAdvance)) {
+      //Remove both due and advance from database
+      this.props.startRemoveAdvance({ id: this.userHaveAdvance()[2] });
+      this.props.startRemovePrevDue(this.userAlreadyExists()[2]);
     } else {
-      this.props.showSnackBar("Error! Valid Deposit Please!");
+      //Update the due database
+      //remove the advance entry
+      this.props.startAddPrevDue(this.state.number, newDue, {
+        name: this.state.name,
+        number: this.state.number,
+        mail: this.state.mail,
+        address: this.state.address
+      });
+      this.props.startRemoveAdvance({ id: this.userHaveAdvance()[2] });
     }
+
+    const modelData = {
+      advance: this.userHaveAdvance()[1],
+      allTotal: this.state.bill,
+      prevDue: this.userAlreadyExists()[1],
+      totalWithDue: allTotalWithPrevDue,
+      depositNow: deposit,
+      newDue
+    };
+
+    this.setState({ modelData });
+    this.handleDialogOpen();
+
+    const dataForPDF = {
+      storeInfo: this.props.storeInfo,
+      details: this.state.details,
+      customer: {
+        name: this.state.name,
+        number: this.state.number,
+        mail: this.state.mail,
+        address: this.state.address,
+        bill: this.state.bill,
+        prevDue: this.userAlreadyExists()[1],
+        billWithDue: allTotalWithPrevDue,
+        depositNow: deposit,
+        newDue,
+        advance: this.userHaveAdvance()[1]
+      },
+      memoNumber: this.props.memoNumber
+    };
+    // Generating PDF
+    GENERATE_PDF(dataForPDF);
+    const dataForReadyCash = {
+      type: "income",
+      moment: moment().valueOf(),
+      amount: deposit,
+      category: "fabrication",
+      number: this.state.number,
+      address: this.state.address,
+      name: this.state.name,
+      mail: this.state.mail,
+      memoNumber: this.props.memoNumber
+    };
+
+    this.props.startAddAnEntryToReadyCash(dataForReadyCash);
+    this.handleReset();
+    this.props.startIncrementMemoNumber();
+    // } else {
+    //   this.props.showSnackBar(
+    //     `Error![Advance Found: ${this.userHaveAdvance()[1].toFixed(
+    //       2
+    //     )} Taka] So, Validate your Deposit!`
+    //   );
+    // }
   };
 
   render() {
@@ -473,7 +438,6 @@ const mapDispatchToProps = dispatch => {
     startAddAnEntryToReadyCash: data => {
       dispatch(startAddAnEntryToReadyCash(data));
     },
-    startEditAdvance: (id, advance) => dispatch(startEditAdvance(id, advance)),
     startRemoveAdvance: data => dispatch(startRemoveAdvance(data))
   };
 };

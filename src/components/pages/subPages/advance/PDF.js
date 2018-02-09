@@ -136,9 +136,9 @@ function GENERATE_PDF(data, date = null) {
   let pdf_name;
   if (date) {
     pdf_name =
-      number + "advance_history_memo_" + name + "_" + Date().substr(0, 15);
+      number + "_advance_history_memo_" + name + "_" + Date().substr(0, 15);
   } else {
-    pdf_name = number + "advance_memo_" + name + "_" + Date().substr(0, 15);
+    pdf_name = number + "_advance_memo_" + name + "_" + Date().substr(0, 15);
   }
   pdfMake.createPdf(docDefinition).download(pdf_name);
 }

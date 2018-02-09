@@ -59,25 +59,23 @@ class Due extends Component {
             ) : (
               this.props.allDue.map((singleDue, index) => {
                 return (
-                  parseFloat(singleDue.amount) > 0 && (
-                    <div key={index} className="animated rollIn">
-                      <Card className="due-list-item">
-                        <div className="list-item">
-                          <div>
-                            <h3 className="list-item-number">
-                              {singleDue.number}
-                            </h3>
-                          </div>
-                          <h3 className="list-item-amount">
-                            {numeral(parseFloat(singleDue.amount)).format(
-                              "0,0.00"
-                            )}{" "}
-                            &#x9f3;
+                  <div key={index} className="animated rollIn">
+                    <Card className="due-list-item">
+                      <div className="list-item">
+                        <div>
+                          <h3 className="list-item-number">
+                            {singleDue.number}
                           </h3>
                         </div>
-                      </Card>
-                    </div>
-                  )
+                        <h3 className="list-item-amount">
+                          {numeral(parseFloat(singleDue.amount)).format(
+                            "0,0.00"
+                          )}{" "}
+                          &#x9f3;
+                        </h3>
+                      </div>
+                    </Card>
+                  </div>
                 );
               })
             )}

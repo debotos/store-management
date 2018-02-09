@@ -19,61 +19,30 @@ const renderPrevDue = prevDue => {
   }
 };
 
-const renderPrevAdvance = prevAdvance => {
-  if (parseInt(prevAdvance, 10) === 0) {
-    return " [No]";
-  } else {
-    return numeral(parseFloat(prevAdvance)).format("0,0.00");
-  }
-};
-
-const renderNewAdvance = (allTotalWithPrevDue, depositWithAdvance) => {
-  let newAdvance = 0;
-  if (parseFloat(allTotalWithPrevDue) < parseFloat(depositWithAdvance)) {
-    newAdvance =
-      parseFloat(depositWithAdvance) - parseFloat(allTotalWithPrevDue);
-  }
-  if (parseFloat(allTotalWithPrevDue) === parseFloat(depositWithAdvance)) {
-    newAdvance = 0;
-  }
-  if (parseInt(newAdvance, 10) === 0) {
-    return {};
-  } else {
-    return {
-      text:
-        "New Advance From Now = " +
-        numeral(parseFloat(newAdvance)).format("0,0.00"),
-      italics: true,
-      bold: true,
-      color: "green"
-    };
-  }
-};
-
-const renderNewDue = (allTotalWithPrevDue, depositWithAdvance) => {
-  let newDue = 0;
-  if (parseFloat(allTotalWithPrevDue) > parseFloat(depositWithAdvance)) {
-    newDue = parseFloat(allTotalWithPrevDue) - parseFloat(depositWithAdvance);
-  }
-  if (parseFloat(allTotalWithPrevDue) === parseFloat(depositWithAdvance)) {
-    newDue = 0;
-  }
+const renderNewDue = newDue => {
   if (parseInt(newDue, 10) === 0) {
-    return {
-      text: "New Due From Now = [paid]",
-      italics: true,
-      bold: true,
-      color: "red"
-    };
+    return " [paid]";
   } else {
-    return {
-      text:
-        "New Due From Now = " + numeral(parseFloat(newDue)).format("0,0.00"),
-      italics: true,
-      bold: true,
-      color: "red"
-    };
+    return numeral(parseFloat(newDue)).format("0,0.00") + " Taka";
   }
+};
+
+const renderAdvance = customer => {
+  return {
+    text:
+      "Deposit Now (" +
+      numeral(parseFloat(customer.depositNow)).format("0,0.00") +
+      ") + Previous Advance (" +
+      numeral(parseFloat(customer.advance)).format("0,0.00") +
+      ") = " +
+      numeral(
+        parseFloat(customer.depositNow) + parseFloat(customer.advance)
+      ).format("0,0.00") +
+      " Taka",
+    italics: true,
+    bold: true,
+    color: "green"
+  };
 };
 
 function GENERATE_PDF(data, date = null) {
@@ -155,38 +124,33 @@ function GENERATE_PDF(data, date = null) {
         alignment: "right",
         type: "none",
         ul: [
-          "Bill = " + numeral(parseFloat(customer.bill)).format("0,0.00"),
-
           {
-            text: "Previous Due = " + renderPrevDue(customer.prevDue),
+            text:
+              "Bill = " +
+              numeral(parseFloat(customer.bill)).format("0,0.00") +
+              " Taka",
+            italics: true,
+            bold: true,
+            color: "blue"
+          },
+          {
+            text:
+              "Previous Due = " +
+              renderPrevDue(customer.prevDue) +
+              " | Bill With Previous Due = " +
+              numeral(parseFloat(customer.billWithDue)).format("0,0.00") +
+              " Taka",
             italics: true,
             bold: true,
             color: "red"
           },
-          "Bill With Previous Due = " +
-            numeral(parseFloat(customer.billWithDue)).format("0,0.00"),
+          renderAdvance(customer),
           {
-            text: "Previous Advance = " + renderPrevAdvance(customer.advance),
+            text: "New Due From Now = " + renderNewDue(customer.newDue),
             italics: true,
             bold: true,
-            color: "green"
-          },
-          {
-            text:
-              "Deposit Now = " +
-              numeral(parseFloat(customer.depositNow)).format("0,0.00"),
-            italics: true,
-            bold: true,
-            color: "green"
-          },
-          renderNewAdvance(
-            customer.allTotalWithPrevDue,
-            customer.depositWithAdvance
-          ),
-          renderNewDue(
-            customer.allTotalWithPrevDue,
-            customer.depositWithAdvance
-          )
+            color: "red"
+          }
         ]
       },
       { text: "\n\n" },

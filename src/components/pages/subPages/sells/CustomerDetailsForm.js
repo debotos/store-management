@@ -15,9 +15,13 @@ import GENERATE_PDF from "./PDF";
 import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
 import { removeAllSellsItem } from "../../../../actions/sells/sells-actions";
 import { startAddSellUnderCustomerHistory } from "../../../../actions/sells/sells-history-actions";
-import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
+import {
+  startAddPrevDue,
+  startRemovePrevDue
+} from "../../../../actions/sells/prevDue-actions";
 import { removeAllTable } from "../../../../actions/sells/table-actions";
 import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
+import { startRemoveAdvance } from "../../../../actions/advance/advance-actions";
 
 const uuidv4 = require("uuid/v4");
 
@@ -120,22 +124,127 @@ class CustomerDetailsForm extends Component {
         number: this.state.number,
         mail: this.state.mail,
         deposit: this.state.deposit,
+        advance: this.userHaveAdvance()[1],
         prevDue: parseFloat(this.userAlreadyExists()[1]).toFixed(2),
         totalWithDue: parseFloat(
           parseFloat(this.props.allTotal.finalTotal) +
             parseFloat(this.userAlreadyExists()[1])
         ).toFixed(2),
         address: this.state.address,
-        newDue: (
-          (
-            parseFloat(this.props.allTotal.finalTotal) +
-            parseFloat(this.userAlreadyExists()[1])
-          ).toFixed(2) - parseFloat(this.state.deposit).toFixed(2)
-        ).toFixed(2)
+        depositWithAdvance:
+          parseFloat(this.userHaveAdvance()[1]) +
+          parseFloat(this.state.deposit),
+        allTotalWithPrevDue:
+          parseFloat(this.props.allTotal.finalTotal) +
+          parseFloat(this.userAlreadyExists()[1])
       }
     }
   });
+  userHaveAdvance = () => {
+    const searchingFor = this.state.number;
+    let flag = false;
+    let id;
+    let prevAdvance = 0;
+    let obj;
+    this.props.advance.forEach(singleItem => {
+      if (singleItem.note.toString() === searchingFor.toString()) {
+        console.log("User Have Advance.");
+        flag = true;
+        id = singleItem.id;
+        obj = singleItem;
+        prevAdvance = singleItem.amount;
+      }
+    });
+    return [flag, prevAdvance, id, obj];
+  };
+  //Final Work
+  finalWork = () => {
+    let allTotalWithPrevDue =
+      parseFloat(this.props.allTotal.finalTotal) +
+      parseFloat(this.userAlreadyExists()[1]);
+    let depositWithAdvance =
+      parseFloat(this.userHaveAdvance()[1]) + parseFloat(this.state.deposit);
+    // if (parseFloat(allTotalWithPrevDue) >= parseFloat(depositWithAdvance)) {
+    // This condition is not needed if i want to save deposit as new advance
+    let deposit = parseFloat(this.state.deposit).toFixed(2);
+    let newDue = (allTotalWithPrevDue - parseFloat(depositWithAdvance)).toFixed(
+      2
+    );
 
+    if (parseFloat(allTotalWithPrevDue) === parseFloat(depositWithAdvance)) {
+      //Remove both due and advance from database
+      this.props.startRemoveAdvance({ id: this.userHaveAdvance()[2] });
+      this.props.startRemovePrevDue(this.userAlreadyExists()[2]);
+    } else {
+      //Update the due database
+      //remove the advance entry
+      this.props.startAddPrevDue(this.state.number, newDue, {
+        name: this.state.name,
+        number: this.state.number,
+        mail: this.state.mail,
+        address: this.state.address
+      });
+      this.props.startRemoveAdvance({ id: this.userHaveAdvance()[2] });
+    }
+
+    //Saving History
+    this.props.startAddSellUnderCustomerHistory(this.collectSellsData());
+
+    //Data for showing model
+    const modelData = {
+      advance: this.userHaveAdvance()[1],
+      allTotal: this.props.allTotal.finalTotal,
+      prevDue: this.userAlreadyExists()[1],
+      totalWithDue: allTotalWithPrevDue,
+      depositNow: deposit,
+      newDue
+    };
+    this.setState({ modelData });
+    this.handleDialogOpen();
+
+    const dataForPDF = {
+      tables: this.props.sellsTables,
+      customer: {
+        name: this.state.name,
+        number: this.state.number,
+        mail: this.state.mail,
+        address: this.state.address,
+        allTotal: this.props.allTotal,
+        prevDue: this.userAlreadyExists()[1],
+        totalWithDue: allTotalWithPrevDue,
+        depositNow: deposit,
+        newDue,
+        advance: this.userHaveAdvance()[1]
+      },
+      memoNumber: this.props.memoNumber,
+      storeInfo: this.props.storeInfo
+    };
+    GENERATE_PDF(dataForPDF);
+
+    const dataForReadyCash = {
+      type: "income",
+      moment: moment().valueOf(),
+      amount: deposit,
+      category: "sell",
+      number: this.state.number,
+      address: this.state.address,
+      name: this.state.name,
+      mail: this.state.mail,
+      memoNumber: this.props.memoNumber
+    };
+    this.props.startAddAnEntryToReadyCash(dataForReadyCash);
+
+    this.handleReset();
+    this.props.startIncrementMemoNumber();
+    // } else {
+    //   this.props.showSnackBar(
+    //     `Error![Advance Found: ${this.userHaveAdvance()[1].toFixed(
+    //       2
+    //     )} Taka] So, Validate your Deposit!`
+    //   );
+    // }
+  };
+  //End Final Work
   handleSaveAndGeneratePDF = () => {
     noInternet().then(offline => {
       if (offline) {
@@ -143,156 +252,28 @@ class CustomerDetailsForm extends Component {
         this.props.showSnackBar("Failed ! No Internet Connection !");
       } else {
         // internet have
-
-        let allTotalWithPrevDue =
-          parseFloat(this.props.allTotal.finalTotal) +
-          parseFloat(this.userAlreadyExists()[1]);
         if (this.state.mail) {
           if (isEmail(this.state.mail)) {
-            if (
-              parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)
-            ) {
-              let deposit = parseFloat(this.state.deposit).toFixed(2);
-              let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(
-                2
-              );
-              this.props.startAddPrevDue(this.state.number, newDue, {
-                name: this.state.name,
-                number: this.state.number,
-                mail: this.state.mail,
-                address: this.state.address
-              });
-              this.props.startAddSellUnderCustomerHistory(
-                this.collectSellsData()
-              );
-              const modelData = {
-                allTotal: this.props.allTotal.finalTotal,
-                prevDue: this.userAlreadyExists()[1],
-                totalWithDue: allTotalWithPrevDue,
-                depositNow: deposit,
-                newDue
-              };
-              this.setState({ modelData });
-              this.handleDialogOpen();
-              const dataForPDF = {
-                tables: this.props.sellsTables,
-                customer: {
-                  name: this.state.name,
-                  number: this.state.number,
-                  mail: this.state.mail,
-                  address: this.state.address,
-                  allTotal: this.props.allTotal,
-                  prevDue: this.userAlreadyExists()[1],
-                  totalWithDue: allTotalWithPrevDue,
-                  depositNow: deposit,
-                  newDue
-                },
-                memoNumber: this.props.memoNumber,
-                storeInfo: this.props.storeInfo
-              };
-              GENERATE_PDF(dataForPDF);
-
-              const dataForReadyCash = {
-                type: "income",
-                moment: moment().valueOf(),
-                amount: deposit,
-                category: "sell",
-                number: this.state.number,
-                address: this.state.address,
-                name: this.state.name,
-                mail: this.state.mail,
-                memoNumber: this.props.memoNumber
-              };
-              this.props.startAddAnEntryToReadyCash(dataForReadyCash);
-
-              this.handleReset();
-              this.props.startIncrementMemoNumber();
-            } else {
-              this.props.showSnackBar("Error! Valid Deposit Please!");
-            }
+            this.finalWork();
           } else {
             this.props.showSnackBar("Error ! Invalid Email !");
           }
         } else {
-          if (
-            parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)
-          ) {
-            let deposit = parseFloat(this.state.deposit).toFixed(2);
-            let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
-            this.props.startAddPrevDue(this.state.number, newDue, {
-              name: this.state.name,
-              number: this.state.number,
-              mail: this.state.mail,
-              address: this.state.address
-            });
-            // Saving for history
-            this.props.startAddSellUnderCustomerHistory(
-              this.collectSellsData()
-            );
-            const modelData = {
-              allTotal: this.props.allTotal.finalTotal,
-              prevDue: this.userAlreadyExists()[1],
-              totalWithDue: allTotalWithPrevDue,
-              depositNow: deposit,
-              newDue
-            };
-            this.setState({ modelData });
-            this.handleDialogOpen();
-            console.log("sending for pdf ", this.props.sellsTables);
-            const dataForPDF = {
-              tables: this.props.sellsTables,
-              customer: {
-                name: this.state.name,
-                number: this.state.number,
-                mail: this.state.mail,
-                address: this.state.address,
-                allTotal: this.props.allTotal,
-                prevDue: this.userAlreadyExists()[1],
-                totalWithDue: allTotalWithPrevDue,
-                depositNow: deposit,
-                newDue
-              },
-              memoNumber: this.props.memoNumber,
-              storeInfo: this.props.storeInfo
-            };
-            console.log("====================================");
-            console.log("Data for PDF sending", dataForPDF);
-            console.log("====================================");
-            GENERATE_PDF(dataForPDF);
-
-            const dataForReadyCash = {
-              type: "income",
-              moment: moment().valueOf(),
-              amount: deposit,
-              category: "sell",
-              number: this.state.number,
-              address: this.state.address,
-              name: this.state.name,
-              mail: this.state.mail,
-              memoNumber: this.props.memoNumber
-            };
-
-            console.log("====================================");
-            console.log("data for ready cash", dataForReadyCash);
-            console.log("====================================");
-            this.props.startAddAnEntryToReadyCash(dataForReadyCash);
-            this.handleReset();
-            this.props.startIncrementMemoNumber();
-          } else {
-            this.props.showSnackBar("Error! Valid Deposit Please!");
-          }
+          this.finalWork();
         }
       }
     });
   };
   showModelData = modelData => {
     const {
+      advance,
       allTotal,
       prevDue,
       totalWithDue,
       depositNow,
       newDue
     } = this.state.modelData;
+
     return (
       <div>
         All Table Total: {numeral(parseFloat(allTotal)).format("0,0.00")}
@@ -307,7 +288,18 @@ class CustomerDetailsForm extends Component {
         All Total + Previous Due:{" "}
         {numeral(parseFloat(totalWithDue)).format("0,0.00")}
         <br />
-        Deposit Now: {numeral(parseFloat(depositNow)).format("0,0.00")}
+        <strong>Advance: </strong>
+        <b style={{ color: "green" }}>
+          {parseFloat(advance).toFixed(2) === parseFloat(0).toFixed(2)
+            ? "No Previous Advance"
+            : numeral(parseFloat(advance)).format("0,0.00")}
+        </b>
+        <br />
+        Deposit Now:{" "}
+        {numeral(parseFloat(depositNow) + parseFloat(advance)).format("0,0.00")}
+        <br />
+        Deposit Now + Previous Advance:{" "}
+        {numeral(parseFloat(depositNow)).format("0,0.00")}
         <br />
         <strong>New Due From Now: </strong>
         <b style={{ color: "red" }}>
@@ -434,6 +426,7 @@ const mapDispatchToProps = dispatch => {
     startAddPrevDue: (number, amount, info) => {
       dispatch(startAddPrevDue(number, amount, info));
     },
+    startRemovePrevDue: id => dispatch(startRemovePrevDue(id)),
     startIncrementMemoNumber: () => {
       dispatch(startIncrementMemoNumber());
     },
@@ -445,7 +438,8 @@ const mapDispatchToProps = dispatch => {
     },
     startAddAnEntryToReadyCash: data => {
       dispatch(startAddAnEntryToReadyCash(data));
-    }
+    },
+    startRemoveAdvance: data => dispatch(startRemoveAdvance(data))
   };
 };
 

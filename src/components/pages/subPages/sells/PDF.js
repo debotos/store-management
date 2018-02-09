@@ -110,6 +110,27 @@ const renderPrevDue = prevDue => {
     return numeral(parseFloat(prevDue)).format("0,0.00") + " Taka";
   }
 };
+const renderAdvance = customer => {
+  let advance = 0;
+  if (customer.advance) {
+    advance = customer.advance;
+  }
+  return {
+    text:
+      "Deposit Now (" +
+      numeral(parseFloat(customer.depositNow)).format("0,0.00") +
+      ") + Previous Advance (" +
+      numeral(parseFloat(advance)).format("0,0.00") +
+      ") = " +
+      numeral(parseFloat(customer.depositNow) + parseFloat(advance)).format(
+        "0,0.00"
+      ) +
+      " Taka",
+    italics: true,
+    bold: true,
+    color: "green"
+  };
+};
 function GENERATE_PDF(data, date = null) {
   let { tables, customer, memoNumber, storeInfo } = data;
 
@@ -189,11 +210,16 @@ function GENERATE_PDF(data, date = null) {
         fontSize: 10,
         type: "none",
         ul: [
-          "All Tables Total = " +
-            numeral(parseFloat(customer.allTotal.total)).format("0,0.00") +
-            " Taka" +
-            friendlyDiscountRender(customer),
-
+          {
+            text:
+              "All Tables Total = " +
+              numeral(parseFloat(customer.allTotal.total)).format("0,0.00") +
+              " Taka" +
+              friendlyDiscountRender(customer),
+            italics: true,
+            bold: true,
+            color: "blue"
+          },
           {
             text:
               "Previous Due = " +
@@ -206,18 +232,12 @@ function GENERATE_PDF(data, date = null) {
             bold: true,
             color: "red"
           },
-
+          renderAdvance(customer),
           {
-            text:
-              "Deposit Now = " +
-              numeral(parseFloat(customer.depositNow)).format("0,0.00") +
-              " Taka" +
-              " | " +
-              "New Due From Now = " +
-              renderNewDue(customer.newDue),
+            text: "New Due From Now = " + renderNewDue(customer.newDue),
             italics: true,
             bold: true,
-            color: "green"
+            color: "red"
           }
         ]
       },

@@ -4,6 +4,7 @@ import TextField from "material-ui/TextField";
 import SvgIcon from "material-ui/SvgIcon";
 import { connect } from "react-redux";
 import moment from "moment";
+import AutoComplete from "material-ui/AutoComplete";
 // import { SingleDatePicker } from "react-dates";
 // import { Card, CardActions } from "material-ui/Card";
 import DatePicker from "material-ui/DatePicker";
@@ -30,41 +31,52 @@ class AddAdvanceForm extends Component {
       amount: parseFloat(this.state.advanceAmount, 10),
       createdAt: this.state.advanceDate.valueOf()
     };
-    this.props.startAddAdvance(advance);
-    this.setState({ advanceTitle: "" });
-    this.setState({ advanceAmount: "" });
-    this.setState({ advanceDetails: "" });
-    this.setState({ advanceDate: moment() });
-    this.setState({ materialDate: null });
-    this.setState({ advanceName: "" });
-    this.props.showSnackBar("Successfully Added !");
-    const dataForReadyCash = {
-      type: "income",
-      moment: moment().valueOf(),
-      amount: parseFloat(this.state.advanceAmount, 10),
-      title: this.state.advanceTitle,
-      name: this.state.advanceName,
-      details: this.state.advanceDetails,
-      category: "advance"
-    };
-    this.props.startAddAnEntryToReadyCash(dataForReadyCash);
-    let dataForPDF = {
-      name: this.state.advanceName,
-      number: this.state.advanceTitle,
-      amount: this.state.advanceAmount,
-      details: this.state.advanceDetails,
-      storeInfo: this.props.storeInfo
-    };
-    GENERATE_PDF(dataForPDF);
+    let flag = true;
+    this.props.advance.map(singleItem => {
+      if (singleItem.note.toString() === this.state.advanceTitle.toString()) {
+        flag = false;
+      }
+    });
+    if (flag) {
+      this.props.startAddAdvance(advance);
+      this.setState({ advanceTitle: "" });
+      this.refs.autoCompleteInput.setState({ searchText: "" });
+      this.setState({ advanceAmount: "" });
+      this.setState({ advanceDetails: "" });
+      this.setState({ advanceDate: moment() });
+      this.setState({ materialDate: null });
+      this.setState({ advanceName: "" });
+      this.props.showSnackBar("Successfully Added !");
+      const dataForReadyCash = {
+        type: "income",
+        moment: moment().valueOf(),
+        amount: parseFloat(this.state.advanceAmount, 10),
+        title: this.state.advanceTitle,
+        name: this.state.advanceName,
+        details: this.state.advanceDetails,
+        category: "advance"
+      };
+      this.props.startAddAnEntryToReadyCash(dataForReadyCash);
+      let dataForPDF = {
+        name: this.state.advanceName,
+        number: this.state.advanceTitle,
+        amount: this.state.advanceAmount,
+        details: this.state.advanceDetails,
+        storeInfo: this.props.storeInfo
+      };
+      GENERATE_PDF(dataForPDF);
+    } else {
+      this.props.showSnackBar("Number Exists!! Use Edit or Update Function!");
+    }
   };
   // onFocusChange = ({ focused }) => {
   //   this.setState(() => ({ calendarFocused: focused }));
   // };
 
-  handleAdvanceTitleChange = event => {
-    const title = event.target.value;
-    this.setState({ advanceTitle: title });
-  };
+  // handleAdvanceTitleChange = event => {
+  //   const title = event.target.value;
+  //   this.setState({ advanceTitle: title });
+  // };
   handleAdvanceNameChange = event => {
     const name = event.target.value;
     this.setState({ advanceName: name });
@@ -104,9 +116,26 @@ class AddAdvanceForm extends Component {
       advanceDate: moment(),
       advanceDetails: "",
       materialDate: null,
-      advanceName: ""
+      advanceName: "",
+      dataSource: this.props.due.map(singleItem => {
+        return singleItem.number;
+      })
     };
   }
+  handleUpdateInput = value => {
+    this.setState({ advanceTitle: value });
+  };
+  setOthersField = () => {
+    let info;
+    this.props.due.forEach(singleItem => {
+      if (singleItem.number === this.state.advanceTitle) {
+        info = singleItem.info;
+      }
+    });
+    if (info) {
+      this.setState({ advanceName: info.name });
+    }
+  };
   render() {
     return (
       <div>
@@ -114,11 +143,14 @@ class AddAdvanceForm extends Component {
           className="container"
           style={{ textAlign: "center", marginTop: 10 }}
         >
-          <TextField
+          <AutoComplete
             autoFocus
-            onChange={this.handleAdvanceTitleChange}
             type="number"
+            ref="autoCompleteInput"
+            dataSource={this.state.dataSource}
+            onUpdateInput={this.handleUpdateInput}
             value={this.state.advanceTitle}
+            onNewRequest={this.setOthersField}
             hintText="Phone Number"
             floatingLabelText="Provide Phone Number"
           />
@@ -209,7 +241,9 @@ class AddAdvanceForm extends Component {
 
 const mapStateToProps = state => {
   return {
-    storeInfo: state.storeInfo
+    due: state.due,
+    storeInfo: state.storeInfo,
+    advance: state.advance
   };
 };
 
