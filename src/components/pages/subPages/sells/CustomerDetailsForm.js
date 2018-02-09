@@ -84,12 +84,25 @@ class CustomerDetailsForm extends Component {
   };
   setOthersField = () => {
     let info;
+    let amount;
     this.props.due.forEach(singleItem => {
       if (singleItem.number === this.state.number) {
         info = singleItem.info;
+        amount = singleItem.amount;
+      }
+    });
+    let advance = 0;
+    this.props.advance.forEach(singleItem => {
+      if (singleItem.note === this.state.number) {
+        advance = singleItem.amount;
       }
     });
     if (info) {
+      this.props.showSnackBar(
+        `Found Due ${numeral(parseFloat(amount)).format(
+          "0,0.00"
+        )} Taka & Advance ${numeral(parseFloat(advance)).format("0,0.00")} Taka`
+      );
       this.setState({ name: info.name });
       this.setState({ number: info.number });
       this.setState({ mail: info.mail });
@@ -295,11 +308,10 @@ class CustomerDetailsForm extends Component {
             : numeral(parseFloat(advance)).format("0,0.00")}
         </b>
         <br />
-        Deposit Now:{" "}
-        {numeral(parseFloat(depositNow) + parseFloat(advance)).format("0,0.00")}
+        Deposit Now: {numeral(parseFloat(depositNow)).format("0,0.00")}
         <br />
         Deposit Now + Previous Advance:{" "}
-        {numeral(parseFloat(depositNow)).format("0,0.00")}
+        {numeral(parseFloat(depositNow) + parseFloat(advance)).format("0,0.00")}
         <br />
         <strong>New Due From Now: </strong>
         <b style={{ color: "red" }}>

@@ -28,16 +28,20 @@ const renderNewDue = newDue => {
 };
 
 const renderAdvance = customer => {
+  let advance = 0;
+  if (customer.advance) {
+    advance = customer.advance;
+  }
   return {
     text:
       "Deposit Now (" +
       numeral(parseFloat(customer.depositNow)).format("0,0.00") +
       ") + Previous Advance (" +
-      numeral(parseFloat(customer.advance)).format("0,0.00") +
+      numeral(parseFloat(advance)).format("0,0.00") +
       ") = " +
-      numeral(
-        parseFloat(customer.depositNow) + parseFloat(customer.advance)
-      ).format("0,0.00") +
+      numeral(parseFloat(customer.depositNow) + parseFloat(advance)).format(
+        "0,0.00"
+      ) +
       " Taka",
     italics: true,
     bold: true,
