@@ -18,6 +18,7 @@ class Navigation extends Component {
         <Link to="/pad">Pad</Link>
         {/* <Link to="/salary">Salary</Link> */}
         <Link to="/stock">Stock</Link>
+        <Link to="/advance">Advance</Link>
       </div>
     );
   }

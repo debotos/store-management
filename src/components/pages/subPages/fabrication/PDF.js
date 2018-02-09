@@ -19,11 +19,60 @@ const renderPrevDue = prevDue => {
   }
 };
 
-const renderNewDue = newDue => {
-  if (parseInt(newDue, 10) === 0) {
-    return " [paid]";
+const renderPrevAdvance = prevAdvance => {
+  if (parseInt(prevAdvance, 10) === 0) {
+    return " [No]";
   } else {
-    return numeral(parseFloat(newDue)).format("0,0.00");
+    return numeral(parseFloat(prevAdvance)).format("0,0.00");
+  }
+};
+
+const renderNewAdvance = (allTotalWithPrevDue, depositWithAdvance) => {
+  let newAdvance = 0;
+  if (parseFloat(allTotalWithPrevDue) < parseFloat(depositWithAdvance)) {
+    newAdvance =
+      parseFloat(depositWithAdvance) - parseFloat(allTotalWithPrevDue);
+  }
+  if (parseFloat(allTotalWithPrevDue) === parseFloat(depositWithAdvance)) {
+    newAdvance = 0;
+  }
+  if (parseInt(newAdvance, 10) === 0) {
+    return {};
+  } else {
+    return {
+      text:
+        "New Advance From Now = " +
+        numeral(parseFloat(newAdvance)).format("0,0.00"),
+      italics: true,
+      bold: true,
+      color: "green"
+    };
+  }
+};
+
+const renderNewDue = (allTotalWithPrevDue, depositWithAdvance) => {
+  let newDue = 0;
+  if (parseFloat(allTotalWithPrevDue) > parseFloat(depositWithAdvance)) {
+    newDue = parseFloat(allTotalWithPrevDue) - parseFloat(depositWithAdvance);
+  }
+  if (parseFloat(allTotalWithPrevDue) === parseFloat(depositWithAdvance)) {
+    newDue = 0;
+  }
+  if (parseInt(newDue, 10) === 0) {
+    return {
+      text: "New Due From Now = [paid]",
+      italics: true,
+      bold: true,
+      color: "red"
+    };
+  } else {
+    return {
+      text:
+        "New Due From Now = " + numeral(parseFloat(newDue)).format("0,0.00"),
+      italics: true,
+      bold: true,
+      color: "red"
+    };
   }
 };
 
@@ -117,6 +166,12 @@ function GENERATE_PDF(data, date = null) {
           "Bill With Previous Due = " +
             numeral(parseFloat(customer.billWithDue)).format("0,0.00"),
           {
+            text: "Previous Advance = " + renderPrevAdvance(customer.advance),
+            italics: true,
+            bold: true,
+            color: "green"
+          },
+          {
             text:
               "Deposit Now = " +
               numeral(parseFloat(customer.depositNow)).format("0,0.00"),
@@ -124,12 +179,14 @@ function GENERATE_PDF(data, date = null) {
             bold: true,
             color: "green"
           },
-          {
-            text: "New Due From Now = " + renderNewDue(customer.newDue),
-            italics: true,
-            bold: true,
-            color: "red"
-          }
+          renderNewAdvance(
+            customer.allTotalWithPrevDue,
+            customer.depositWithAdvance
+          ),
+          renderNewDue(
+            customer.allTotalWithPrevDue,
+            customer.depositWithAdvance
+          )
         ]
       },
       { text: "\n\n" },

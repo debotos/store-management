@@ -65,3 +65,9 @@ export const SET_STORE_INFO = "SET_STORE_INFO";
 
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
+
+// Advance.js
+export const ADD_ADVANCE = "ADD_ADVANCE";
+export const REMOVE_ADVANCE = "REMOVE_ADVANCE";
+export const EDIT_ADVANCE = "EDIT_ADVANCE";
+export const SET_ADVANCES = "SET_ADVANCES";

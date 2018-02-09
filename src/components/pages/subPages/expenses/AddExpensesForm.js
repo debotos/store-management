@@ -31,6 +31,7 @@ class AddExpensesForm extends Component {
     this.setState({ expensesAmount: "" });
     this.setState({ expensesDetails: "" });
     this.setState({ expensesDate: moment() });
+    this.setState({ materialDate: null });
     this.props.showSnackBar("Successfully Added !");
     const dataForReadyCash = {
       type: "expenses",

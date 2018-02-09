@@ -455,7 +455,8 @@ const mapStateToProps = state => {
     sellsHistory: state.sellsHistory,
     due: state.due,
     memoNumber: state.memoNumber.memoNumber,
-    storeInfo: state.storeInfo
+    storeInfo: state.storeInfo,
+    advance: state.advance
   };
 };
 

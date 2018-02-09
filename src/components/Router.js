@@ -16,6 +16,7 @@ import ReadyCash from "./pages/ReadyCash";
 // import Salary from "./pages/Salary";
 import Sell from "./pages/Sells";
 import Stock from "./pages/Stock";
+import Advance from "./pages/Advance";
 import NotFoundpage from "./pages/NotFoundpage";
 import Home from "./Home";
 import LoginPage from "./LoginPage";
@@ -62,7 +63,7 @@ class MainRouter extends Component {
             <PrivateRoute path="/pad" component={Pad} exact={true} />
             {/* <Route path="/salary" component={Salary} exact={true} /> */}
             <PrivateRoute path="/stock" component={Stock} exact={true} />
-
+            <PrivateRoute path="/advance" component={Advance} exact={true} />
             <Route component={NotFoundpage} exact={true} />
           </Switch>
         </div>

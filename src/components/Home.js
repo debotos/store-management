@@ -219,6 +219,11 @@ class Home extends Component {
                   <h4>Stock</h4>
                 </Card>
               </Link>
+              <Link style={styles.link} to="/advance">
+                <Card className="animated infinite pulse" style={styles.button}>
+                  <h4>Advance</h4>
+                </Card>
+              </Link>
             </div>
           </Card>
         </div>

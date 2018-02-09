@@ -32,6 +32,7 @@ class AddIncomeForm extends Component {
     this.setState({ incomeAmount: "" });
     this.setState({ incomeDetails: "" });
     this.setState({ incomeDate: moment() });
+    this.setState({ materialDate: null });
     this.props.showSnackBar("Successfully Added !");
     const dataForReadyCash = {
       type: "income",

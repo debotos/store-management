@@ -29,6 +29,7 @@ import { startSetMemoNumber } from "./actions/sells/memo-no-actions";
 import { startSetReadyCash } from "./actions/ready-cash/ready-cash-actions";
 import { startSetReadyCashAmount } from "./actions/ready-cash/ready-cash-amount-actions";
 import { startSetIncomes } from "./actions/others-income/income-actions";
+import { startSetAdvances } from "./actions/advance/advance-actions";
 import { startSetStoreInfo } from "./actions/storeInfo/store-info-actions";
 
 const store = configureStore();
@@ -126,6 +127,9 @@ firebase.auth().onAuthStateChanged(user => {
       })
       .then(() => {
         return store.dispatch(startSetStoreInfo());
+      })
+      .then(() => {
+        return store.dispatch(startSetAdvances());
       })
       .then(() => {
         renderApp();

@@ -111,6 +111,53 @@ class ReadyCashIncomeList extends Component {
             secondaryTextLines={2}
           />
         );
+      } else if (singleItem.category === "advance") {
+        return (
+          <ListItem
+            key={index}
+            primaryText={
+              <p>
+                <span style={{ color: "green" }}>
+                  <strong>
+                    {numeral(singleItem.amount).format("0,0.00")} &#x9f3;
+                  </strong>{" "}
+                </span>
+                &nbsp;From{" "}
+                <SvgIcon style={{ width: 12, height: 12 }}>
+                  <path d="M22 3H2C.9 3 0 3.9 0 5v14c0 1.1.9 2 2 2h20c1.1 0 1.99-.9 1.99-2L24 5c0-1.1-.9-2-2-2zM8 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H2v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1zm3.85-4h1.64L21 16l-1.99 1.99c-1.31-.98-2.28-2.38-2.73-3.99-.18-.64-.28-1.31-.28-2s.1-1.36.28-2c.45-1.62 1.42-3.01 2.73-3.99L21 8l-1.51 2h-1.64c-.22.63-.35 1.3-.35 2s.13 1.37.35 2z" />
+                </SvgIcon>{" "}
+                <strong>{singleItem.title}</strong> Via{" "}
+                <strong>{singleItem.category.toUpperCase()}</strong>
+              </p>
+            }
+            secondaryText={
+              <p>
+                <strong>
+                  Name: {singleItem.name} &nbsp;
+                  <span style={{ color: "orange" }}>
+                    {this.extractDate(singleItem.moment)}
+                  </span>
+                </strong>
+              </p>
+            }
+            secondaryTextLines={2}
+            rightIconButton={
+              <div
+                style={{ marginRight: 10, marginTop: 10, cursor: "pointer" }}
+              >
+                <FloatingActionButton
+                  mini={true}
+                  secondary={true}
+                  onClick={() => this.handleOpen(singleItem)}
+                >
+                  <SvgIcon>
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z" />
+                  </SvgIcon>
+                </FloatingActionButton>
+              </div>
+            }
+          />
+        );
       } else {
         return (
           <ListItem

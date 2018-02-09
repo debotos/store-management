@@ -16,7 +16,7 @@ const renderIncomeTable = DataIncomming => {
     entries,
     // previousReadyCash,
     // expensesTotal,
-    incomeTotal,
+    incomeTotal
     // fromNowReadyCash,
     // storeInfo
   } = DataIncomming;
@@ -56,6 +56,22 @@ const renderIncomeTable = DataIncomming => {
             "Title: " + singleIncomeItem.title,
             "Category: OTHERS INCOME",
             "Time: " + extractDate(singleIncomeItem.moment)
+          ]
+        },
+        {
+          text: numeral(parseFloat(singleIncomeItem.amount)).format("0,0.00"),
+          color: "green",
+          alignment: "center",
+          bold: true
+        }
+      ];
+    } else if (singleIncomeItem.category === "advance") {
+      item = [
+        {
+          ul: [
+            "Title: " + singleIncomeItem.title,
+            "Category: ADVANCE",
+            "Time: " + moment(singleIncomeItem.moment).format("LTS")
           ]
         },
         {
@@ -119,7 +135,7 @@ const renderExpensesTable = DataIncomming => {
   let {
     entries,
     // previousReadyCash,
-    expensesTotal,
+    expensesTotal
     // incomeTotal,
     // fromNowReadyCash,
     // storeInfo
@@ -222,33 +238,34 @@ const GENERATE_PDF = DataIncomming => {
     },
     content: [
       { text: storeInfo.name, style: "header", alignment: "center" },
-
+      {
+        text:
+          "For All kinds of - Glass, SS, Pipe, Thai Aluminium, False Celling, Accessories",
+        alignment: "center",
+        fontSize: 8,
+        bold: true,
+        margin: [0, -4, 0, 0]
+      },
       {
         text: storeInfo.address + " |" + getCompanyPhoneNo(storeInfo),
+        fontSize: 10,
+        bold: true,
         alignment: "center"
       },
-      {
-        text: "Daily Ledger",
-        alignment: "center",
-        style: "subheader"
-      },
-      { text: "\n" },
-
       {
         columns: [
           {
             type: "none",
             ul: [
               {
-                text: `Date: ${Date().substr(0, 15)}`,
-                alignment: "center"
+                text: `Daily Ledger ${Date().substr(0, 15)}`,
+                alignment: "center",
+                style: "subheader"
               }
             ]
           }
         ]
       },
-
-      { text: "\n" },
       // I have to create a function that will render details
       {
         table: {
@@ -339,9 +356,9 @@ const GENERATE_PDF = DataIncomming => {
     ],
     styles: {
       header: {
-        fontSize: 30,
+        fontSize: 25,
         bold: true,
-        margin: [0, 0, 0, 10]
+        margin: [0, -20, 0, 3] // [Left, Top, Right, Bottom]
       },
       subheader: {
         fontSize: 16,
@@ -349,11 +366,12 @@ const GENERATE_PDF = DataIncomming => {
         margin: [0, 10, 0, 5]
       },
       tableDesign: {
-        margin: [0, 5, 0, 15]
+        fontSize: 8,
+        margin: [0, 5, 0, 5]
       },
       tableHeader: {
         bold: true,
-        fontSize: 13,
+        fontSize: 10,
         color: "black"
       }
     },

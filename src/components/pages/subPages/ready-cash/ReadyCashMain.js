@@ -311,7 +311,8 @@ class ReadyCashMain extends Component {
           open={this.state.open}
           title={
             <div style={{ color: "red" }}>
-              Are You Sure? You Should Reset it Only After 24 Hour !
+              Are You Sure? You Should Reset It Only After 24 Hour !
+              (Warning...) Genetate The PDF First !
             </div>
           }
           onRequestClose={this.handleClose}

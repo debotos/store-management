@@ -11,8 +11,15 @@ import SvgIcon from "material-ui/SvgIcon";
 import noInternet from "no-internet";
 import AutoComplete from "material-ui/AutoComplete";
 
-import { startAddPrevDue } from "../../../../actions/sells/prevDue-actions";
+import {
+  startAddPrevDue,
+  startRemovePrevDue
+} from "../../../../actions/sells/prevDue-actions";
 import { startAddAnEntryToReadyCash } from "../../../../actions/ready-cash/ready-cash-actions";
+import {
+  startEditAdvance,
+  startRemoveAdvance
+} from "../../../../actions/advance/advance-actions";
 import { startIncrementMemoNumber } from "../../../../actions/sells/memo-no-actions";
 import GENERATE_PDF from "./PDF";
 
@@ -71,12 +78,30 @@ class Form extends Component {
   };
   showModelData = modelData => {
     const {
+      advance,
       allTotal,
       prevDue,
       totalWithDue,
       depositNow,
-      newDue
+      allTotalWithPrevDue,
+      depositWithAdvance
     } = this.state.modelData;
+    let newDue = 0;
+    let newAdvance = 0;
+    if (parseFloat(allTotalWithPrevDue) > parseFloat(depositWithAdvance)) {
+      //Due have
+      newDue = parseFloat(allTotalWithPrevDue) - parseFloat(depositWithAdvance);
+    }
+    if (parseFloat(allTotalWithPrevDue) < parseFloat(depositWithAdvance)) {
+      //Due have
+      newAdvance =
+        parseFloat(depositWithAdvance) - parseFloat(allTotalWithPrevDue);
+    }
+    if (parseFloat(allTotalWithPrevDue) === parseFloat(depositWithAdvance)) {
+      //Due have
+      newAdvance = 0;
+      newDue = 0;
+    }
     return (
       <div>
         Bill: {numeral(parseFloat(allTotal)).format("0,0.00")}
@@ -91,13 +116,30 @@ class Form extends Component {
         Bill + Previous Due:{" "}
         {numeral(parseFloat(totalWithDue)).format("0,0.00")}
         <br />
+        <strong>Advance: </strong>
+        <b style={{ color: "green" }}>
+          {parseFloat(advance).toFixed(2) === parseFloat(0).toFixed(2)
+            ? "No Previous Advance"
+            : numeral(parseFloat(advance)).format("0,0.00")}
+        </b>
+        <br />
         Deposit Now: {numeral(parseFloat(depositNow)).format("0,0.00")}
+        <br />
+        Deposit Now + Previous Advance:{" "}
+        {numeral(parseFloat(depositWithAdvance)).format("0,0.00")}
         <br />
         <strong>New Due From Now: </strong>
         <b style={{ color: "red" }}>
           {parseFloat(newDue).toFixed(2) === parseFloat(0).toFixed(2)
             ? "No Due"
             : numeral(parseFloat(newDue)).format("0,0.00")}
+        </b>
+        <br />
+        <strong>New Advance From Now: </strong>
+        <b style={{ color: "green" }}>
+          {parseFloat(newAdvance).toFixed(2) === parseFloat(0).toFixed(2)
+            ? "Nothing"
+            : numeral(parseFloat(newAdvance)).format("0,0.00")}
         </b>
         <br />
       </div>
@@ -107,15 +149,36 @@ class Form extends Component {
     const searchingFor = this.state.number;
     let flag = false;
     let prevDue = 0;
+    let id;
     this.props.due.forEach(singleItem => {
       if (singleItem.number.toString() === searchingFor.toString()) {
-        console.log("Existing user");
+        console.log("User Have Due.");
         flag = true;
+        id = singleItem.id;
         prevDue = singleItem.amount;
       }
     });
-    return [flag, prevDue];
+    return [flag, prevDue, id];
   };
+
+  userHaveAdvance = () => {
+    const searchingFor = this.state.number;
+    let flag = false;
+    let id;
+    let prevAdvance = 0;
+    let obj;
+    this.props.advance.forEach(singleItem => {
+      if (singleItem.note.toString() === searchingFor.toString()) {
+        console.log("User Have Advance.");
+        flag = true;
+        id = singleItem.id;
+        obj = singleItem;
+        prevAdvance = singleItem.amount;
+      }
+    });
+    return [flag, prevAdvance, id, obj];
+  };
+
   handleSaveAndGeneratePDF = () => {
     if (this.state.mail) {
       if (isEmail(this.state.mail)) {
@@ -180,22 +243,48 @@ class Form extends Component {
   finalWork = () => {
     let allTotalWithPrevDue =
       parseFloat(this.state.bill) + parseFloat(this.userAlreadyExists()[1]);
-    if (parseFloat(allTotalWithPrevDue) >= parseFloat(this.state.deposit)) {
+    let depositWithAdvance =
+      parseFloat(this.userHaveAdvance()[1]) + parseFloat(this.state.deposit);
+    if (parseFloat(allTotalWithPrevDue) >= depositWithAdvance) {
       let deposit = parseFloat(this.state.deposit).toFixed(2);
-      let newDue = (allTotalWithPrevDue - parseFloat(deposit)).toFixed(2);
-      this.props.startAddPrevDue(this.state.number, newDue, {
-        name: this.state.name,
-        number: this.state.number,
-        mail: this.state.mail,
-        address: this.state.address
-      });
+      let newDue = (allTotalWithPrevDue - depositWithAdvance).toFixed(2);
+      if (parseFloat(allTotalWithPrevDue) === parseFloat(depositWithAdvance)) {
+        //Remove both due and advance from database
+        this.props.startRemoveAdvance({ id: this.userHaveAdvance()[2] });
+        this.props.startRemovePrevDue(this.userAlreadyExists()[2]);
+      }
+
+      if (parseFloat(allTotalWithPrevDue) > parseFloat(depositWithAdvance)) {
+        //Update the due database
+        //remove the advance entry
+        this.props.startAddPrevDue(this.state.number, newDue, {
+          name: this.state.name,
+          number: this.state.number,
+          mail: this.state.mail,
+          address: this.state.address
+        });
+        this.props.startRemoveAdvance({ id: this.userHaveAdvance()[2] });
+      }
+
+      if (parseFloat(allTotalWithPrevDue) < parseFloat(depositWithAdvance)) {
+        //update the advance database
+        //remove the due entry
+        let newAmount = (depositWithAdvance - allTotalWithPrevDue).toFixed(2);
+        this.props.startEditAdvance(this.userHaveAdvance()[2], {
+          amount: newAmount,
+          ...this.userHaveAdvance()[3]
+        });
+        this.props.startRemovePrevDue(this.userAlreadyExists()[2]);
+      }
 
       const modelData = {
+        advance: this.userHaveAdvance()[1],
         allTotal: this.state.bill,
         prevDue: this.userAlreadyExists()[1],
         totalWithDue: allTotalWithPrevDue,
         depositNow: deposit,
-        newDue
+        allTotalWithPrevDue,
+        depositWithAdvance
       };
 
       this.setState({ modelData });
@@ -211,9 +300,11 @@ class Form extends Component {
           address: this.state.address,
           bill: this.state.bill,
           prevDue: this.userAlreadyExists()[1],
+          advance: this.userHaveAdvance()[1],
           billWithDue: allTotalWithPrevDue,
+          depositWithAdvance,
           depositNow: deposit,
-          newDue
+          allTotalWithPrevDue
         },
         memoNumber: this.props.memoNumber
       };
@@ -378,9 +469,12 @@ const mapDispatchToProps = dispatch => {
     startAddPrevDue: (number, amount, info) => {
       dispatch(startAddPrevDue(number, amount, info));
     },
+    startRemovePrevDue: id => dispatch(startRemovePrevDue(id)),
     startAddAnEntryToReadyCash: data => {
       dispatch(startAddAnEntryToReadyCash(data));
-    }
+    },
+    startEditAdvance: (id, advance) => dispatch(startEditAdvance(id, advance)),
+    startRemoveAdvance: data => dispatch(startRemoveAdvance(data))
   };
 };
 
@@ -388,7 +482,8 @@ const mapStateToProps = state => {
   return {
     due: state.due,
     memoNumber: state.memoNumber.memoNumber,
-    storeInfo: state.storeInfo
+    storeInfo: state.storeInfo,
+    advance: state.advance
   };
 };
 
